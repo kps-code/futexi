@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '../_shared/base.css';
 
 /* Dark mode is driven by the `dark` class set by next-themes on <html>. */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -50,15 +51,6 @@
   --radius-2xl: 1.5rem;
 }
 
-/* The rupee sign (U+20B9) lives in Inter's Latin-Extended subset, an 83 KB download for one glyph.
-   This local face serves ₹ from a system font and lets every other character fall through to Inter. */
-@font-face {
-  font-family: 'KF Rupee';
-  src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial'), local('Noto Sans');
-  unicode-range: U+20B9;
-  font-display: swap;
-}
-
 @layer base {
   html {
     color-scheme: light;
@@ -77,16 +69,6 @@
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
   }
 }
 
@@ -149,27 +131,4 @@
 @utility cv-auto {
   content-visibility: auto;
   contain-intrinsic-size: auto 800px;
-}
-
-/* Scroll reveal. Hidden only while the observer script is active (html.reveal-ready),
-   so content is always visible without JavaScript. */
-.reveal-ready .reveal:not(.is-visible) {
-  opacity: 0;
-  transform: translateY(24px);
-}
-.reveal {
-  transition:
-    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
-}
-.reveal.is-visible {
-  will-change: auto;
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal-ready .reveal:not(.is-visible) {
-    opacity: 1;
-    transform: none;
-  }
 }

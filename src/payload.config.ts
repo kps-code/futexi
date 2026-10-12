@@ -15,6 +15,7 @@ import { Visitors } from './payload/collections/Visitors'
 import { Sessions } from './payload/collections/Sessions'
 import { PageViews } from './payload/collections/PageViews'
 import { Events } from './payload/collections/Events'
+import { DemoBookings } from './payload/collections/DemoBookings'
 import { SiteSettings } from './payload/globals/SiteSettings'
 import { AboutPage } from './payload/globals/AboutPage'
 import { getDatabaseUrl } from './server/env'
@@ -46,7 +47,18 @@ export default buildConfig({
       },
     },
   },
-  collections: [Users, Media, TeamMembers, Leads, ApiLogs, Visitors, Sessions, PageViews, Events],
+  collections: [
+    Users,
+    Media,
+    TeamMembers,
+    Leads,
+    ApiLogs,
+    Visitors,
+    Sessions,
+    PageViews,
+    Events,
+    DemoBookings,
+  ],
   globals: [SiteSettings, AboutPage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

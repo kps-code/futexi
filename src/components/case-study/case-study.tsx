@@ -1,8 +1,9 @@
+import Image from 'next/image'
 import { ArrowRight, Check, ExternalLink, MessageCircle } from 'lucide-react'
 import { ButtonLink } from '@/components/ui/button'
 import { DemoPreview } from '@/components/demos/demo-preview'
 import { Reveal } from '@/components/reveal'
-import type { Demo } from '@/content/demos'
+import { screenSizes, type Demo } from '@/content/demos'
 import { whatsappLink } from '@/lib/whatsapp'
 import type { ReactNode } from 'react'
 
@@ -125,8 +126,28 @@ export function CaseStudy({ demo, whatsappNumber }: { demo: Demo; whatsappNumber
 
       {/* 05 Website Screens */}
       <Block n="05" title="Website Screens">
-        {live ? (
-          <p className="text-muted">Full-page screens are captured from the live demo.</p>
+        {demo.screens ? (
+          <div className="grid gap-6">
+            {demo.screens.desktop.map((s, i) => (
+              <Reveal key={s.src} index={i} className="overflow-hidden rounded-2xl frame-glass">
+                <div className="flex items-center gap-1.5 border-b border-border px-3 py-2">
+                  <span className="h-2 w-2 rounded-full bg-muted/40" />
+                  <span className="h-2 w-2 rounded-full bg-muted/40" />
+                  <span className="h-2 w-2 rounded-full bg-muted/40" />
+                  <span className="ml-2 h-2 flex-1 rounded bg-background/70" />
+                </div>
+                <Image
+                  src={s.src}
+                  alt={s.alt}
+                  width={screenSizes.desktop.width}
+                  height={screenSizes.desktop.height}
+                  sizes="(min-width: 1024px) 60vw, 100vw"
+                  className="h-auto w-full"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                />
+              </Reveal>
+            ))}
+          </div>
         ) : (
           <div className="grid gap-5 sm:grid-cols-2">
             <DemoPreview demo={demo} />
@@ -140,23 +161,43 @@ export function CaseStudy({ demo, whatsappNumber }: { demo: Demo; whatsappNumber
       {/* 06 Mobile Experience */}
       <Block n="06" title="Mobile Experience" tone="surface">
         <div className="grid gap-6 sm:grid-cols-3">
-          {[0, 1, 2].map((i) => (
-            <Reveal
-              key={i}
-              index={i}
-              className="mx-auto w-full max-w-[13rem] rounded-[1.75rem] border-[6px] border-foreground/80 bg-background p-2 shadow-xl"
-            >
-              <DemoPreview demo={demo} className="rounded-[1.1rem]" />
-              <div className="mt-2 space-y-1.5 px-1 pb-2">
-                <span className="block h-2 w-5/6 rounded bg-foreground/60" />
-                <span className="block h-2 w-2/3 rounded bg-muted/50" />
-                <span className="mt-2 block h-6 w-full rounded-full bg-accent-gradient" />
-              </div>
-            </Reveal>
-          ))}
+          {demo.screens
+            ? demo.screens.mobile.map((s, i) => (
+                <Reveal
+                  key={s.src}
+                  index={i}
+                  className="mx-auto w-full max-w-[15rem] overflow-hidden rounded-[2rem] border-[6px] border-foreground/80 bg-background shadow-xl"
+                >
+                  <Image
+                    src={s.src}
+                    alt={s.alt}
+                    width={screenSizes.mobile.width}
+                    height={screenSizes.mobile.height}
+                    sizes="240px"
+                    className="h-auto w-full"
+                    loading="lazy"
+                  />
+                </Reveal>
+              ))
+            : [0, 1, 2].map((i) => (
+                <Reveal
+                  key={i}
+                  index={i}
+                  className="mx-auto w-full max-w-[13rem] rounded-[1.75rem] border-[6px] border-foreground/80 bg-background p-2 shadow-xl"
+                >
+                  <DemoPreview demo={demo} className="rounded-[1.1rem]" />
+                  <div className="mt-2 space-y-1.5 px-1 pb-2">
+                    <span className="block h-2 w-5/6 rounded bg-foreground/60" />
+                    <span className="block h-2 w-2/3 rounded bg-muted/50" />
+                    <span className="mt-2 block h-6 w-full rounded-full bg-accent-gradient" />
+                  </div>
+                </Reveal>
+              ))}
         </div>
         <p className="mt-6 text-center text-sm text-muted">
-          Every demo is built mobile-first. Phone screenshots replace these frames when the demo is live.
+          {demo.screens
+            ? 'Captured from the live demo on a 390px wide phone viewport.'
+            : 'Every demo is built mobile-first. Phone screenshots replace these frames when the demo is live.'}
         </p>
       </Block>
 

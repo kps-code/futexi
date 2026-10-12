@@ -4,6 +4,7 @@
       "url": [
         "http://localhost:3100/",
         "http://localhost:3100/demos/booking",
+        "http://localhost:3100/demo/booking",
         "http://localhost:3100/contact"
       ],
       "numberOfRuns": 3,

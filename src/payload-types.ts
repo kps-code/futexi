@@ -76,6 +76,7 @@ export interface Config {
     sessions: Session;
     'page-views': PageView;
     events: Event;
+    'demo-bookings': DemoBooking;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -92,6 +93,7 @@ export interface Config {
     sessions: SessionsSelect<false> | SessionsSelect<true>;
     'page-views': PageViewsSelect<false> | PageViewsSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
+    'demo-bookings': DemoBookingsSelect<false> | DemoBookingsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -441,6 +443,32 @@ export interface Event {
   createdAt: string;
 }
 /**
+ * Appointments made on the Booking demo site. Sample business: Nova Studio.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "demo-bookings".
+ */
+export interface DemoBooking {
+  id: number;
+  service: 'signature-facial' | 'deep-tissue-massage' | 'hair-spa' | 'skin-consultation';
+  /**
+   * YYYY-MM-DD (IST)
+   */
+  date: string;
+  /**
+   * HH:MM, 24 hour
+   */
+  time: string;
+  name: string;
+  phone: string;
+  notes?: string | null;
+  status: 'requested' | 'confirmed' | 'cancelled';
+  reference: string;
+  visitorId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -499,6 +527,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'events';
         value: number | Event;
+      } | null)
+    | ({
+        relationTo: 'demo-bookings';
+        value: number | DemoBooking;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -770,6 +802,23 @@ export interface EventsSelect<T extends boolean = true> {
   name?: T;
   path?: T;
   props?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "demo-bookings_select".
+ */
+export interface DemoBookingsSelect<T extends boolean = true> {
+  service?: T;
+  date?: T;
+  time?: T;
+  name?: T;
+  phone?: T;
+  notes?: T;
+  status?: T;
+  reference?: T;
+  visitorId?: T;
   updatedAt?: T;
   createdAt?: T;
 }

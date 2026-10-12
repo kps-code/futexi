@@ -12,6 +12,7 @@ const RETENTION_DAYS = {
   'page-views': 180,
   events: 180,
   sessions: 180,
+  'demo-bookings': 90,
 } as const
 
 function cutoff(days: number): string {

@@ -24,7 +24,18 @@ export type Demo = {
   outcomes: readonly string[]
   /** Accent used for the CSS preview frame. */
   accent: 'violet' | 'cyan' | 'amber' | 'rose' | 'emerald' | 'sky' | 'indigo'
+  /** Real screenshots of the live demo (captured by scripts/capture-demo-screens.mjs). */
+  screens?: {
+    desktop: readonly { src: string; alt: string }[]
+    mobile: readonly { src: string; alt: string }[]
+  }
 }
+
+/** Capture sizes used by scripts/capture-demo-screens.mjs. */
+export const screenSizes = {
+  desktop: { width: 1440, height: 900 },
+  mobile: { width: 390, height: 844 },
+} as const
 
 export const demos: readonly Demo[] = [
   {
@@ -36,7 +47,26 @@ export const demos: readonly Demo[] = [
     tags: ['Booking', 'WhatsApp', 'Responsive'],
     cta: 'Request a Similar Website',
     contactType: 'booking',
-    status: 'coming-soon',
+    status: 'live',
+    liveHref: '/demo/booking',
+    screens: {
+      desktop: [
+        {
+          src: '/demos/booking/desktop-home.webp',
+          alt: 'Nova Studio home page with services and booking call to action',
+        },
+        { src: '/demos/booking/desktop-book-service.webp', alt: 'Booking flow step one: choose a service' },
+        {
+          src: '/demos/booking/desktop-book-time.webp',
+          alt: 'Booking flow step three: live time slots for the chosen date',
+        },
+      ],
+      mobile: [
+        { src: '/demos/booking/mobile-home.webp', alt: 'Nova Studio home on a phone' },
+        { src: '/demos/booking/mobile-book-service.webp', alt: 'Choosing a service on a phone' },
+        { src: '/demos/booking/mobile-book-time.webp', alt: 'Choosing a time slot on a phone' },
+      ],
+    },
     challenge:
       'Customers struggle to check availability and book appointments. Calls go unanswered, WhatsApp messages pile up, and bookings get missed.',
     solution: [

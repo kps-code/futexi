@@ -38,21 +38,22 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ## Scripts
 
-| Script                               | What it does                                                 |
-| ------------------------------------ | ------------------------------------------------------------ |
-| `npm run dev`                        | Dev server with hot reload                                   |
-| `npm run build` / `npm start`        | Production build and serve                                   |
-| `npm run typecheck`                  | TypeScript, strict                                           |
-| `npm run lint`                       | ESLint (Next core-web-vitals + TypeScript rules)             |
-| `npm run format` / `format:check`    | Prettier with Tailwind class sorting                         |
-| `npm run test:unit`                  | Pure unit tests, no database                                 |
-| `npm run test:int`                   | Integration tests against the database                       |
-| `npm run test:e2e`                   | Playwright browser tests (starts the dev server)             |
-| `npm run generate:types`             | Regenerate `src/payload-types.ts` after changing collections |
-| `npm run migrate:create` / `migrate` | Payload migrations for production                            |
-| `npm run db:up` / `db:down`          | Local Postgres via Docker                                    |
-| `npm run db:create`                  | Creates the database named in .env if missing                |
-| `npm run vercel-build`               | What Vercel runs: migrations, then build                     |
+| Script                                         | What it does                                                     |
+| ---------------------------------------------- | ---------------------------------------------------------------- |
+| `npm run dev`                                  | Dev server with hot reload                                       |
+| `npm run build` / `npm start`                  | Production build and serve                                       |
+| `npm run typecheck`                            | TypeScript, strict                                               |
+| `npm run lint`                                 | ESLint (Next core-web-vitals + TypeScript rules)                 |
+| `npm run format` / `format:check`              | Prettier with Tailwind class sorting                             |
+| `npm run test:unit`                            | Pure unit tests, no database                                     |
+| `npm run test:int`                             | Integration tests against the database                           |
+| `npm run test:e2e`                             | Playwright browser tests (starts the dev server)                 |
+| `npm run generate:types`                       | Regenerate `src/payload-types.ts` after changing collections     |
+| `npm run migrate:create` / `migrate`           | Payload migrations for production                                |
+| `npm run db:up` / `db:down`                    | Local Postgres via Docker                                        |
+| `node scripts/capture-demo-screens.mjs <slug>` | Capture real screenshots of a live demo into public/demos/<slug> |
+| `npm run db:create`                            | Creates the database named in .env if missing                    |
+| `npm run vercel-build`                         | What Vercel runs: migrations, then build                         |
 
 ## Project layout
 
@@ -61,6 +62,8 @@ src/
   app/
     (site)/            public website: layout, pages, globals.css
     (payload)/         Payload admin and REST (generated, REST wrapped for logging)
+    (demos)/           live demo mini-sites with their own root layout and theme (demo.css)
+    _shared/           CSS shared by the main site and the demos (rupee font-face, reveals)
     api/health         uptime check
   components/
     site/              header, footer, theme, page intro

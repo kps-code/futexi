@@ -1,0 +1,68 @@
+@import 'tailwindcss';
+@import '../_shared/base.css';
+
+/* Nova Studio: the fictional business behind the Booking Website demo.
+   Light, warm and calm so it reads as a client's site, not KAPOSA's. */
+:root {
+  --nv-bg: #fbfaf7;
+  --nv-surface: #ffffff;
+  --nv-surface-2: #f3f0ea;
+  --nv-ink: #1c1917;
+  --nv-muted: #6b665f;
+  --nv-line: rgba(28, 25, 23, 0.1);
+  --nv-line-strong: rgba(28, 25, 23, 0.2);
+  --nv-brand: #0f766e;
+  --nv-brand-ink: #115e59;
+  --nv-brand-soft: #ccfbf1;
+  --nv-accent: #d97706;
+  --nv-ring: rgba(15, 118, 110, 0.35);
+}
+
+@theme inline {
+  --color-nv-bg: var(--nv-bg);
+  --color-nv-surface: var(--nv-surface);
+  --color-nv-surface-2: var(--nv-surface-2);
+  --color-nv-ink: var(--nv-ink);
+  --color-nv-muted: var(--nv-muted);
+  --color-nv-line: var(--nv-line);
+  --color-nv-line-strong: var(--nv-line-strong);
+  --color-nv-brand: var(--nv-brand);
+  --color-nv-brand-ink: var(--nv-brand-ink);
+  --color-nv-brand-soft: var(--nv-brand-soft);
+  --color-nv-accent: var(--nv-accent);
+  --color-nv-ring: var(--nv-ring);
+
+  --font-sans: 'KF Rupee', var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'KF Rupee', var(--font-sora), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-nv-bg text-nv-ink font-sans antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--nv-brand);
+    outline-offset: 2px;
+  }
+}
+
+@utility container-nv {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 72rem;
+  padding-inline: 1.25rem;
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility nv-card {
+  background: var(--nv-surface);
+  border: 1px solid var(--nv-line);
+  border-radius: 1.25rem;
+  box-shadow: 0 1px 2px rgba(28, 25, 23, 0.04);
+}

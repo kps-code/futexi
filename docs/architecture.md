@@ -60,8 +60,8 @@ futexi/
       contact/page.tsx
       privacy/page.tsx
       terms/page.tsx
-    (demos)/                    demo sites, own layout, no main nav
-      demo/booking/
+    (demos)/                    demo sites, own root layout + demo.css theme, noindex, Tracker
+      demo/booking/             Nova Studio: landing + 5-step booking flow (live slots, WhatsApp confirm)
       demo/salon/
       demo/restaurant/
       demo/interior/
@@ -101,6 +101,7 @@ futexi/
       Sessions.ts
       PageViews.ts
       Events.ts
+      DemoBookings.ts           appointments from the Booking demo (unique date+time), 90 day retention
     globals/
       SiteSettings.ts
       AboutPage.ts
