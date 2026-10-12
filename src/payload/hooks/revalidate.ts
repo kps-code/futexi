@@ -1,15 +1,24 @@
-import { revalidateTag } from 'next/cache'
+import { revalidateTag, updateTag } from 'next/cache'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, GlobalAfterChangeHook } from 'payload'
 
 export const CACHE_TAGS = {
   siteSettings: 'site-settings',
   aboutPage: 'about-page',
   teamMembers: 'team-members',
+  demoSettings: 'demo-settings',
 } as const
 
 function revalidate(tag: string) {
+  // Admin saves run inside a Server Action, where updateTag expires the tag
+  // immediately (read-your-own-writes). REST/route-handler saves fall back to
+  // revalidateTag, which serves the old value once more while refreshing.
   try {
-    // Next 16: second argument is the cache profile. 'max' = serve stale while refreshing.
+    updateTag(tag)
+    return
+  } catch {
+    /* not in a server action */
+  }
+  try {
     revalidateTag(tag, 'max')
   } catch {
     // Outside a request scope (seed scripts, tests): nothing to revalidate.
@@ -23,6 +32,11 @@ export const revalidateSiteSettings: GlobalAfterChangeHook = ({ doc }) => {
 
 export const revalidateAboutPage: GlobalAfterChangeHook = ({ doc }) => {
   revalidate(CACHE_TAGS.aboutPage)
+  return doc
+}
+
+export const revalidateDemoSettings: GlobalAfterChangeHook = ({ doc }) => {
+  revalidate(CACHE_TAGS.demoSettings)
   return doc
 }
 

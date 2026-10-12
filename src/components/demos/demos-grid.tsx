@@ -1,12 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { demoCategories, demos } from '@/content/demos'
+import { demoCategories, type Demo } from '@/content/demos'
 import { cn } from '@/lib/utils'
 import { DemoCard } from './demo-card'
 
 /** Filterable demo grid (docs/content-lock.md §4). */
-export function DemosGrid() {
+export function DemosGrid({ demos }: { demos: readonly Demo[] }) {
   const [filter, setFilter] = useState<(typeof demoCategories)[number]>('All')
   const visible = demos.filter((d) => filter === 'All' || d.category === filter || d.category === 'All')
 

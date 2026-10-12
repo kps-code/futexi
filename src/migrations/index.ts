@@ -1,6 +1,7 @@
 import * as migration_20261007_113251_initial from './20261007_113251_initial'
 import * as migration_20261007_175732_demos from './20261007_175732_demos'
 import * as migration_20261007_182907_demo_enquiries from './20261007_182907_demo_enquiries'
+import * as migration_20261008_051300_demo_settings from './20261008_051300_demo_settings'
 
 export const migrations = [
   {
@@ -17,5 +18,10 @@ export const migrations = [
     up: migration_20261007_182907_demo_enquiries.up,
     down: migration_20261007_182907_demo_enquiries.down,
     name: '20261007_182907_demo_enquiries',
+  },
+  {
+    up: migration_20261008_051300_demo_settings.up,
+    down: migration_20261008_051300_demo_settings.down,
+    name: '20261008_051300_demo_settings',
   },
 ]

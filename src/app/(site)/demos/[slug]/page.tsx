@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { CaseStudy } from '@/components/case-study/case-study'
 import { demoBySlug, demos } from '@/content/demos'
-import { getSiteSettings } from '@/server/site-data'
+import { getSiteSettings, isDemoHidden } from '@/server/site-data'
 
 type Params = { params: Promise<{ slug: string }> }
 
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function DemoCaseStudyPage({ params }: Params) {
   const { slug } = await params
   const demo = demoBySlug(slug)
-  if (!demo) notFound()
+  if (!demo || (await isDemoHidden(slug))) notFound()
   const settings = await getSiteSettings()
   return <CaseStudy demo={demo} whatsappNumber={settings.whatsappNumber} />
 }

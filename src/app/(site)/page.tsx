@@ -12,18 +12,23 @@ import { Technology } from '@/components/home/technology'
 import { TrustStrip } from '@/components/home/trust-strip'
 import { WhatWeBuild } from '@/components/home/what-we-build'
 import { WhyUs } from '@/components/home/why-us'
-import { getAboutPage, getSiteSettings, getTeamMembers } from '@/server/site-data'
+import { getAboutPage, getFeaturedDemos, getSiteSettings, getTeamMembers } from '@/server/site-data'
 
 /** Home. Section order: docs/content-lock.md §2. */
 export default async function HomePage() {
-  const [settings, team, about] = await Promise.all([getSiteSettings(), getTeamMembers(), getAboutPage()])
+  const [settings, team, about, featured] = await Promise.all([
+    getSiteSettings(),
+    getTeamMembers(),
+    getAboutPage(),
+    getFeaturedDemos(),
+  ])
 
   return (
     <>
       <Hero />
       <TrustStrip />
       <WhatWeBuild />
-      <FeaturedDemos />
+      <FeaturedDemos demos={featured} />
       <AiSection />
       <BeforeAfter />
       <EveryScreen />

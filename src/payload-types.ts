@@ -108,10 +108,12 @@ export interface Config {
   globals: {
     'site-settings': SiteSetting;
     'about-page': AboutPage;
+    'demo-settings': DemoSetting;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
+    'demo-settings': DemoSettingsSelect<false> | DemoSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -985,6 +987,25 @@ export interface AboutPage {
   createdAt?: string | null;
 }
 /**
+ * Control which demos appear on the website. Changes go live within seconds.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "demo-settings".
+ */
+export interface DemoSetting {
+  id: number;
+  /**
+   * Selected demos disappear from Home, the Demos page, case studies and the sitemap. Their live mini-site still opens by direct link, so you can share one privately.
+   */
+  hidden?: ('booking' | 'salon' | 'restaurant' | 'interior' | 'tuition' | 'before-after' | 'ai-business')[] | null;
+  /**
+   * Up to four demos shown on the home page, in the order selected. Hidden demos are skipped.
+   */
+  featured?: ('booking' | 'salon' | 'restaurant' | 'interior' | 'tuition' | 'before-after' | 'ai-business')[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
@@ -1010,6 +1031,17 @@ export interface AboutPageSelect<T extends boolean = true> {
   heading?: T;
   intro?: T;
   values?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "demo-settings_select".
+ */
+export interface DemoSettingsSelect<T extends boolean = true> {
+  hidden?: T;
+  featured?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

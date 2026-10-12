@@ -19,6 +19,7 @@ import { DemoBookings } from './payload/collections/DemoBookings'
 import { DemoLeads } from './payload/collections/DemoLeads'
 import { SiteSettings } from './payload/globals/SiteSettings'
 import { AboutPage } from './payload/globals/AboutPage'
+import { DemoSettings } from './payload/globals/DemoSettings'
 import { getDatabaseUrl } from './server/env'
 
 const filename = fileURLToPath(import.meta.url)
@@ -62,7 +63,7 @@ export default buildConfig({
     DemoBookings,
     DemoLeads,
   ],
-  globals: [SiteSettings, AboutPage],
+  globals: [SiteSettings, AboutPage, DemoSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

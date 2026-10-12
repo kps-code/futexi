@@ -2,6 +2,7 @@ import 'server-only'
 import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { demoBySlug, demos, type Demo } from '@/content/demos'
 import { brand, contactDefaults } from '@/content/site'
 import { CACHE_TAGS } from '@/payload/hooks/revalidate'
 import type { Media, TeamMember } from '@/payload-types'
@@ -119,3 +120,41 @@ export const getTeamMembers = unstable_cache(
   ['team-members'],
   { tags: [CACHE_TAGS.teamMembers], revalidate: ONE_HOUR },
 )
+
+export type DemoSettings = { hidden: string[]; featured: string[] }
+
+const DEFAULT_FEATURED = ['booking', 'salon', 'restaurant', 'ai-business']
+
+/** Admin-controlled demo visibility (Settings > Demos). */
+export const getDemoSettings = unstable_cache(
+  async (): Promise<DemoSettings> => {
+    const payload = await getPayload({ config })
+    const s = await payload.findGlobal({ slug: 'demo-settings', depth: 0, overrideAccess: true })
+    const list = (v: unknown): string[] =>
+      Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : []
+    const featured = list(s?.featured)
+    return { hidden: list(s?.hidden), featured: featured.length ? featured : DEFAULT_FEATURED }
+  },
+  ['demo-settings'],
+  { tags: [CACHE_TAGS.demoSettings], revalidate: ONE_HOUR },
+)
+
+/** Demos that may appear on the public site, in catalogue order. */
+export async function getVisibleDemos(): Promise<Demo[]> {
+  const { hidden } = await getDemoSettings()
+  return demos.filter((d) => !hidden.includes(d.slug))
+}
+
+/** Up to four demos for the home page, in the admin's chosen order, skipping hidden ones. */
+export async function getFeaturedDemos(): Promise<Demo[]> {
+  const { hidden, featured } = await getDemoSettings()
+  return featured
+    .map(demoBySlug)
+    .filter((d): d is Demo => Boolean(d) && !hidden.includes(d!.slug))
+    .slice(0, 4)
+}
+
+export async function isDemoHidden(slug: string): Promise<boolean> {
+  const { hidden } = await getDemoSettings()
+  return hidden.includes(slug)
+}

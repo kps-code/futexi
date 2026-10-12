@@ -1,12 +1,12 @@
 import { ButtonLink } from '@/components/ui/button'
 import { DemoCard } from '@/components/demos/demo-card'
 import { Reveal } from '@/components/reveal'
-import { demoBySlug } from '@/content/demos'
+import type { Demo } from '@/content/demos'
 import { featuredDemos } from '@/content/home'
 import { Section, SectionHeading } from './section'
 
-export function FeaturedDemos() {
-  const items = featuredDemos.slugs.map(demoBySlug).filter((d): d is NonNullable<typeof d> => Boolean(d))
+export function FeaturedDemos({ demos: items }: { demos: readonly Demo[] }) {
+  if (items.length === 0) return null
   return (
     <Section id="demos" tone="surface" className="cv-auto">
       <SectionHeading eyebrow="Demos" title={featuredDemos.heading} sub={featuredDemos.sub} />
