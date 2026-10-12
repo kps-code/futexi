@@ -45,3 +45,4 @@ export function createLimiter(max: number, windowMs: number): Limiter {
 export const trackLimiterByVisitor = createLimiter(60, 60_000)
 export const trackLimiterByIp = createLimiter(600, 60_000)
 export const contactLimiterByIp = createLimiter(5, 10 * 60_000)
+export const feedbackLimiterByIp = createLimiter(5, 10 * 60_000)

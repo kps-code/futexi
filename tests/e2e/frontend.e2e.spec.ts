@@ -13,6 +13,16 @@ test.describe('Frontend', () => {
     }
   })
 
+  test('footer and structured data carry the business location', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.locator('footer')).toContainText('Chennai, Tamil Nadu')
+    const ld = await page.locator('script[type="application/ld+json"]').first().textContent()
+    const data = JSON.parse(ld ?? '[]') as Array<Record<string, unknown>>
+    const business = data.find((d) => d['@type'] === 'ProfessionalService')
+    expect(business).toBeTruthy()
+    expect((business?.address as Record<string, string>).addressLocality).toBe('Chennai')
+  })
+
   test('theme toggle switches the html class', async ({ page }) => {
     await page.goto('/')
     const html = page.locator('html')

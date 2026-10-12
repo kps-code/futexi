@@ -1,14 +1,12 @@
 import type { Metadata } from 'next'
-import { Mail, MessageCircle, Phone } from 'lucide-react'
+import { Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
 import { ContactForm } from '@/components/site/contact-form'
 import { PageIntro } from '@/components/site/page-intro'
 import { InstagramIcon, LinkedinIcon } from '@/components/site/social-icons'
 import { ButtonLink } from '@/components/ui/button'
-import { faq } from '@/content/faq'
 import { needOptions } from '@/content/contact'
-import { whatsappDefaultMessage } from '@/content/site'
 import { whatsappLink } from '@/lib/whatsapp'
-import { getSiteSettings } from '@/server/site-data'
+import { getFaqs, getSiteSettings } from '@/server/site-data'
 
 export const metadata: Metadata = { title: 'Contact' }
 
@@ -23,9 +21,9 @@ const typeMap: Record<string, (typeof needOptions)[number]> = {
 }
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
-  const [settings, params] = await Promise.all([getSiteSettings(), searchParams])
+  const [settings, faq, params] = await Promise.all([getSiteSettings(), getFaqs(), searchParams])
   const defaultNeed = params.type ? typeMap[params.type] : undefined
-  const wa = whatsappLink(settings.whatsappNumber, whatsappDefaultMessage)
+  const wa = whatsappLink(settings.whatsappNumber, settings.whatsappMessage)
 
   const lines = [
     { icon: Phone, label: settings.phone, href: `tel:+${settings.whatsappNumber}` },
@@ -59,6 +57,17 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
               </li>
             ))}
           </ul>
+          <p className="flex items-center gap-3 text-sm text-foreground/90">
+            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-surface">
+              <MapPin aria-hidden className="h-4 w-4" />
+            </span>
+            <span>
+              {settings.city}, {settings.region}
+              {settings.serviceAreaText && (
+                <span className="block text-muted">{settings.serviceAreaText}</span>
+              )}
+            </span>
+          </p>
           <ButtonLink
             href={wa}
             size="lg"
@@ -79,9 +88,9 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
           <h2 className="font-display text-2xl font-bold sm:text-3xl">Questions businesses ask us</h2>
           <div className="mt-8 divide-y divide-border">
             {faq.map((item) => (
-              <details key={item.q} className="group py-4">
+              <details key={item.id} className="group py-4">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium transition-colors group-open:text-accent hover:text-accent">
-                  {item.q}
+                  {item.question}
                   <span
                     aria-hidden
                     className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border text-muted transition-[transform,border-color,color] duration-300 group-open:rotate-45 group-open:border-accent group-open:text-accent"
@@ -90,7 +99,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
                   </span>
                 </summary>
                 <p className="mt-3 max-w-3xl text-sm text-muted">
-                  {item.a.replace('{price}', settings.startingPriceText)}
+                  {item.answer.replace('{price}', settings.startingPriceText)}
                 </p>
               </details>
             ))}

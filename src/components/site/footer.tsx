@@ -1,23 +1,33 @@
+import { MapPin } from 'lucide-react'
 import Link from 'next/link'
-import { brand, footerColumns, legal, whatsappDefaultMessage } from '@/content/site'
+import { brand, footerColumns, legal } from '@/content/site'
 import { whatsappLink } from '@/lib/whatsapp'
 import { Wordmark } from './wordmark'
 
 export type FooterContact = {
   phone: string
   whatsappNumber: string
+  whatsappMessage: string
   email: string
+  city: string
+  region: string
+  serviceAreaText: string
   instagram?: string | null
   linkedin?: string | null
   github?: string | null
 }
 
-export function Footer({ contact }: { contact: FooterContact }) {
+export type FooterLink = { label: string; href: string }
+
+export function Footer({ contact, solutions }: { contact: FooterContact; solutions: FooterLink[] }) {
+  const columns = footerColumns.map((col) =>
+    col.title === 'Solutions' && solutions.length > 0 ? { title: col.title, links: solutions } : col,
+  )
   const connect = [
     contact.instagram ? { label: 'Instagram', href: contact.instagram } : null,
     contact.linkedin ? { label: 'LinkedIn', href: contact.linkedin } : null,
     contact.github ? { label: 'GitHub', href: contact.github } : null,
-    { label: 'WhatsApp', href: whatsappLink(contact.whatsappNumber, whatsappDefaultMessage) },
+    { label: 'WhatsApp', href: whatsappLink(contact.whatsappNumber, contact.whatsappMessage) },
   ].filter((x): x is { label: string; href: string } => Boolean(x))
 
   return (
@@ -31,9 +41,16 @@ export function Footer({ contact }: { contact: FooterContact }) {
           <Wordmark withSubline={false} />
           <p className="text-sm text-muted">{brand.positioning}</p>
           <p className="font-display text-lg font-semibold">{brand.footerLine}</p>
+          <p className="flex items-start gap-2 text-sm text-muted">
+            <MapPin aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+            <span>
+              {contact.city}, {contact.region}
+              {contact.serviceAreaText && <span className="block">{contact.serviceAreaText}</span>}
+            </span>
+          </p>
         </div>
 
-        {footerColumns.map((col) => (
+        {columns.map((col) => (
           <div key={col.title}>
             <h2 className="mb-4 text-xs font-semibold tracking-[0.18em] text-muted uppercase">{col.title}</h2>
             <ul className="space-y-2.5">

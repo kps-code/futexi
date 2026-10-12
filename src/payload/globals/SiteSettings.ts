@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { anyone, isLoggedIn } from '../access'
-import { contactDefaults, brand } from '@/content/site'
+import { contactDefaults, brand, whatsappDefaultMessage } from '@/content/site'
 import { revalidateSiteSettings } from '../hooks/revalidate'
 
 const httpsUrl = (value: unknown) => {
@@ -64,6 +64,32 @@ export const SiteSettings: GlobalConfig = {
               type: 'text',
               defaultValue: contactDefaults.replyTimeText,
             },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'city',
+                  type: 'text',
+                  defaultValue: contactDefaults.city,
+                  admin: {
+                    description: 'Shown in the footer and Contact page, and sent to Google as your location.',
+                  },
+                },
+                {
+                  name: 'region',
+                  label: 'State',
+                  type: 'text',
+                  defaultValue: contactDefaults.region,
+                },
+              ],
+            },
+            {
+              name: 'serviceAreaText',
+              label: 'Service area line',
+              type: 'text',
+              defaultValue: contactDefaults.serviceAreaText,
+              admin: { description: 'Short line after the city, e.g. "Serving businesses across India".' },
+            },
           ],
         },
         {
@@ -99,6 +125,43 @@ export const SiteSettings: GlobalConfig = {
               required: true,
               defaultValue: contactDefaults.startingPriceText,
               admin: { description: 'Shown in the Investment section and FAQ.' },
+            },
+            {
+              name: 'whatsappMessage',
+              label: 'WhatsApp message',
+              type: 'textarea',
+              maxLength: 300,
+              defaultValue: whatsappDefaultMessage,
+              admin: {
+                description:
+                  'Pre-filled text when a visitor taps a WhatsApp button. Change it for campaigns, e.g. mention an offer.',
+              },
+            },
+          ],
+        },
+        {
+          label: 'SEO',
+          fields: [
+            {
+              name: 'seoDescription',
+              label: 'Site description',
+              type: 'textarea',
+              maxLength: 160,
+              defaultValue: brand.tagline,
+              admin: {
+                description:
+                  'Shown under the site name in Google results and link previews. Up to 160 characters.',
+              },
+            },
+            {
+              name: 'ogImage',
+              label: 'Share image',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description:
+                  'Preview image when the site is shared on WhatsApp, Instagram or LinkedIn. 1200 x 630 PNG or JPG. Leave empty to use the built-in default.',
+              },
             },
           ],
         },

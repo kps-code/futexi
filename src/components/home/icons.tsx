@@ -21,9 +21,12 @@ import {
   type LucideProps,
 } from 'lucide-react'
 import type { ComponentType } from 'react'
+import type { IconName } from '@/content/icon-names'
 
-/** Maps the string icon names used in content files to lucide components. */
-export const icons = {
+export type { IconName } from '@/content/icon-names'
+
+/** Maps the string icon names used in content and admin to lucide components. */
+export const icons: Record<IconName, ComponentType<LucideProps>> = {
   bot: Bot,
   calendar: CalendarCheck,
   check: Check,
@@ -43,9 +46,7 @@ export const icons = {
   users: Users,
   workflow: Workflow,
   zap: Zap,
-} satisfies Record<string, ComponentType<LucideProps>>
-
-export type IconName = keyof typeof icons
+}
 
 export function Icon({ name, className }: { name: IconName; className?: string }) {
   const Comp = icons[name]

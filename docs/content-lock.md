@@ -436,7 +436,22 @@ Login at /admin. One account per team member.
 | About Page (single) | heading, intro paragraph, values list | About page |
 | Media | uploaded images | Team photos, future demo screenshots |
 
-Stays in code for v1: homepage copy, services, demos, case studies, FAQ, scripted AI answers. Can move to admin later.
+Added 2026-10-12 (Phase 7):
+
+| Collection | Fields | Used on |
+|---|---|---|
+| FAQ | question, answer (`{price}` placeholder), where to show (Home and Contact / Contact only / Hidden), order | Contact page (all except Hidden), Home FAQ ("Home and Contact" only) |
+| Testimonials | name, business, quote, rating, photo, order, visible; private feedback link (`/feedback/<token>`, one use, no-index) that lets the client fill rating and quote themselves; "Received" timestamp | Home "What Clients Say" (visible + quote only; hidden while empty) |
+| Home Page (single) | hero headline (two parts), sub-text, button labels, trust line; final CTA heading, accent, sub-text, button labels; technology heading, line, items | Home hero, closing CTA (also on Demos and Services), Technology strip |
+| AI Assistant Demo (single) | conversations: chip, question, answer | Home "Ask our AI Assistant" box |
+| Site Settings, extended | WhatsApp pre-filled message; SEO description; share image; city, state, service-area line | Every WhatsApp button; `<meta>` description; link previews (OG image, default `public/og-default.png`); footer and Contact location line; ProfessionalService structured data for Google (address locality/region) |
+| Demos (single) | hidden demos, featured on home | Home, Demos page, case studies, sitemap |
+| Services | title, slug (link anchor), icon, contact-form type, outcome, home card line, included list, good for, order, visible | Services page cards, home "What We Build" cards, footer Solutions links |
+| Services Page (single) | heading, sub-text | Top of the Services page |
+| Legal Pages (single) | Privacy and Terms: title, last updated, intro, sections (title + paragraphs); placeholders `{brand}` `{email}` `{phone}` `{price}` | /privacy, /terms |
+| Home Page (single), extended | Why Us heading + cards; How We Work heading + steps (title, line, icon), numbered automatically | Home "Why Build With Us?" and "From Idea to Launch" |
+
+Stays in code: demos, case studies, demo mini-sites, section structure, the AI feature list, Before/After lists, Every Screen chips, trust strip, nav and footer company links, contact form options.
 
 ---
 

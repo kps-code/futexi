@@ -1,4 +1,7 @@
-/** Source: docs/content-lock.md §9. `{price}` is replaced with the admin-editable starting price text. */
+/**
+ * Source: docs/content-lock.md §9. `{price}` is replaced with the admin-editable starting price text.
+ * Seed and fallback values; the admin's FAQ collection overrides them once it has entries.
+ */
 export const faq = [
   {
     q: 'How much does a website cost?',

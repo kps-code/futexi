@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { DemosGrid } from '@/components/demos/demos-grid'
 import { FinalCta } from '@/components/home/final-cta'
 import { PageIntro } from '@/components/site/page-intro'
-import { getSiteSettings, getVisibleDemos } from '@/server/site-data'
+import { getHomePage, getSiteSettings, getVisibleDemos } from '@/server/site-data'
 
 export const metadata: Metadata = {
   title: 'Demos',
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default async function DemosPage() {
-  const [settings, visible] = await Promise.all([getSiteSettings(), getVisibleDemos()])
+  const [settings, visible, home] = await Promise.all([getSiteSettings(), getVisibleDemos(), getHomePage()])
   return (
     <>
       <PageIntro eyebrow="Demos" title="See What We Can Build">
@@ -23,7 +23,11 @@ export default async function DemosPage() {
       <section className="container-site pb-20">
         <DemosGrid demos={visible} />
       </section>
-      <FinalCta whatsappNumber={settings.whatsappNumber} />
+      <FinalCta
+        content={home.finalCta}
+        whatsappNumber={settings.whatsappNumber}
+        whatsappMessage={settings.whatsappMessage}
+      />
     </>
   )
 }

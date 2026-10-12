@@ -2,15 +2,22 @@ import 'server-only'
 import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { aiScript, type AiScriptItem } from '@/content/ai-script'
+import type { ContactType } from '@/content/contact'
 import { demoBySlug, demos, type Demo } from '@/content/demos'
-import { brand, contactDefaults } from '@/content/site'
+import { faq, homeFaqCount } from '@/content/faq'
+import { finalCta, howWeWork, technology, whatWeBuild, whyUs } from '@/content/home'
+import { isIconName, type IconName } from '@/content/icon-names'
+import { privacyDefaults, termsDefaults, type LegalPageContent } from '@/content/legal'
+import { services as serviceDefaults, servicesPage } from '@/content/services'
+import { brand, contactDefaults, hero, whatsappDefaultMessage } from '@/content/site'
 import { CACHE_TAGS } from '@/payload/hooks/revalidate'
 import type { Media, TeamMember } from '@/payload-types'
 
 /**
  * Admin-editable content, cached and tagged. Payload hooks revalidate the
  * tags on save, so an edit is live within seconds while pages stay static.
- * Empty fields fall back to the build-time defaults in content/site.ts.
+ * Empty fields fall back to the build-time defaults in src/content/*.
  */
 
 export type SiteSettings = {
@@ -23,6 +30,13 @@ export type SiteSettings = {
   github?: string
   tagline: string
   startingPriceText: string
+  whatsappMessage: string
+  seoDescription: string
+  city: string
+  region: string
+  serviceAreaText: string
+  /** Absolute or site-relative URL of the uploaded share image, if any. */
+  ogImageUrl?: string
 }
 
 const ONE_HOUR = 60 * 60
@@ -33,11 +47,23 @@ function text(v: unknown, fallback: string): string {
 function optionalText(v: unknown): string | undefined {
   return typeof v === 'string' && v.trim() ? v.trim() : undefined
 }
+function textList(v: unknown, fallback: readonly string[]): string[] {
+  const list = Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string' && x.trim() !== '') : []
+  return list.length ? list : [...fallback]
+}
+function mediaUrl(v: unknown, size?: 'thumbnail' | 'card' | 'large'): string | undefined {
+  if (!v || typeof v !== 'object') return undefined
+  const m = v as Media
+  return (size && m.sizes?.[size]?.url) || m.url || undefined
+}
+function iconName(v: unknown, fallback: IconName): IconName {
+  return isIconName(v) ? v : fallback
+}
 
 export const getSiteSettings = unstable_cache(
   async (): Promise<SiteSettings> => {
     const payload = await getPayload({ config })
-    const s = await payload.findGlobal({ slug: 'site-settings', depth: 0, overrideAccess: true })
+    const s = await payload.findGlobal({ slug: 'site-settings', depth: 1, overrideAccess: true })
     return {
       phone: text(s?.phone, contactDefaults.phoneDisplay),
       whatsappNumber: text(s?.whatsappNumber, contactDefaults.whatsappNumber),
@@ -48,6 +74,12 @@ export const getSiteSettings = unstable_cache(
       github: optionalText(s?.github) ?? optionalText(contactDefaults.github),
       tagline: text(s?.tagline, brand.tagline),
       startingPriceText: text(s?.startingPriceText, contactDefaults.startingPriceText),
+      whatsappMessage: text(s?.whatsappMessage, whatsappDefaultMessage),
+      seoDescription: text(s?.seoDescription, brand.tagline),
+      city: text(s?.city, contactDefaults.city),
+      region: text(s?.region, contactDefaults.region),
+      serviceAreaText: text(s?.serviceAreaText, contactDefaults.serviceAreaText),
+      ogImageUrl: mediaUrl(s?.ogImage),
     }
   },
   ['site-settings'],
@@ -66,10 +98,12 @@ export const getAboutPage = unstable_cache(
         a?.intro,
         'We are a small technology team focused on building modern websites, AI-powered experiences, automation solutions and digital products. We work directly with every client, from the first call to launch and beyond.',
       ),
-      values:
-        Array.isArray(a?.values) && a.values.length
-          ? a.values.filter((v): v is string => typeof v === 'string')
-          : ['Custom, Not Cookie-Cutter', 'AI-Ready', 'Mobile First', 'Direct Collaboration'],
+      values: textList(a?.values, [
+        'Custom, Not Cookie-Cutter',
+        'AI-Ready',
+        'Mobile First',
+        'Direct Collaboration',
+      ]),
     }
   },
   ['about-page'],
@@ -102,7 +136,6 @@ export const getTeamMembers = unstable_cache(
     })
     return res.docs.map((m: TeamMember) => {
       const photo = m.photo && typeof m.photo === 'object' ? (m.photo as Media) : undefined
-      const card = photo?.sizes?.card?.url ?? photo?.url ?? undefined
       return {
         id: m.id,
         name: m.name,
@@ -110,7 +143,7 @@ export const getTeamMembers = unstable_cache(
         bio: m.bio,
         skills: (m.skills ?? []).filter((s): s is string => typeof s === 'string'),
         aiSkills: (m.aiSkills ?? []).filter((s): s is string => typeof s === 'string'),
-        photoUrl: card ?? undefined,
+        photoUrl: mediaUrl(photo, 'card'),
         photoAlt: photo?.alt,
         linkedin: optionalText(m.linkedin),
         github: optionalText(m.github),
@@ -158,3 +191,277 @@ export async function isDemoHidden(slug: string): Promise<boolean> {
   const { hidden } = await getDemoSettings()
   return hidden.includes(slug)
 }
+
+/* ------------------------------------------------------------------------ */
+/* Home page texts (Content > Home Page)                                    */
+/* ------------------------------------------------------------------------ */
+
+export type HeroContent = {
+  eyebrow: string
+  headingLine1: string
+  headingLine2: string
+  sub: string
+  primaryLabel: string
+  secondaryLabel: string
+  trustLine: string[]
+}
+export type FinalCtaContent = {
+  heading: string
+  headingAccent: string
+  sub: string
+  primaryLabel: string
+  whatsappLabel: string
+}
+export type TechnologyContent = { heading: string; line: string; items: string[] }
+export type WhyUsContent = { heading: string; cards: { title: string; line: string }[] }
+export type HowWeWorkContent = { heading: string; steps: { title: string; line: string; icon: IconName }[] }
+export type HomePageContent = {
+  hero: HeroContent
+  finalCta: FinalCtaContent
+  technology: TechnologyContent
+  whyUs: WhyUsContent
+  howWeWork: HowWeWorkContent
+}
+
+export const getHomePage = unstable_cache(
+  async (): Promise<HomePageContent> => {
+    const payload = await getPayload({ config })
+    const h = await payload.findGlobal({ slug: 'home-page', depth: 0, overrideAccess: true })
+    const cards = (h?.whyUs?.cards ?? [])
+      .map((c) => ({ title: text(c.title, ''), line: text(c.line, '') }))
+      .filter((c) => c.title)
+    const steps = (h?.howWeWork?.steps ?? [])
+      .map((s) => ({ title: text(s.title, ''), line: text(s.line, ''), icon: iconName(s.icon, 'check') }))
+      .filter((s) => s.title)
+    return {
+      hero: {
+        eyebrow: hero.eyebrow,
+        headingLine1: text(h?.hero?.headingLine1, hero.headingLine1),
+        headingLine2: text(h?.hero?.headingLine2, hero.headingLine2),
+        sub: text(h?.hero?.sub, hero.sub),
+        primaryLabel: text(h?.hero?.primaryLabel, hero.primary.label),
+        secondaryLabel: text(h?.hero?.secondaryLabel, hero.secondary.label),
+        trustLine: textList(h?.hero?.trustLine, hero.trustLine),
+      },
+      finalCta: {
+        heading: text(h?.finalCta?.heading, finalCta.heading),
+        headingAccent: text(h?.finalCta?.headingAccent, finalCta.headingAccent),
+        sub: text(h?.finalCta?.sub, finalCta.sub),
+        primaryLabel: text(h?.finalCta?.primaryLabel, finalCta.primary.label),
+        whatsappLabel: text(h?.finalCta?.whatsappLabel, finalCta.whatsapp),
+      },
+      technology: {
+        heading: text(h?.technology?.heading, technology.heading),
+        line: text(h?.technology?.line, technology.line),
+        items: textList(h?.technology?.items, technology.items),
+      },
+      whyUs: {
+        heading: text(h?.whyUs?.heading, whyUs.heading),
+        cards: cards.length ? cards : whyUs.cards.map((c) => ({ title: c.title, line: c.line })),
+      },
+      howWeWork: {
+        heading: text(h?.howWeWork?.heading, howWeWork.heading),
+        steps: steps.length
+          ? steps
+          : howWeWork.steps.map((s) => ({ title: s.title, line: s.line, icon: iconName(s.icon, 'check') })),
+      },
+    }
+  },
+  ['home-page'],
+  { tags: [CACHE_TAGS.homePage], revalidate: ONE_HOUR },
+)
+
+/* ------------------------------------------------------------------------ */
+/* Services (Content > Services, Content > Services Page)                   */
+/* ------------------------------------------------------------------------ */
+
+export type ServiceView = {
+  id: string
+  slug: string
+  icon: IconName
+  title: string
+  outcome: string
+  homeLine?: string
+  included: string[]
+  goodFor?: string
+  contactType: ContactType
+}
+
+function defaultServices(): ServiceView[] {
+  return serviceDefaults.map((s) => ({
+    id: `default-${s.id}`,
+    slug: s.id,
+    icon: iconName(s.icon, 'globe'),
+    title: s.title,
+    outcome: s.outcome,
+    homeLine: whatWeBuild.cards.find((c) => c.id === s.id)?.what,
+    included: [...s.included],
+    goodFor: s.goodFor,
+    contactType: s.contactType,
+  }))
+}
+
+/** Visible services in order. Falls back to the code catalogue while the collection is empty. */
+export const getServices = unstable_cache(
+  async (): Promise<ServiceView[]> => {
+    const payload = await getPayload({ config })
+    const res = await payload.find({
+      collection: 'services',
+      where: { visible: { equals: true } },
+      sort: 'order',
+      limit: 30,
+      depth: 0,
+      overrideAccess: true,
+    })
+    const total = await payload.count({ collection: 'services', overrideAccess: true })
+    if (total.totalDocs === 0) return defaultServices()
+    return res.docs.map((d) => ({
+      id: String(d.id),
+      slug: d.slug,
+      icon: iconName(d.icon, 'globe'),
+      title: d.title,
+      outcome: d.outcome,
+      homeLine: optionalText(d.homeLine),
+      included: textList(d.included, []),
+      goodFor: optionalText(d.goodFor),
+      contactType: (d.contactType ?? 'website') as ContactType,
+    }))
+  },
+  ['services'],
+  { tags: [CACHE_TAGS.services], revalidate: ONE_HOUR },
+)
+
+export type ServicesPageContent = { heading: string; sub: string }
+
+export const getServicesPage = unstable_cache(
+  async (): Promise<ServicesPageContent> => {
+    const payload = await getPayload({ config })
+    const p = await payload.findGlobal({ slug: 'services-page', depth: 0, overrideAccess: true })
+    return { heading: text(p?.heading, servicesPage.heading), sub: text(p?.sub, servicesPage.sub) }
+  },
+  ['services-page'],
+  { tags: [CACHE_TAGS.servicesPage], revalidate: ONE_HOUR },
+)
+
+/* ------------------------------------------------------------------------ */
+/* Legal pages (Content > Legal Pages)                                      */
+/* ------------------------------------------------------------------------ */
+
+export type LegalPageView = LegalPageContent
+
+export const getLegalPage = unstable_cache(
+  async (kind: 'privacy' | 'terms'): Promise<LegalPageView> => {
+    const payload = await getPayload({ config })
+    const g = await payload.findGlobal({ slug: 'legal-pages', depth: 0, overrideAccess: true })
+    const defaults = kind === 'privacy' ? privacyDefaults : termsDefaults
+    const page = g?.[kind]
+    const sections = (page?.sections ?? [])
+      .map((s) => ({ title: text(s.title, ''), body: text(s.body, '') }))
+      .filter((s) => s.title && s.body)
+    return {
+      title: text(page?.title, defaults.title),
+      intro: text(page?.intro, defaults.intro),
+      updatedOn: text(page?.updatedOn, defaults.updatedOn),
+      sections: sections.length ? sections : defaults.sections,
+    }
+  },
+  ['legal-pages'],
+  { tags: [CACHE_TAGS.legalPages], revalidate: ONE_HOUR },
+)
+
+/* ------------------------------------------------------------------------ */
+/* Scripted AI conversation (Content > AI Assistant Demo)                   */
+/* ------------------------------------------------------------------------ */
+
+export const getAiScript = unstable_cache(
+  async (): Promise<AiScriptItem[]> => {
+    const payload = await getPayload({ config })
+    const g = await payload.findGlobal({ slug: 'ai-demo', depth: 0, overrideAccess: true })
+    const rows = (g?.conversations ?? [])
+      .map((c) => ({ chip: text(c.chip, ''), question: text(c.question, ''), answer: text(c.answer, '') }))
+      .filter((c) => c.chip && c.question && c.answer)
+    return rows.length ? rows : [...aiScript]
+  },
+  ['ai-demo'],
+  { tags: [CACHE_TAGS.aiDemo], revalidate: ONE_HOUR },
+)
+
+/* ------------------------------------------------------------------------ */
+/* FAQ (Content > FAQ)                                                      */
+/* ------------------------------------------------------------------------ */
+
+export type FaqItem = { id: string; question: string; answer: string; showOnHome: boolean }
+
+export const getFaqs = unstable_cache(
+  async (): Promise<FaqItem[]> => {
+    const payload = await getPayload({ config })
+    const res = await payload.find({
+      collection: 'faqs',
+      where: { placement: { not_equals: 'hidden' } },
+      sort: 'order',
+      limit: 50,
+      depth: 0,
+      overrideAccess: true,
+    })
+    if (res.docs.length === 0) {
+      return faq.map((f, i) => ({
+        id: `default-${i}`,
+        question: f.q,
+        answer: f.a,
+        showOnHome: i < homeFaqCount,
+      }))
+    }
+    return res.docs.map((d) => ({
+      id: String(d.id),
+      question: d.question,
+      answer: d.answer,
+      showOnHome: d.placement === 'home',
+    }))
+  },
+  ['faqs'],
+  { tags: [CACHE_TAGS.faqs], revalidate: ONE_HOUR },
+)
+
+/* ------------------------------------------------------------------------ */
+/* Testimonials (Content > Testimonials)                                    */
+/* ------------------------------------------------------------------------ */
+
+export type TestimonialView = {
+  id: number
+  name: string
+  business?: string
+  quote: string
+  rating?: number
+  photoUrl?: string
+  photoAlt?: string
+}
+
+export const getTestimonials = unstable_cache(
+  async (): Promise<TestimonialView[]> => {
+    const payload = await getPayload({ config })
+    const res = await payload.find({
+      collection: 'testimonials',
+      where: { and: [{ visible: { equals: true } }, { quote: { exists: true } }] },
+      sort: 'order',
+      limit: 12,
+      depth: 1,
+      overrideAccess: true,
+    })
+    return res.docs
+      .filter((t) => typeof t.quote === 'string' && t.quote.trim() !== '')
+      .map((t) => {
+        const photo = t.photo && typeof t.photo === 'object' ? (t.photo as Media) : undefined
+        return {
+          id: t.id,
+          name: t.name,
+          business: optionalText(t.business),
+          quote: (t.quote as string).trim(),
+          rating: typeof t.rating === 'number' ? Math.min(5, Math.max(1, Math.round(t.rating))) : undefined,
+          photoUrl: mediaUrl(photo, 'thumbnail'),
+          photoAlt: photo?.alt,
+        }
+      })
+  },
+  ['testimonials'],
+  { tags: [CACHE_TAGS.testimonials], revalidate: ONE_HOUR },
+)

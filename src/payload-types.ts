@@ -78,6 +78,9 @@ export interface Config {
     events: Event;
     'demo-bookings': DemoBooking;
     'demo-leads': DemoLead;
+    faqs: Faq;
+    testimonials: Testimonial;
+    services: Service;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -96,6 +99,9 @@ export interface Config {
     events: EventsSelect<false> | EventsSelect<true>;
     'demo-bookings': DemoBookingsSelect<false> | DemoBookingsSelect<true>;
     'demo-leads': DemoLeadsSelect<false> | DemoLeadsSelect<true>;
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -109,11 +115,19 @@ export interface Config {
     'site-settings': SiteSetting;
     'about-page': AboutPage;
     'demo-settings': DemoSetting;
+    'home-page': HomePage;
+    'ai-demo': AiDemo;
+    'services-page': ServicesPage;
+    'legal-pages': LegalPage;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
     'demo-settings': DemoSettingsSelect<false> | DemoSettingsSelect<true>;
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'ai-demo': AiDemoSelect<false> | AiDemoSelect<true>;
+    'services-page': ServicesPageSelect<false> | ServicesPageSelect<true>;
+    'legal-pages': LegalPagesSelect<false> | LegalPagesSelect<true>;
   };
   locale: null;
   widgets: {
@@ -525,6 +539,130 @@ export interface DemoLead {
   createdAt: string;
 }
 /**
+ * Questions and answers for the website. "Where to show" decides the page: the Contact page lists every question, the home page shows a short list. Changes go live within seconds.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: number;
+  question: string;
+  /**
+   * Write {price} to insert the starting price text from Site Settings.
+   */
+  answer: string;
+  /**
+   * Hidden keeps the question in the admin but off every page.
+   */
+  placement: 'home' | 'contact' | 'hidden';
+  /**
+   * Lower numbers show first.
+   */
+  order: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Client feedback shown on the home page under "What Clients Say". To collect one: Create New, enter the client name and business, Save, then copy the Feedback link and send it on WhatsApp. When the client submits, the quote appears here; tick Visible to publish it.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  name: string;
+  business?: string | null;
+  /**
+   * Private link for this client only. Copy it and send it on WhatsApp. It stops working once feedback is received.
+   */
+  feedbackLink?: string | null;
+  token?: string | null;
+  /**
+   * In the client's own words. One to three sentences. Filled in by the client through the feedback link, or type it here yourself.
+   */
+  quote?: string | null;
+  /**
+   * 1 to 5 stars. Leave empty to hide the stars.
+   */
+  rating?: number | null;
+  /**
+   * Optional. Square works best. Without a photo the first letter of the name is shown.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * Set automatically when the client submits the feedback form.
+   */
+  submittedAt?: string | null;
+  /**
+   * Lower numbers show first.
+   */
+  order: number;
+  /**
+   * Shows the testimonial on the home page. Needs a quote.
+   */
+  visible?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * What you offer. Each service is a card on the Services page, a card in the home "What We Build" section and a link in the footer. Untick Visible to hide one without deleting it. Changes go live within seconds.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  title: string;
+  /**
+   * Link anchor, e.g. /services#booking-websites. Filled from the title; do not change after launch.
+   */
+  slug: string;
+  icon:
+    | 'bot'
+    | 'calendar'
+    | 'check'
+    | 'code'
+    | 'globe'
+    | 'hammer'
+    | 'layout'
+    | 'lightbulb'
+    | 'megaphone'
+    | 'message'
+    | 'pen'
+    | 'plug'
+    | 'rocket'
+    | 'search'
+    | 'smartphone'
+    | 'sparkles'
+    | 'users'
+    | 'workflow'
+    | 'zap';
+  /**
+   * What the "Start a Project" button pre-selects on the contact form.
+   */
+  contactType: 'website' | 'landing' | 'booking' | 'ai' | 'automation' | 'app' | 'software';
+  /**
+   * One sentence on the result, e.g. "Accept bookings online, day and night."
+   */
+  outcome: string;
+  /**
+   * Short description under the outcome on the home page card.
+   */
+  homeLine?: string | null;
+  /**
+   * Press Enter after each item.
+   */
+  included?: string[] | null;
+  goodFor?: string | null;
+  /**
+   * Lower numbers show first.
+   */
+  order: number;
+  visible?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -591,6 +729,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'demo-leads';
         value: number | DemoLead;
+      } | null)
+    | ({
+        relationTo: 'faqs';
+        value: number | Faq;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: number | Service;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -902,6 +1052,54 @@ export interface DemoLeadsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  question?: T;
+  answer?: T;
+  placement?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  name?: T;
+  business?: T;
+  feedbackLink?: T;
+  token?: T;
+  quote?: T;
+  rating?: T;
+  photo?: T;
+  submittedAt?: T;
+  order?: T;
+  visible?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  icon?: T;
+  contactType?: T;
+  outcome?: T;
+  homeLine?: T;
+  included?: T;
+  goodFor?: T;
+  order?: T;
+  visible?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -958,6 +1156,15 @@ export interface SiteSetting {
   whatsappNumber: string;
   email: string;
   replyTimeText?: string | null;
+  /**
+   * Shown in the footer and Contact page, and sent to Google as your location.
+   */
+  city?: string | null;
+  region?: string | null;
+  /**
+   * Short line after the city, e.g. "Serving businesses across India".
+   */
+  serviceAreaText?: string | null;
   instagram?: string | null;
   linkedin?: string | null;
   github?: string | null;
@@ -966,6 +1173,18 @@ export interface SiteSetting {
    * Shown in the Investment section and FAQ.
    */
   startingPriceText: string;
+  /**
+   * Pre-filled text when a visitor taps a WhatsApp button. Change it for campaigns, e.g. mention an offer.
+   */
+  whatsappMessage?: string | null;
+  /**
+   * Shown under the site name in Google results and link previews. Up to 160 characters.
+   */
+  seoDescription?: string | null;
+  /**
+   * Preview image when the site is shared on WhatsApp, Instagram or LinkedIn. 1200 x 630 PNG or JPG. Leave empty to use the built-in default.
+   */
+  ogImage?: (number | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1006,6 +1225,177 @@ export interface DemoSetting {
   createdAt?: string | null;
 }
 /**
+ * Home page texts: hero, closing call to action, technology list, "Why Build With Us?" cards and "How We Work" steps. Changes go live within seconds.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  hero: {
+    headingLine1: string;
+    /**
+     * Shown on its own line in the accent gradient.
+     */
+    headingLine2: string;
+    sub: string;
+    /**
+     * Opens the Demos page.
+     */
+    primaryLabel: string;
+    /**
+     * Opens the Contact page.
+     */
+    secondaryLabel: string;
+    /**
+     * Short labels under the buttons. Press Enter after each.
+     */
+    trustLine?: string[] | null;
+  };
+  finalCta: {
+    heading: string;
+    headingAccent?: string | null;
+    sub: string;
+    primaryLabel: string;
+    whatsappLabel: string;
+  };
+  technology: {
+    heading: string;
+    line?: string | null;
+    /**
+     * Shown as pills. Press Enter after each.
+     */
+    items?: string[] | null;
+  };
+  whyUs: {
+    heading: string;
+    cards?:
+      | {
+          title: string;
+          line: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  howWeWork: {
+    heading: string;
+    /**
+     * Numbered automatically in this order.
+     */
+    steps?:
+      | {
+          title: string;
+          icon:
+            | 'bot'
+            | 'calendar'
+            | 'check'
+            | 'code'
+            | 'globe'
+            | 'hammer'
+            | 'layout'
+            | 'lightbulb'
+            | 'megaphone'
+            | 'message'
+            | 'pen'
+            | 'plug'
+            | 'rocket'
+            | 'search'
+            | 'smartphone'
+            | 'sparkles'
+            | 'users'
+            | 'workflow'
+            | 'zap';
+          line: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The sample conversation in the "Ask our AI Assistant" box on the home page. Each row is a chip the visitor can click: the question appears, then the answer is typed out.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ai-demo".
+ */
+export interface AiDemo {
+  id: number;
+  conversations?:
+    | {
+        /**
+         * The business type button, e.g. Salon.
+         */
+        chip: string;
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Heading and sub-text at the top of the Services page. The service cards are under Content > Services.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services-page".
+ */
+export interface ServicesPage {
+  id: number;
+  heading: string;
+  sub?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Privacy Policy and Terms. Each page is a title, an intro line and a list of sections.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal-pages".
+ */
+export interface LegalPage {
+  id: number;
+  privacy: {
+    title: string;
+    updatedOn?: string | null;
+    /**
+     * Line under the title. You can write {brand}, {email}, {phone} and {price}; they are filled in from Site Settings.
+     */
+    intro?: string | null;
+    /**
+     * Leave a blank line between paragraphs. You can write {brand}, {email}, {phone} and {price}; they are filled in from Site Settings.
+     */
+    sections?:
+      | {
+          title: string;
+          body: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  terms: {
+    title: string;
+    updatedOn?: string | null;
+    /**
+     * Line under the title. You can write {brand}, {email}, {phone} and {price}; they are filled in from Site Settings.
+     */
+    intro?: string | null;
+    /**
+     * Leave a blank line between paragraphs. You can write {brand}, {email}, {phone} and {price}; they are filled in from Site Settings.
+     */
+    sections?:
+      | {
+          title: string;
+          body: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
@@ -1014,11 +1404,17 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   whatsappNumber?: T;
   email?: T;
   replyTimeText?: T;
+  city?: T;
+  region?: T;
+  serviceAreaText?: T;
   instagram?: T;
   linkedin?: T;
   github?: T;
   tagline?: T;
   startingPriceText?: T;
+  whatsappMessage?: T;
+  seoDescription?: T;
+  ogImage?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1042,6 +1438,131 @@ export interface AboutPageSelect<T extends boolean = true> {
 export interface DemoSettingsSelect<T extends boolean = true> {
   hidden?: T;
   featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        headingLine1?: T;
+        headingLine2?: T;
+        sub?: T;
+        primaryLabel?: T;
+        secondaryLabel?: T;
+        trustLine?: T;
+      };
+  finalCta?:
+    | T
+    | {
+        heading?: T;
+        headingAccent?: T;
+        sub?: T;
+        primaryLabel?: T;
+        whatsappLabel?: T;
+      };
+  technology?:
+    | T
+    | {
+        heading?: T;
+        line?: T;
+        items?: T;
+      };
+  whyUs?:
+    | T
+    | {
+        heading?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              line?: T;
+              id?: T;
+            };
+      };
+  howWeWork?:
+    | T
+    | {
+        heading?: T;
+        steps?:
+          | T
+          | {
+              title?: T;
+              icon?: T;
+              line?: T;
+              id?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ai-demo_select".
+ */
+export interface AiDemoSelect<T extends boolean = true> {
+  conversations?:
+    | T
+    | {
+        chip?: T;
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services-page_select".
+ */
+export interface ServicesPageSelect<T extends boolean = true> {
+  heading?: T;
+  sub?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal-pages_select".
+ */
+export interface LegalPagesSelect<T extends boolean = true> {
+  privacy?:
+    | T
+    | {
+        title?: T;
+        updatedOn?: T;
+        intro?: T;
+        sections?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+      };
+  terms?:
+    | T
+    | {
+        title?: T;
+        updatedOn?: T;
+        intro?: T;
+        sections?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

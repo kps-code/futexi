@@ -3,15 +3,15 @@
 import { Bot, Sparkles } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { ButtonLink } from '@/components/ui/button'
-import { aiScript, type AiScriptItem } from '@/content/ai-script'
+import type { AiScriptItem } from '@/content/ai-script'
 import { aiSection } from '@/content/home'
 import { cn } from '@/lib/utils'
 import { usePrefersReducedMotion } from '@/lib/use-reduced-motion'
 
 type Phase = 'idle' | 'asking' | 'thinking' | 'answering' | 'done'
 
-/** Scripted sample conversation (docs/content-lock.md §10). No model call. */
-export function AiDemoBox() {
+/** Scripted sample conversation (Content > AI Assistant Demo). No model call. */
+export function AiDemoBox({ script }: { script: AiScriptItem[] }) {
   const reduce = usePrefersReducedMotion()
   const [item, setItem] = useState<AiScriptItem | null>(null)
   const [phase, setPhase] = useState<Phase>('idle')
@@ -74,7 +74,7 @@ export function AiDemoBox() {
 
       <p className="mt-5 text-xs font-medium text-muted">Pick a business to see a sample answer:</p>
       <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Business types">
-        {aiScript.map((s) => (
+        {script.map((s) => (
           <button
             key={s.chip}
             type="button"

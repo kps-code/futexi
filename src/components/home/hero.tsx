@@ -1,13 +1,15 @@
 import { ButtonLink } from '@/components/ui/button'
 import { hero } from '@/content/site'
+import type { HeroContent } from '@/server/site-data'
 import { HeroMockup } from './hero-mockup'
 import { Eyebrow } from './section'
 
 /**
- * Above the fold. Text rises in first, mockup follows. The h1 only slides
- * (no fade) so it can be painted immediately as the LCP element.
+ * Above the fold. Texts come from Content > Home Page in the admin; links stay
+ * in code. On desktop the copy rises in first and the mockup follows; the h1
+ * only slides (no fade) so it can be painted immediately as the LCP element.
  */
-export function Hero() {
+export function Hero({ content }: { content: HeroContent }) {
   return (
     <section className="relative overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -18,14 +20,14 @@ export function Hero() {
 
       <div className="container-site grid min-h-[calc(100dvh-4.5rem)] items-center gap-12 py-16 lg:grid-cols-[1.1fr_1fr] lg:py-20">
         <div className="text-center lg:text-left">
-          <Eyebrow className="mb-6 lg:animate-rise">{hero.eyebrow}</Eyebrow>
+          <Eyebrow className="mb-6 lg:animate-rise">{content.eyebrow}</Eyebrow>
           <h1 className="font-display text-4xl leading-[1.05] font-bold tracking-[-0.02em] text-balance sm:text-6xl lg:animate-rise-soft lg:text-[4.75rem] lg:leading-[1.02]">
-            Your Ideas. Our Technology.
+            {content.headingLine1}
             <br />
-            <span className="text-gradient lg:text-gradient-live">Built for What&apos;s Next.</span>
+            <span className="text-gradient lg:text-gradient-live">{content.headingLine2}</span>
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-base text-pretty text-muted [--rise-delay:120ms] sm:text-lg lg:mx-0 lg:animate-rise">
-            {hero.sub}
+            {content.sub}
           </p>
           <div className="mt-10 flex flex-col justify-center gap-3 [--rise-delay:200ms] sm:flex-row lg:animate-rise lg:justify-start">
             <ButtonLink
@@ -34,7 +36,7 @@ export function Hero() {
               data-track="cta_click"
               data-track-props='{"cta":"hero_primary"}'
             >
-              {hero.primary.label}
+              {content.primaryLabel}
             </ButtonLink>
             <ButtonLink
               href={hero.secondary.href}
@@ -43,11 +45,11 @@ export function Hero() {
               data-track="cta_click"
               data-track-props='{"cta":"hero_secondary"}'
             >
-              {hero.secondary.label}
+              {content.secondaryLabel}
             </ButtonLink>
           </div>
           <ul className="mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs font-medium text-muted [--rise-delay:280ms] lg:animate-rise lg:justify-start">
-            {hero.trustLine.map((item, i) => (
+            {content.trustLine.map((item, i) => (
               <li key={item} className="flex items-center gap-3">
                 {i > 0 && <span aria-hidden className="h-1 w-1 rounded-full bg-muted/60" />}
                 {item}

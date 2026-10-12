@@ -182,7 +182,8 @@ export const technology = {
 } as const
 
 export const finalCta = {
-  heading: "Have an Idea? Let's Build It.",
+  heading: 'Have an Idea?',
+  headingAccent: "Let's Build It.",
   sub: "Tell us what you're trying to build. We'll help you find the right digital solution.",
   primary: { label: 'Start a Project', href: '/contact' },
   whatsapp: 'WhatsApp Us',

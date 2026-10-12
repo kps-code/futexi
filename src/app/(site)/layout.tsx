@@ -9,7 +9,7 @@ import { ThemeProvider } from '@/components/site/theme-provider'
 import { Tracker } from '@/components/tracking/tracker'
 import { brand } from '@/content/site'
 import { clientEnv } from '@/server/env'
-import { getSiteSettings } from '@/server/site-data'
+import { getServices, getSiteSettings } from '@/server/site-data'
 import './globals.css'
 
 const inter = Inter({
@@ -25,19 +25,29 @@ const sora = Sora({
   weight: ['400', '500', '600', '700', '800'],
 })
 
-export const metadata: Metadata = {
-  metadataBase: new URL(clientEnv.NEXT_PUBLIC_SITE_URL),
-  title: {
-    default: `${brand.name} · ${brand.positioning}`,
-    template: `%s · ${brand.name}`,
-  },
-  description: brand.tagline,
-  openGraph: {
-    siteName: brand.name,
-    type: 'website',
-    locale: 'en_IN',
-  },
-  robots: { index: true, follow: true },
+/** Built-in share image, used until an image is uploaded in Site Settings > SEO. */
+const DEFAULT_OG_IMAGE = '/og-default.png'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings()
+  const image = settings.ogImageUrl ?? DEFAULT_OG_IMAGE
+  return {
+    metadataBase: new URL(clientEnv.NEXT_PUBLIC_SITE_URL),
+    title: {
+      default: `${brand.name} · ${brand.positioning}`,
+      template: `%s · ${brand.name}`,
+    },
+    description: settings.seoDescription,
+    openGraph: {
+      siteName: brand.name,
+      type: 'website',
+      locale: 'en_IN',
+      description: settings.seoDescription,
+      images: [{ url: image, width: 1200, height: 630, alt: `${brand.name} · ${brand.positioning}` }],
+    },
+    twitter: { card: 'summary_large_image' },
+    robots: { index: true, follow: true },
+  }
 }
 
 export const viewport: Viewport = {
@@ -50,7 +60,7 @@ export const viewport: Viewport = {
 }
 
 export default async function SiteLayout({ children }: { children: ReactNode }) {
-  const settings = await getSiteSettings()
+  const [settings, services] = await Promise.all([getSiteSettings(), getServices()])
 
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${sora.variable}`}>
@@ -64,11 +74,16 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
             contact={{
               phone: settings.phone,
               whatsappNumber: settings.whatsappNumber,
+              whatsappMessage: settings.whatsappMessage,
               email: settings.email,
+              city: settings.city,
+              region: settings.region,
+              serviceAreaText: settings.serviceAreaText,
               linkedin: settings.linkedin,
               instagram: settings.instagram,
               github: settings.github,
             }}
+            solutions={services.map((s) => ({ label: s.title, href: `/services#${s.slug}` }))}
           />
           <RevealObserver />
           <Tracker />

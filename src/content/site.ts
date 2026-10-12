@@ -22,6 +22,9 @@ export const contactDefaults = {
   github: '',
   startingPriceText: 'Projects start from ₹5,000',
   replyTimeText: 'We reply within one working day.',
+  city: 'Chennai',
+  region: 'Tamil Nadu',
+  serviceAreaText: 'Serving businesses across India',
 } as const
 
 export const whatsappDefaultMessage =
@@ -64,6 +67,8 @@ export const footerColumns = [
 export const hero = {
   eyebrow: brand.positioning,
   heading: "Your Ideas. Our Technology. Built for What's Next.",
+  headingLine1: 'Your Ideas. Our Technology.',
+  headingLine2: "Built for What's Next.",
   sub: 'We design and build modern websites, AI-powered experiences, automation solutions and digital products for businesses ready for the next generation.',
   primary: { label: 'Explore Our Work', href: '/demos' },
   secondary: { label: 'Start Your Project', href: '/contact' },

@@ -1,6 +1,11 @@
-/** Scripted AI demo. Source: docs/content-lock.md §10. No live model at launch. */
+/**
+ * Scripted AI demo. Source: docs/content-lock.md §10. No live model at launch.
+ * These are the seed and fallback values; the admin's "AI Assistant Demo" global overrides them.
+ */
 
-export const aiScript = [
+export type AiScriptItem = { chip: string; question: string; answer: string }
+
+export const aiScript: readonly AiScriptItem[] = [
   {
     chip: 'Salon',
     question: 'I run a salon. What website do I need?',
@@ -31,6 +36,4 @@ export const aiScript = [
     answer:
       'A clinic website should show doctors, services, timings, location and an appointment booking form with WhatsApp confirmation. Patients book without waiting on a call.',
   },
-] as const
-
-export type AiScriptItem = (typeof aiScript)[number]
+]

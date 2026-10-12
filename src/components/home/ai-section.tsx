@@ -1,11 +1,13 @@
 import { ButtonLink } from '@/components/ui/button'
 import { Reveal } from '@/components/reveal'
 import { aiSection } from '@/content/home'
+import { getAiScript } from '@/server/site-data'
 import { AiDemoBox } from './ai-demo-box'
 import { Icon } from './icons'
 import { IconBadge, Section, SectionHeading } from './section'
 
-export function AiSection() {
+export async function AiSection() {
+  const script = await getAiScript()
   return (
     <Section id="ai" className="cv-auto">
       <SectionHeading eyebrow="AI" title={aiSection.heading} sub={aiSection.sub} />
@@ -35,7 +37,7 @@ export function AiSection() {
         </ul>
         <Reveal index={2} className="relative">
           <div aria-hidden className="glow-blob -inset-10 -z-10" />
-          <AiDemoBox />
+          <AiDemoBox script={script} />
         </Reveal>
       </div>
     </Section>

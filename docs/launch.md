@@ -41,7 +41,8 @@ Date: 2026-10-07
 
 4. Storage: add **Vercel Blob** to the project (Storage tab). It injects `BLOB_READ_WRITE_TOKEN` automatically. Team photos upload there.
 5. Deploy. The first deploy runs `payload migrate` against Neon, then builds. Open `/admin` on the Vercel URL and create the first admin user.
-6. Seed content into production once, from your PC with the Neon URL: `DATABASE_URL=<neon pooled url> npm run seed`. This creates the three team members and fills Site Settings and About if they are empty.
+6. Seed content into production once, from your PC with the Neon URL: `DATABASE_URL=<neon pooled url> npm run seed`. This creates the three team members and the eight FAQ entries, and fills Site Settings, About, Home Page texts and the AI Assistant Demo if they are empty.
+7. In the admin, open Settings → Site Settings → SEO and upload a 1200 x 630 share image if you want your own; otherwise the built-in one is used in WhatsApp and Instagram link previews. For testimonials: Content → Testimonials → Create New, enter the client's name and business, Save, copy the Feedback link and send it on WhatsApp. The client fills in the rating and quote; tick Visible to publish it on the home page.
 7. Turn on **Speed Insights** and **Web Analytics** in the Vercel project (free). Speed Insights gives real-visitor LCP, the number that matters.
 8. Cron: `vercel.json` already schedules `/api/cron/cleanup` daily at 02:00 IST. Vercel reads it on deploy.
 

@@ -17,9 +17,16 @@ import { PageViews } from './payload/collections/PageViews'
 import { Events } from './payload/collections/Events'
 import { DemoBookings } from './payload/collections/DemoBookings'
 import { DemoLeads } from './payload/collections/DemoLeads'
+import { Faqs } from './payload/collections/Faqs'
+import { Testimonials } from './payload/collections/Testimonials'
+import { Services } from './payload/collections/Services'
 import { SiteSettings } from './payload/globals/SiteSettings'
 import { AboutPage } from './payload/globals/AboutPage'
 import { DemoSettings } from './payload/globals/DemoSettings'
+import { HomePage } from './payload/globals/HomePage'
+import { AiDemo } from './payload/globals/AiDemo'
+import { ServicesPage } from './payload/globals/ServicesPage'
+import { LegalPages } from './payload/globals/LegalPages'
 import { getDatabaseUrl } from './server/env'
 
 const filename = fileURLToPath(import.meta.url)
@@ -40,7 +47,10 @@ export default buildConfig({
     components: {
       beforeNavLinks: ['/payload/admin/DashboardNavLink#DashboardNavLink'],
       afterNavLinks: ['/payload/admin/LogoutNavLink#LogoutNavLink'],
-      providers: ['/payload/admin/PasswordRevealProvider#PasswordRevealProvider'],
+      providers: [
+        '/payload/admin/PasswordRevealProvider#PasswordRevealProvider',
+        '/payload/admin/NavAccordionProvider#NavAccordionProvider',
+      ],
       views: {
         analytics: {
           Component: '/payload/admin/views/AnalyticsView#AnalyticsView',
@@ -62,8 +72,11 @@ export default buildConfig({
     Events,
     DemoBookings,
     DemoLeads,
+    Faqs,
+    Testimonials,
+    Services,
   ],
-  globals: [SiteSettings, AboutPage, DemoSettings],
+  globals: [SiteSettings, AboutPage, DemoSettings, HomePage, AiDemo, ServicesPage, LegalPages],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

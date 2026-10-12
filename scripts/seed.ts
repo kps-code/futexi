@@ -1,12 +1,17 @@
 /**
  * Seeds admin-editable content from docs/content-lock.md. Idempotent:
- * existing team members (matched by name) and filled settings are left alone.
+ * existing team members (matched by name), FAQ entries and filled settings
+ * are left alone.
  *
  *   npm run seed
  */
 import { getPayload, type Payload } from 'payload'
 import config from '../src/payload.config'
-import { contactDefaults, brand } from '../src/content/site'
+import { aiScript } from '../src/content/ai-script'
+import { faq, homeFaqCount } from '../src/content/faq'
+import { finalCta, technology, whatWeBuild } from '../src/content/home'
+import { services } from '../src/content/services'
+import { contactDefaults, brand, hero, whatsappDefaultMessage } from '../src/content/site'
 
 const team = [
   {
@@ -82,9 +87,27 @@ export async function seed(payload: Payload) {
         linkedin: contactDefaults.linkedin,
         tagline: brand.tagline,
         startingPriceText: contactDefaults.startingPriceText,
+        whatsappMessage: whatsappDefaultMessage,
+        seoDescription: brand.tagline,
+        city: contactDefaults.city,
+        region: contactDefaults.region,
+        serviceAreaText: contactDefaults.serviceAreaText,
       },
     })
     payload.logger.info('site settings: seeded')
+  } else if (!settings.whatsappMessage || !settings.seoDescription || !settings.city) {
+    await payload.updateGlobal({
+      slug: 'site-settings',
+      overrideAccess: true,
+      data: {
+        whatsappMessage: settings.whatsappMessage || whatsappDefaultMessage,
+        seoDescription: settings.seoDescription || brand.tagline,
+        city: settings.city || contactDefaults.city,
+        region: settings.region || contactDefaults.region,
+        serviceAreaText: settings.serviceAreaText || contactDefaults.serviceAreaText,
+      },
+    })
+    payload.logger.info('site settings: WhatsApp message, SEO description and location filled')
   } else {
     payload.logger.info('site settings: already filled, skipped')
   }
@@ -105,6 +128,88 @@ export async function seed(payload: Payload) {
   } else {
     payload.logger.info('about page: already filled, skipped')
   }
+
+  const home = await payload.findGlobal({ slug: 'home-page', overrideAccess: true })
+  if (!home?.hero?.headingLine1) {
+    await payload.updateGlobal({
+      slug: 'home-page',
+      overrideAccess: true,
+      data: {
+        hero: {
+          headingLine1: hero.headingLine1,
+          headingLine2: hero.headingLine2,
+          sub: hero.sub,
+          primaryLabel: hero.primary.label,
+          secondaryLabel: hero.secondary.label,
+          trustLine: [...hero.trustLine],
+        },
+        finalCta: {
+          heading: finalCta.heading,
+          headingAccent: finalCta.headingAccent,
+          sub: finalCta.sub,
+          primaryLabel: finalCta.primary.label,
+          whatsappLabel: finalCta.whatsapp,
+        },
+        technology: { heading: technology.heading, line: technology.line, items: [...technology.items] },
+      },
+    })
+    payload.logger.info('home page texts: seeded')
+  } else {
+    payload.logger.info('home page texts: already filled, skipped')
+  }
+
+  const ai = await payload.findGlobal({ slug: 'ai-demo', overrideAccess: true })
+  if (!ai?.conversations?.length) {
+    await payload.updateGlobal({
+      slug: 'ai-demo',
+      overrideAccess: true,
+      data: {
+        conversations: aiScript.map((s) => ({ chip: s.chip, question: s.question, answer: s.answer })),
+      },
+    })
+    payload.logger.info('AI assistant demo: seeded')
+  } else {
+    payload.logger.info('AI assistant demo: already filled, skipped')
+  }
+
+  const faqs = await payload.count({ collection: 'faqs', overrideAccess: true })
+  if (faqs.totalDocs === 0) {
+    for (const [i, f] of faq.entries()) {
+      await payload.create({
+        collection: 'faqs',
+        data: { question: f.q, answer: f.a, placement: i < homeFaqCount ? 'home' : 'contact', order: i + 1 },
+        overrideAccess: true,
+      })
+    }
+    payload.logger.info(`faq: ${faq.length} entries seeded`)
+  } else {
+    payload.logger.info(`faq: ${faqs.totalDocs} entries already present, skipped`)
+  }
+
+  const existingServices = await payload.count({ collection: 'services', overrideAccess: true })
+  if (existingServices.totalDocs === 0) {
+    for (const [i, s] of services.entries()) {
+      await payload.create({
+        collection: 'services',
+        data: {
+          title: s.title,
+          slug: s.id,
+          icon: s.icon,
+          contactType: s.contactType,
+          outcome: s.outcome,
+          homeLine: whatWeBuild.cards.find((c) => c.id === s.id)?.what,
+          included: [...s.included],
+          goodFor: s.goodFor,
+          order: i + 1,
+          visible: true,
+        },
+        overrideAccess: true,
+      })
+    }
+    payload.logger.info(`services: ${services.length} seeded`)
+  } else {
+    payload.logger.info(`services: ${existingServices.totalDocs} already present, skipped`)
+  }
 }
 
 /** Ask a running dev server to drop its cached copies, then warm the pages. */
@@ -115,7 +220,21 @@ async function refreshDevServer(payload: Payload) {
     const res = await fetch(`${base}/api/dev/revalidate`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ tags: ['team-members', 'site-settings', 'about-page', 'demo-settings'] }),
+      body: JSON.stringify({
+        tags: [
+          'team-members',
+          'site-settings',
+          'about-page',
+          'demo-settings',
+          'home-page',
+          'ai-demo',
+          'faqs',
+          'testimonials',
+          'services',
+          'services-page',
+          'legal-pages',
+        ],
+      }),
     })
     if (!res.ok) throw new Error(String(res.status))
     for (let i = 0; i < 2; i++) {
