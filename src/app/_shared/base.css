@@ -1,10 +1,14 @@
 /* Shared between the main site (globals.css) and demo sites (demo.css). */
 
 /* The rupee sign (U+20B9) lives in Inter's Latin-Extended subset, an 83 KB download for one glyph.
-   This local face serves ₹ from a system font and lets every other character fall through to Inter. */
+   This local face serves ₹ from a system font and lets every other character fall through to Inter.
+   Windows: Segoe UI. Android: Roboto. iOS/macOS: Helvetica Neue, Arial. Linux (and CI runners):
+   Noto Sans, DejaVu Sans, Liberation Sans. Without any of these the browser falls back to Inter. */
 @font-face {
   font-family: 'KF Rupee';
-  src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial'), local('Noto Sans');
+  src:
+    local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial'), local('Noto Sans'),
+    local('DejaVu Sans'), local('Liberation Sans');
   unicode-range: U+20B9;
   font-display: swap;
 }

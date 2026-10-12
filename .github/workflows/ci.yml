@@ -33,8 +33,8 @@ jobs:
       NEXT_PUBLIC_SITE_URL: http://localhost:3000
       NEXT_TELEMETRY_DISABLED: '1'
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -51,9 +51,12 @@ jobs:
           PORT=3100 npm start &
           npx wait-on --timeout 60000 http://localhost:3100/api/health
           # Warm the server and ISR caches so the first measured run is not a cold start.
-          for u in / /demos/booking /contact; do curl -s -o /dev/null "http://localhost:3100$u"; done
-          npx lhci autorun
-      - uses: actions/upload-artifact@v4
+          for u in / /demos/booking /demo/booking /contact; do curl -s -o /dev/null "http://localhost:3100$u"; done
+          # Collect and save the reports first, then assert, so a failing budget still leaves reports to read.
+          npx lhci collect
+          npx lhci upload
+          npx lhci assert
+      - uses: actions/upload-artifact@v5
         if: always()
         with:
           name: lighthouse-reports
