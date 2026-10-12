@@ -1,0 +1,31 @@
+# Optional local Postgres for development (only if you do not have Postgres installed).
+# Exposed on 5433 so it never clashes with a locally installed PostgreSQL service on 5432.
+# Production uses Neon (DATABASE_URL in Vercel env).
+#
+#   docker compose up -d        start
+#   docker compose down         stop (data kept in the volume)
+#   docker compose down -v      stop and wipe data
+#
+# DATABASE_URL for this container: postgres://postgres:postgres@localhost:5433/futexi
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: futexi-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: futexi
+    ports:
+      - '5433:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d futexi']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
