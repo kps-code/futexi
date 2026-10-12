@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
+import { Avatar } from '@/components/site/avatar'
 import { PageIntro } from '@/components/site/page-intro'
 import { GithubIcon, LinkedinIcon } from '@/components/site/social-icons'
 import { ButtonLink } from '@/components/ui/button'
@@ -18,15 +18,6 @@ const audiences = [
   'Small & Medium Businesses',
 ]
 
-function initials(name: string): string {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase() ?? '')
-    .join('')
-}
-
 export default async function AboutPage() {
   const [about, team] = await Promise.all([getAboutPage(), getTeamMembers()])
 
@@ -44,19 +35,7 @@ export default async function AboutPage() {
             {team.map((m) => (
               <li key={m.id} className="rounded-2xl border border-border bg-surface p-6">
                 <div className="flex items-center gap-4">
-                  {m.photoUrl ? (
-                    <Image
-                      src={m.photoUrl}
-                      alt={m.photoAlt ?? m.name}
-                      width={64}
-                      height={64}
-                      className="h-16 w-16 rounded-full object-cover"
-                    />
-                  ) : (
-                    <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent-gradient font-display text-lg font-bold text-white">
-                      {initials(m.name)}
-                    </span>
-                  )}
+                  <Avatar name={m.name} photoUrl={m.photoUrl} photoAlt={m.photoAlt} size={72} />
                   <div>
                     <h2 className="font-display text-lg font-semibold">{m.name}</h2>
                     <p className="text-sm text-muted">{m.role}</p>

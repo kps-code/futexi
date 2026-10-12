@@ -1,18 +1,9 @@
-import Image from 'next/image'
+import { Avatar } from '@/components/site/avatar'
 import { ButtonLink } from '@/components/ui/button'
 import { Reveal } from '@/components/reveal'
 import { aboutTeaser } from '@/content/home'
 import type { TeamMemberView } from '@/server/site-data'
 import { Section, SectionHeading } from './section'
-
-function initials(name: string): string {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase() ?? '')
-    .join('')
-}
 
 export function AboutTeaser({ team, intro }: { team: TeamMemberView[]; intro: string }) {
   return (
@@ -27,19 +18,7 @@ export function AboutTeaser({ team, intro }: { team: TeamMemberView[]; intro: st
               index={i}
               className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-5"
             >
-              {m.photoUrl ? (
-                <Image
-                  src={m.photoUrl}
-                  alt={m.photoAlt ?? m.name}
-                  width={56}
-                  height={56}
-                  className="h-14 w-14 rounded-full object-cover"
-                />
-              ) : (
-                <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-accent-gradient font-display font-bold text-white">
-                  {initials(m.name)}
-                </span>
-              )}
+              <Avatar name={m.name} photoUrl={m.photoUrl} photoAlt={m.photoAlt} size={56} />
               <div className="min-w-0">
                 <p className="truncate font-display font-semibold">{m.name}</p>
                 <p className="truncate text-sm text-muted">{m.role}</p>
