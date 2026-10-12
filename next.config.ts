@@ -56,7 +56,21 @@ const nextConfig: NextConfig = {
 // Source maps are uploaded only when Sentry is on and an auth token exists (Vercel / CI).
 const uploadSourcemaps = Boolean(env.SENTRY_DSN && env.SENTRY_AUTH_TOKEN)
 
-export default withSentryConfig(withPayload(nextConfig, { devBundleServerPackages: false }), {
+const payloadConfig = withPayload(nextConfig, { devBundleServerPackages: false })
+
+// Payload adds `Accept-CH` / `Critical-CH: Sec-CH-Prefers-Color-Scheme` to every route so the
+// admin can render its theme server-side. `Critical-CH` makes browsers restart the first request
+// (a full extra round trip before first paint). Keep it for the admin only.
+const payloadHeaders = payloadConfig.headers
+payloadConfig.headers = async () => {
+  const rules = (await payloadHeaders?.()) ?? []
+  return rules.map((rule) => {
+    const hasClientHints = rule.headers.some((h) => h.key.toLowerCase() === 'critical-ch')
+    return hasClientHints && rule.source === '/:path*' ? { ...rule, source: '/admin/:path*' } : rule
+  })
+}
+
+export default withSentryConfig(payloadConfig, {
   silent: true,
   telemetry: false,
   widenClientFileUpload: true,

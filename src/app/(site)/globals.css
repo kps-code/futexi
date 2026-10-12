@@ -43,11 +43,20 @@
   --color-accent-to: var(--accent-to);
   --color-ring: var(--ring);
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-sora), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'KF Rupee', var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'KF Rupee', var(--font-sora), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
+}
+
+/* The rupee sign (U+20B9) lives in Inter's Latin-Extended subset, an 83 KB download for one glyph.
+   This local face serves ₹ from a system font and lets every other character fall through to Inter. */
+@font-face {
+  font-family: 'KF Rupee';
+  src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial'), local('Noto Sans');
+  unicode-range: U+20B9;
+  font-display: swap;
 }
 
 @layer base {
@@ -99,5 +108,68 @@
   padding-inline: 1.25rem;
   @media (width >= 40rem) {
     padding-inline: 2rem;
+  }
+}
+
+/* Trust strip marquee. Two copies of the list scroll by half their width. */
+@keyframes kf-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-marquee {
+  animation: kf-marquee 40s linear infinite;
+  &:hover {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@utility mask-fade-x {
+  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+}
+
+/* Browser-frame mock used for demo previews and the hero. */
+@utility frame-glass {
+  background: color-mix(in oklab, var(--surface) 85%, transparent);
+  border: 1px solid var(--border-strong);
+  box-shadow:
+    0 30px 80px -40px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+}
+
+/* Long sections render lazily off-screen. */
+@utility cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+/* Scroll reveal. Hidden only while the observer script is active (html.reveal-ready),
+   so content is always visible without JavaScript. */
+.reveal-ready .reveal:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.reveal {
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  will-change: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-ready .reveal:not(.is-visible) {
+    opacity: 1;
+    transform: none;
   }
 }

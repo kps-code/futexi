@@ -46,3 +46,16 @@ jobs:
       - run: npm run migrate
       - run: npm run build
       - run: npm run test:int
+      - name: Lighthouse CI
+        run: |
+          PORT=3100 npm start &
+          npx wait-on --timeout 60000 http://localhost:3100/api/health
+          # Warm the server and ISR caches so the first measured run is not a cold start.
+          for u in / /demos/booking /contact; do curl -s -o /dev/null "http://localhost:3100$u"; done
+          npx lhci autorun
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
+          retention-days: 14

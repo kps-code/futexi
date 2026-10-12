@@ -9,7 +9,7 @@ Planning documents, read these first:
 
 ## Stack
 
-Next.js (App Router, TypeScript strict), Tailwind CSS v4, Motion, Payload CMS (admin at `/admin`), Postgres (Neon in production), Vercel Blob for images, pino structured logs, Sentry, Vitest, Playwright.
+Next.js (App Router, TypeScript strict), Tailwind CSS v4, Payload CMS (admin at `/admin`), Postgres (Neon in production), Vercel Blob for images, pino structured logs, Sentry, Vitest, Playwright.
 
 ## Local setup
 

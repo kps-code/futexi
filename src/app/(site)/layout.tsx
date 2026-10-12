@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Sora } from 'next/font/google'
 import type { ReactNode } from 'react'
+import { RevealObserver } from '@/components/reveal-observer'
 import { Footer } from '@/components/site/footer'
 import { Header } from '@/components/site/header'
+import { JsonLd } from '@/components/site/json-ld'
 import { ThemeProvider } from '@/components/site/theme-provider'
 import { Tracker } from '@/components/tracking/tracker'
 import { brand } from '@/content/site'
@@ -68,8 +70,10 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
               github: settings.github,
             }}
           />
+          <RevealObserver />
           <Tracker />
         </ThemeProvider>
+        <JsonLd settings={settings} siteUrl={clientEnv.NEXT_PUBLIC_SITE_URL} />
       </body>
     </html>
   )

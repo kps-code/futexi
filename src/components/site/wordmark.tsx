@@ -4,11 +4,7 @@ import { cn } from '@/lib/utils'
 
 export function Wordmark({ className, withSubline = true }: { className?: string; withSubline?: boolean }) {
   return (
-    <Link
-      href="/"
-      aria-label={`${brand.name} home`}
-      className={cn('group inline-flex flex-col leading-none', className)}
-    >
+    <Link href="/" className={cn('group inline-flex flex-col leading-none', className)}>
       <span className="font-display text-[1.05rem] font-bold tracking-[0.18em] text-foreground sm:text-lg">
         KAPOSA <span className="text-gradient">FUTEXI</span>
       </span>
