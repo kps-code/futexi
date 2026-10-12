@@ -3,16 +3,19 @@ import { isAdmin, isLoggedIn, nobody } from '../access'
 
 export const demoLeadStatuses = ['new', 'contacted', 'won', 'lost'] as const
 
-/** Leads captured by the AI assistant on the AI-Powered Business demo. Retention 90 days. */
+/**
+ * Leads and enquiries captured on the demo sites: the AI assistant (Pulse
+ * Fitness) and the enquiry forms (Atelier Nila, Vidya Academy). Retention 90 days.
+ */
 export const DemoLeads: CollectionConfig = {
   slug: 'demo-leads',
   labels: { singular: 'Demo Lead', plural: 'Demo Leads' },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'interest', 'status', 'business', 'createdAt'],
+    defaultColumns: ['business', 'name', 'interest', 'status', 'createdAt'],
     group: 'Demos',
-    description: 'Leads the AI assistant captured on demo sites, with the conversation that led there.',
-    listSearchableFields: ['name', 'phone', 'reference'],
+    description: 'Leads from the demo sites, with the conversation or message that led there.',
+    listSearchableFields: ['name', 'phone', 'reference', 'interest'],
   },
   access: {
     create: nobody,
@@ -30,9 +33,19 @@ export const DemoLeads: CollectionConfig = {
           type: 'select',
           required: true,
           defaultValue: 'ai-business',
-          options: [{ label: 'Pulse Fitness', value: 'ai-business' }],
+          index: true,
+          options: [
+            { label: 'Pulse Fitness (AI)', value: 'ai-business' },
+            { label: 'Atelier Nila (Interior)', value: 'interior' },
+            { label: 'Vidya Academy (Tuition)', value: 'tuition' },
+          ],
         },
-        { name: 'interest', type: 'text', required: true },
+        {
+          name: 'interest',
+          type: 'text',
+          required: true,
+          admin: { description: 'Course, project type or "Free trial".' },
+        },
       ],
     },
     {
@@ -42,7 +55,8 @@ export const DemoLeads: CollectionConfig = {
         { name: 'phone', type: 'text', required: true },
       ],
     },
-    { name: 'transcript', type: 'json', admin: { description: 'The conversation, oldest first.' } },
+    { name: 'details', type: 'textarea', admin: { description: 'Message typed in an enquiry form.' } },
+    { name: 'transcript', type: 'json', admin: { description: 'Assistant conversation, oldest first.' } },
     {
       name: 'status',
       type: 'select',

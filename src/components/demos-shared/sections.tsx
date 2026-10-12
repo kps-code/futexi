@@ -22,12 +22,18 @@ export function ServicesGrid({
   title,
   sub,
   cols = 4,
+  itemCta,
+  priceSuffix,
 }: {
   business: DemoBusiness
   eyebrow?: string
   title: string
   sub?: string
   cols?: 3 | 4
+  /** For businesses without a booking flow: a label and anchor for each card. */
+  itemCta?: { label: string; href: string }
+  /** Appended to prices, e.g. "/month". */
+  priceSuffix?: string
 }) {
   return (
     <section id="services" className="bg-dm-surface scroll-mt-20 py-16 sm:py-20">
@@ -54,18 +60,23 @@ export function ServicesGrid({
                 ) : (
                   <span />
                 )}
-                {business.showPrice && <span className="font-semibold">{formatInr(s.price)}</span>}
+                {business.showPrice && (
+                  <span className="font-semibold">
+                    {formatInr(s.price)}
+                    {priceSuffix && <span className="text-dm-muted text-xs font-normal">{priceSuffix}</span>}
+                  </span>
+                )}
               </div>
-              {business.bookPath && (
+              {(business.bookPath || itemCta) && (
                 <DemoButton
-                  href={`${business.bookPath}?service=${s.slug}`}
+                  href={business.bookPath ? `${business.bookPath}?service=${s.slug}` : (itemCta?.href ?? '#')}
                   size="sm"
                   variant="secondary"
                   className="mt-4"
                   data-track="cta_click"
                   data-track-props={`{"cta":"demo_service","demo":"${business.id}","service":"${s.slug}"}`}
                 >
-                  Book
+                  {business.bookPath ? 'Book' : itemCta?.label}
                 </DemoButton>
               )}
             </Reveal>

@@ -14,7 +14,7 @@ export type DemoService = {
   category?: string
 }
 
-export type DemoBusinessId = 'booking' | 'salon' | 'restaurant' | 'ai-business'
+export type DemoBusinessId = 'booking' | 'salon' | 'restaurant' | 'ai-business' | 'interior' | 'tuition'
 
 export type DemoBusiness = {
   id: DemoBusinessId
@@ -327,7 +327,164 @@ export const pulse: DemoBusiness = {
   whatsappIntro: 'Free trial request (Pulse Fitness demo)',
 }
 
-export const demoBusinesses: readonly DemoBusiness[] = [nova, velvet, saffron, pulse]
+export const nila: DemoBusiness = {
+  id: 'interior',
+  path: '/demo/interior',
+  theme: 'theme-nila',
+  name: 'Atelier Nila',
+  logoLetter: 'A',
+  tagline: 'Interiors that feel like you.',
+  blurb:
+    'A Chennai interior design studio for homes, offices and cafes. We design, we build with our own team, and we hand over on the date we promised.',
+  area: 'Nungambakkam, Chennai',
+  address: '11 Khader Nawaz Khan Road, Nungambakkam, Chennai 600006',
+  mapsUrl: 'https://maps.google.com/?q=Nungambakkam+Chennai',
+  rating: '4.9',
+  reviews: 87,
+  hours: { open: 10, close: 19 },
+  hoursText: ['Mon to Sat · 10:00 AM to 7:00 PM', 'Studio visits by appointment'],
+  slotMinutes: 60,
+  windowDays: 14,
+  services: [
+    {
+      slug: 'nila-residential',
+      name: 'Residential Interiors',
+      minutes: 0,
+      price: 0,
+      line: 'Apartments and villas, from a single room to a full home.',
+      tone: 'teal',
+    },
+    {
+      slug: 'nila-kitchen',
+      name: 'Modular Kitchens',
+      minutes: 0,
+      price: 0,
+      line: 'Designed around how you cook, built in our own workshop.',
+      tone: 'amber',
+    },
+    {
+      slug: 'nila-office',
+      name: 'Office Interiors',
+      minutes: 0,
+      price: 0,
+      line: 'Workplaces that people want to show up to.',
+      tone: 'sky',
+    },
+    {
+      slug: 'nila-turnkey',
+      name: 'Turnkey Renovation',
+      minutes: 0,
+      price: 0,
+      line: 'Civil, electrical, carpentry and styling under one contract.',
+      tone: 'rose',
+    },
+  ],
+  nav: [
+    { label: 'Projects', href: '/demo/interior#projects' },
+    { label: 'Services', href: '/demo/interior#services' },
+    { label: 'Studio', href: '/demo/interior#studio' },
+    { label: 'Contact', href: '/demo/interior#enquire' },
+  ],
+  ctaLabel: 'Start a project',
+  bookingNoun: 'enquiry',
+  showPrice: false,
+  contactType: 'website',
+  whatsappIntro: 'Project enquiry (Atelier Nila demo)',
+}
+
+export const vidya: DemoBusiness = {
+  id: 'tuition',
+  path: '/demo/tuition',
+  theme: 'theme-vidya',
+  name: 'Vidya Academy',
+  logoLetter: 'V',
+  tagline: 'Small batches. Big results.',
+  blurb:
+    'Coaching for Classes 8 to 12, NEET and JEE foundation in Chromepet. Fifteen students per batch, weekly tests, and progress reports parents actually read.',
+  area: 'Chromepet, Chennai',
+  address: '45 GST Road, Chromepet, Chennai 600044',
+  mapsUrl: 'https://maps.google.com/?q=Chromepet+Chennai',
+  rating: '4.8',
+  reviews: 312,
+  hours: { open: 7, close: 20 },
+  hoursText: ['Mon to Sat · 7:00 AM to 8:00 PM', 'Sunday · 9:00 AM to 6:00 PM (foundation batches)'],
+  slotMinutes: 60,
+  windowDays: 14,
+  services: [
+    {
+      slug: 'vidya-class10',
+      name: 'Class 10 · Maths & Science',
+      minutes: 0,
+      price: 2500,
+      line: 'CBSE and State board. Board exam pattern from day one.',
+      tone: 'sky',
+      category: 'School',
+    },
+    {
+      slug: 'vidya-pcm',
+      name: 'Class 11 & 12 · PCM',
+      minutes: 0,
+      price: 3500,
+      line: 'Physics, Chemistry, Maths with JEE-level problem sets.',
+      tone: 'violet',
+      category: 'School',
+    },
+    {
+      slug: 'vidya-pcb',
+      name: 'Class 11 & 12 · PCB',
+      minutes: 0,
+      price: 3500,
+      line: 'Physics, Chemistry, Biology with NEET-style tests.',
+      tone: 'teal',
+      category: 'School',
+    },
+    {
+      slug: 'vidya-neet',
+      name: 'NEET Foundation',
+      minutes: 0,
+      price: 4500,
+      line: 'Weekend batch. Full syllabus, 40 mock tests a year.',
+      tone: 'rose',
+      category: 'Entrance',
+    },
+    {
+      slug: 'vidya-jee',
+      name: 'JEE Foundation',
+      minutes: 0,
+      price: 4500,
+      line: 'Weekend batch. Concepts first, then speed.',
+      tone: 'amber',
+      category: 'Entrance',
+    },
+    {
+      slug: 'vidya-english',
+      name: 'Spoken English',
+      minutes: 0,
+      price: 1500,
+      line: 'Early morning batch for students and working adults.',
+      tone: 'lime',
+      category: 'Skills',
+    },
+  ],
+  nav: [
+    { label: 'Courses', href: '/demo/tuition#services' },
+    { label: 'Batches', href: '/demo/tuition#batches' },
+    { label: 'Faculty', href: '/demo/tuition#faculty' },
+    { label: 'Results', href: '/demo/tuition#results' },
+    { label: 'Enquire', href: '/demo/tuition#enquire' },
+  ],
+  ctaLabel: 'Enquire now',
+  bookingNoun: 'enquiry',
+  showPrice: true,
+  contactType: 'website',
+  whatsappIntro: 'Admission enquiry (Vidya Academy demo)',
+}
+
+export const demoBusinesses: readonly DemoBusiness[] = [nova, velvet, saffron, pulse, nila, vidya]
+
+/** Businesses whose forms create leads (enquiries) rather than bookings. */
+export const enquiryBusinessIds = ['ai-business', 'interior', 'tuition'] as const
+export type EnquiryBusinessId = (typeof enquiryBusinessIds)[number]
 export const bookableBusinesses = demoBusinesses.filter((b) => b.bookPath)
 
 export const businessById = (id: string) => demoBusinesses.find((b) => b.id === id)

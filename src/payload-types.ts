@@ -486,19 +486,26 @@ export interface DemoBooking {
   createdAt: string;
 }
 /**
- * Leads the AI assistant captured on demo sites, with the conversation that led there.
+ * Leads from the demo sites, with the conversation or message that led there.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "demo-leads".
  */
 export interface DemoLead {
   id: number;
-  business: 'ai-business';
+  business: 'ai-business' | 'interior' | 'tuition';
+  /**
+   * Course, project type or "Free trial".
+   */
   interest: string;
   name: string;
   phone: string;
   /**
-   * The conversation, oldest first.
+   * Message typed in an enquiry form.
+   */
+  details?: string | null;
+  /**
+   * Assistant conversation, oldest first.
    */
   transcript?:
     | {
@@ -883,6 +890,7 @@ export interface DemoLeadsSelect<T extends boolean = true> {
   interest?: T;
   name?: T;
   phone?: T;
+  details?: T;
   transcript?: T;
   status?: T;
   reference?: T;

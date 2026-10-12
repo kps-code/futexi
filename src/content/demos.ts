@@ -190,7 +190,23 @@ export const demos: readonly Demo[] = [
     tags: ['Portfolio', 'Gallery', 'Enquiry'],
     cta: 'Build My Portfolio Website',
     contactType: 'website',
-    status: 'coming-soon',
+    status: 'live',
+    liveHref: '/demo/interior',
+    screens: {
+      desktop: [
+        { src: '/demos/interior/desktop-home.webp', alt: 'Atelier Nila home with featured projects' },
+        {
+          src: '/demos/interior/desktop-project.webp',
+          alt: 'A project page with gallery, highlights and palette',
+        },
+        { src: '/demos/interior/desktop-enquire.webp', alt: 'Project enquiry form' },
+      ],
+      mobile: [
+        { src: '/demos/interior/mobile-home.webp', alt: 'Atelier Nila home on a phone' },
+        { src: '/demos/interior/mobile-project.webp', alt: 'Project page on a phone' },
+        { src: '/demos/interior/mobile-enquire.webp', alt: 'Enquiry form on a phone' },
+      ],
+    },
     challenge:
       'Great work, but no place to show it professionally. Instagram hides the detail that wins clients.',
     solution: [
@@ -222,7 +238,20 @@ export const demos: readonly Demo[] = [
     tags: ['Courses', 'Enquiry', 'WhatsApp'],
     cta: 'Build My Education Website',
     contactType: 'website',
-    status: 'coming-soon',
+    status: 'live',
+    liveHref: '/demo/tuition',
+    screens: {
+      desktop: [
+        { src: '/demos/tuition/desktop-home.webp', alt: 'Vidya Academy home with results strip' },
+        { src: '/demos/tuition/desktop-courses.webp', alt: 'Courses with fees and batch timings' },
+        { src: '/demos/tuition/desktop-enquire.webp', alt: 'Admission enquiry form' },
+      ],
+      mobile: [
+        { src: '/demos/tuition/mobile-home.webp', alt: 'Vidya Academy home on a phone' },
+        { src: '/demos/tuition/mobile-courses.webp', alt: 'Courses on a phone' },
+        { src: '/demos/tuition/mobile-enquire.webp', alt: 'Enquiry form on a phone' },
+      ],
+    },
     challenge:
       'Parents want course details, timings and results before they call. Nobody has time to repeat them.',
     solution: [

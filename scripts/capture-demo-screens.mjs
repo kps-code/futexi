@@ -56,6 +56,16 @@ const PLANS = {
     },
     { name: 'plans', path: '/demo/ai-business#plans', steps: [{ scrollTo: '#plans' }] },
   ],
+  interior: [
+    { name: 'home', path: '/demo/interior', steps: [] },
+    { name: 'project', path: '/demo/interior/projects/sea-breeze-apartment', steps: [] },
+    { name: 'enquire', path: '/demo/interior#enquire', steps: [{ scrollTo: '#enquire' }] },
+  ],
+  tuition: [
+    { name: 'home', path: '/demo/tuition', steps: [] },
+    { name: 'courses', path: '/demo/tuition#services', steps: [{ scrollTo: '#services' }] },
+    { name: 'enquire', path: '/demo/tuition#enquire', steps: [{ scrollTo: '#enquire' }] },
+  ],
 }
 
 const plan = PLANS[slug]

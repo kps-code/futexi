@@ -164,3 +164,39 @@
     transform: translateY(0);
   }
 }
+
+/* Atelier Nila (interior): warm stone, deep sage, brass. */
+.theme-nila {
+  --dm-bg: #f7f4ef;
+  --dm-surface: #ffffff;
+  --dm-surface-2: #ece7df;
+  --dm-ink: #1f2420;
+  --dm-muted: #5f635b;
+  --dm-line: rgba(31, 36, 32, 0.1);
+  --dm-line-strong: rgba(31, 36, 32, 0.22);
+  --dm-brand: #3f5a4a;
+  --dm-brand-ink: #2f4538;
+  --dm-brand-soft: #dde8df;
+  --dm-on-brand: #ffffff;
+  --dm-accent: #b58b5a;
+  --dm-ring: rgba(63, 90, 74, 0.35);
+  color-scheme: light;
+}
+
+/* Vidya Academy (tuition): clean paper, indigo, saffron. */
+.theme-vidya {
+  --dm-bg: #f8f9ff;
+  --dm-surface: #ffffff;
+  --dm-surface-2: #eef0fb;
+  --dm-ink: #151a3a;
+  --dm-muted: #5c6283;
+  --dm-line: rgba(21, 26, 58, 0.1);
+  --dm-line-strong: rgba(21, 26, 58, 0.22);
+  --dm-brand: #3730a3;
+  --dm-brand-ink: #312e81;
+  --dm-brand-soft: #e0e7ff;
+  --dm-on-brand: #ffffff;
+  --dm-accent: #f59e0b;
+  --dm-ring: rgba(55, 48, 163, 0.35);
+  color-scheme: light;
+}

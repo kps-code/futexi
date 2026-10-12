@@ -46,7 +46,7 @@ export function AiAssistant({ requestHref }: { requestHref: string }) {
       if (result.captured) {
         const transcript = [...messages, userMsg, ...assistantMsgs].map(({ role, text }) => ({ role, text }))
         startTransition(async () => {
-          setLead(await createDemoLead({ ...result.captured!, transcript }))
+          setLead(await createDemoLead({ business: 'ai-business', ...result.captured!, transcript }))
         })
       }
     }

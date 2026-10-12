@@ -27,6 +27,8 @@ test.describe('Home and demos', () => {
 
   test('scripted AI demo answers when a chip is clicked', async ({ page }) => {
     await page.goto('/#ai')
+    // The chips are client-side; wait for hydration (RevealObserver marks <html> on mount).
+    await page.locator('html.reveal-ready').waitFor({ timeout: 15_000 })
     await page.getByRole('button', { name: 'Salon', exact: true }).click()
     await expect(page.getByText('I run a salon. What website do I need?')).toBeVisible()
     await expect(page.getByText(/booking-focused website/)).toBeVisible({ timeout: 10_000 })
