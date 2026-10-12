@@ -199,3 +199,38 @@
 .kf-nav-link {
   margin-top: calc(var(--base) * 0.5);
 }
+
+/* Dashboard link sits above the groups, styled as a primary entry. */
+.kf-nav-link--dashboard {
+  margin: 0 0 calc(var(--base) * 0.75);
+  font-weight: 600;
+}
+
+/* Show/hide toggle injected into password fields. */
+.kf-reveal {
+  position: relative;
+  input[type='password'],
+  input[type='text'] {
+    padding-right: calc(var(--base) * 1.75);
+  }
+}
+.kf-reveal__btn {
+  position: absolute;
+  top: 50%;
+  right: calc(var(--base) * 0.4);
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--base) * 1.25);
+  height: calc(var(--base) * 1.25);
+  border: 0;
+  border-radius: var(--style-radius-s);
+  background: transparent;
+  color: var(--theme-elevation-600);
+  cursor: pointer;
+  &:hover {
+    color: var(--theme-elevation-900);
+    background: var(--theme-elevation-100);
+  }
+}

@@ -35,7 +35,8 @@ export default buildConfig({
       titleSuffix: ' · KAPOSA FUTEXI',
     },
     components: {
-      afterNavLinks: ['/payload/admin/AnalyticsNavLink#AnalyticsNavLink'],
+      beforeNavLinks: ['/payload/admin/DashboardNavLink#DashboardNavLink'],
+      providers: ['/payload/admin/PasswordRevealProvider#PasswordRevealProvider'],
       views: {
         analytics: {
           Component: '/payload/admin/views/AnalyticsView#AnalyticsView',
