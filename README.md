@@ -21,6 +21,7 @@ npm install
 cp .env.example .env        # set PAYLOAD_SECRET, IP_HASH_SALT and DB_PASSWORD (or DATABASE_URL)
 npm run db:create           # creates the futexi database if missing
 npm run dev                 # http://localhost:3000
+npm run seed                # in a second terminal: team members, settings, about text
 ```
 
 Alternative without the script (PowerShell):
@@ -39,22 +40,23 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ## Scripts
 
-| Script                                         | What it does                                                     |
-| ---------------------------------------------- | ---------------------------------------------------------------- |
-| `npm run dev`                                  | Dev server with hot reload                                       |
-| `npm run build` / `npm start`                  | Production build and serve                                       |
-| `npm run typecheck`                            | TypeScript, strict                                               |
-| `npm run lint`                                 | ESLint (Next core-web-vitals + TypeScript rules)                 |
-| `npm run format` / `format:check`              | Prettier with Tailwind class sorting                             |
-| `npm run test:unit`                            | Pure unit tests, no database                                     |
-| `npm run test:int`                             | Integration tests against the database                           |
-| `npm run test:e2e`                             | Playwright browser tests (starts the dev server)                 |
-| `npm run generate:types`                       | Regenerate `src/payload-types.ts` after changing collections     |
-| `npm run migrate:create` / `migrate`           | Payload migrations for production                                |
-| `npm run db:up` / `db:down`                    | Local Postgres via Docker                                        |
-| `node scripts/capture-demo-screens.mjs <slug>` | Capture real screenshots of a live demo into public/demos/<slug> |
-| `npm run db:create`                            | Creates the database named in .env if missing                    |
-| `npm run vercel-build`                         | What Vercel runs: migrations, then build                         |
+| Script                                         | What it does                                                                        |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `npm run dev`                                  | Dev server with hot reload                                                          |
+| `npm run build` / `npm start`                  | Production build and serve                                                          |
+| `npm run typecheck`                            | TypeScript, strict                                                                  |
+| `npm run lint`                                 | ESLint (Next core-web-vitals + TypeScript rules)                                    |
+| `npm run format` / `format:check`              | Prettier with Tailwind class sorting                                                |
+| `npm run test:unit`                            | Pure unit tests, no database                                                        |
+| `npm run test:int`                             | Integration tests against the database                                              |
+| `npm run test:e2e`                             | Playwright browser tests (starts the dev server)                                    |
+| `npm run generate:types`                       | Regenerate `src/payload-types.ts` after changing collections                        |
+| `npm run migrate:create` / `migrate`           | Payload migrations for production                                                   |
+| `npm run db:up` / `db:down`                    | Local Postgres via Docker                                                           |
+| `node scripts/capture-demo-screens.mjs <slug>` | Capture real screenshots of a live demo into public/demos/<slug>                    |
+| `npm run seed`                                 | Seeds team members, site settings and about text from the content lock (idempotent) |
+| `npm run db:create`                            | Creates the database named in .env if missing                                       |
+| `npm run vercel-build`                         | What Vercel runs: migrations, then build                                            |
 
 ## Project layout
 

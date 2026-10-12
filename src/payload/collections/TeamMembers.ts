@@ -23,8 +23,9 @@ export const TeamMembers: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'role', 'order', 'visible'],
-    group: 'Content',
-    description: 'People shown on the About page and the home page team teaser.',
+    group: 'Settings',
+    description:
+      'The builders shown on the About page and the home page. Untick Visible to hide someone without deleting; Delete is in the record menu.',
   },
   access: {
     read: anyone,

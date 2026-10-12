@@ -222,7 +222,7 @@ export interface Media {
   };
 }
 /**
- * People shown on the About page and the home page team teaser.
+ * The builders shown on the About page and the home page. Untick Visible to hide someone without deleting; Delete is in the record menu.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "team-members".

@@ -26,7 +26,8 @@
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "db:create": "node scripts/db-create.mjs",
     "vercel-build": "npm run migrate && npm run build",
-    "lighthouse": "lhci autorun"
+    "lighthouse": "lhci autorun",
+    "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/seed.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.90.2",
