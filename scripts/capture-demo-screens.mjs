@@ -18,7 +18,13 @@ if (!slug) {
   process.exit(1)
 }
 
-const SIZES = { desktop: { width: 1440, height: 900 }, mobile: { width: 390, height: 844 } }
+const SIZES = {
+  desktop: { width: 1440, height: 900 },
+  tablet: { width: 768, height: 1024 },
+  mobile: { width: 390, height: 844 },
+}
+// DEVICES=tablet node scripts/... limits the run; tablet captures the home screen only.
+const DEVICES = (process.env.DEVICES ?? Object.keys(SIZES).join(',')).split(',')
 
 /** Per-demo capture plans: name -> steps to reach the screen. */
 const bookTime = (bookPath, service) => ({
@@ -80,6 +86,7 @@ await mkdir(outDir, { recursive: true })
 const browser = await chromium.launch()
 try {
   for (const [device, size] of Object.entries(SIZES)) {
+    if (!DEVICES.includes(device)) continue
     const context = await browser.newContext({
       viewport: size,
       deviceScaleFactor: 1,
@@ -90,6 +97,7 @@ try {
     })
     const page = await context.newPage()
     for (const shot of plan) {
+      if (device === 'tablet' && shot.name !== 'home') continue
       await page.goto(`${base}${shot.path}`, { waitUntil: 'networkidle' })
       for (const step of shot.steps) {
         if (step.click) await page.locator(step.click).first().click()
