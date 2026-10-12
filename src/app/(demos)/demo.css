@@ -1,36 +1,97 @@
 @import 'tailwindcss';
 @import '../_shared/base.css';
 
-/* Nova Studio: the fictional business behind the Booking Website demo.
-   Light, warm and calm so it reads as a client's site, not KAPOSA's. */
-:root {
-  --nv-bg: #fbfaf7;
-  --nv-surface: #ffffff;
-  --nv-surface-2: #f3f0ea;
-  --nv-ink: #1c1917;
-  --nv-muted: #6b665f;
-  --nv-line: rgba(28, 25, 23, 0.1);
-  --nv-line-strong: rgba(28, 25, 23, 0.2);
-  --nv-brand: #0f766e;
-  --nv-brand-ink: #115e59;
-  --nv-brand-soft: #ccfbf1;
-  --nv-accent: #d97706;
-  --nv-ring: rgba(15, 118, 110, 0.35);
+/*
+ * Demo mini-sites share one component set styled with `dm-*` tokens.
+ * Each business sets the tokens through a theme class on its wrapper.
+ */
+
+/* Nova Studio (Booking demo): light, warm, teal. */
+.theme-nova {
+  --dm-bg: #fbfaf7;
+  --dm-surface: #ffffff;
+  --dm-surface-2: #f3f0ea;
+  --dm-ink: #1c1917;
+  --dm-muted: #6b665f;
+  --dm-line: rgba(28, 25, 23, 0.1);
+  --dm-line-strong: rgba(28, 25, 23, 0.2);
+  --dm-brand: #0f766e;
+  --dm-brand-ink: #115e59;
+  --dm-brand-soft: #ccfbf1;
+  --dm-on-brand: #ffffff;
+  --dm-accent: #d97706;
+  --dm-ring: rgba(15, 118, 110, 0.35);
+  color-scheme: light;
+}
+
+/* Velvet Salon: blush paper, deep rose, gold accent. */
+.theme-velvet {
+  --dm-bg: #fdf8f6;
+  --dm-surface: #ffffff;
+  --dm-surface-2: #f7ebe7;
+  --dm-ink: #2a1b1e;
+  --dm-muted: #76616a;
+  --dm-line: rgba(42, 27, 30, 0.1);
+  --dm-line-strong: rgba(42, 27, 30, 0.22);
+  --dm-brand: #9f1239;
+  --dm-brand-ink: #881337;
+  --dm-brand-soft: #ffe4e6;
+  --dm-on-brand: #ffffff;
+  --dm-accent: #c49a5a;
+  --dm-ring: rgba(159, 18, 57, 0.35);
+  color-scheme: light;
+}
+
+/* Saffron Kitchen: dark, warm, amber. */
+.theme-saffron {
+  --dm-bg: #171210;
+  --dm-surface: #211a16;
+  --dm-surface-2: #2b221d;
+  --dm-ink: #f6efe7;
+  --dm-muted: #b9aa9c;
+  --dm-line: rgba(246, 239, 231, 0.1);
+  --dm-line-strong: rgba(246, 239, 231, 0.22);
+  --dm-brand: #e0892b;
+  --dm-brand-ink: #f2a44f;
+  --dm-brand-soft: rgba(224, 137, 43, 0.16);
+  --dm-on-brand: #1a1208;
+  --dm-accent: #b91c1c;
+  --dm-ring: rgba(224, 137, 43, 0.4);
+  color-scheme: dark;
+}
+
+/* Pulse Fitness: deep navy, electric lime. */
+.theme-pulse {
+  --dm-bg: #0b1020;
+  --dm-surface: #121a30;
+  --dm-surface-2: #1a2440;
+  --dm-ink: #f3f6ff;
+  --dm-muted: #9aa5c4;
+  --dm-line: rgba(243, 246, 255, 0.1);
+  --dm-line-strong: rgba(243, 246, 255, 0.22);
+  --dm-brand: #a3e635;
+  --dm-brand-ink: #bef264;
+  --dm-brand-soft: rgba(163, 230, 53, 0.14);
+  --dm-on-brand: #0b1020;
+  --dm-accent: #38bdf8;
+  --dm-ring: rgba(163, 230, 53, 0.4);
+  color-scheme: dark;
 }
 
 @theme inline {
-  --color-nv-bg: var(--nv-bg);
-  --color-nv-surface: var(--nv-surface);
-  --color-nv-surface-2: var(--nv-surface-2);
-  --color-nv-ink: var(--nv-ink);
-  --color-nv-muted: var(--nv-muted);
-  --color-nv-line: var(--nv-line);
-  --color-nv-line-strong: var(--nv-line-strong);
-  --color-nv-brand: var(--nv-brand);
-  --color-nv-brand-ink: var(--nv-brand-ink);
-  --color-nv-brand-soft: var(--nv-brand-soft);
-  --color-nv-accent: var(--nv-accent);
-  --color-nv-ring: var(--nv-ring);
+  --color-dm-bg: var(--dm-bg);
+  --color-dm-surface: var(--dm-surface);
+  --color-dm-surface-2: var(--dm-surface-2);
+  --color-dm-ink: var(--dm-ink);
+  --color-dm-muted: var(--dm-muted);
+  --color-dm-line: var(--dm-line);
+  --color-dm-line-strong: var(--dm-line-strong);
+  --color-dm-brand: var(--dm-brand);
+  --color-dm-brand-ink: var(--dm-brand-ink);
+  --color-dm-brand-soft: var(--dm-brand-soft);
+  --color-dm-on-brand: var(--dm-on-brand);
+  --color-dm-accent: var(--dm-accent);
+  --color-dm-ring: var(--dm-ring);
 
   --font-sans: 'KF Rupee', var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: 'KF Rupee', var(--font-sora), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -38,19 +99,18 @@
 
 @layer base {
   html {
-    color-scheme: light;
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-nv-bg text-nv-ink font-sans antialiased;
+    @apply font-sans antialiased;
   }
   :focus-visible {
-    outline: 2px solid var(--nv-brand);
+    outline: 2px solid var(--dm-brand);
     outline-offset: 2px;
   }
 }
 
-@utility container-nv {
+@utility container-dm {
   margin-inline: auto;
   width: 100%;
   max-width: 72rem;
@@ -60,9 +120,47 @@
   }
 }
 
-@utility nv-card {
-  background: var(--nv-surface);
-  border: 1px solid var(--nv-line);
+@utility dm-card {
+  background: var(--dm-surface);
+  border: 1px solid var(--dm-line);
   border-radius: 1.25rem;
-  box-shadow: 0 1px 2px rgba(28, 25, 23, 0.04);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* Abstract gallery tiles (no stock photos): soft gradients per tone. */
+@utility tile-rose {
+  background: linear-gradient(135deg, #fecdd3, #fb7185 60%, #9f1239);
+}
+@utility tile-gold {
+  background: linear-gradient(135deg, #fde68a, #f59e0b 60%, #92400e);
+}
+@utility tile-plum {
+  background: linear-gradient(135deg, #e9d5ff, #a855f7 60%, #581c87);
+}
+@utility tile-sand {
+  background: linear-gradient(135deg, #fef3c7, #d6b48b 60%, #6b4f2a);
+}
+@utility tile-ember {
+  background: linear-gradient(135deg, #fed7aa, #ea580c 60%, #7c2d12);
+}
+@utility tile-leaf {
+  background: linear-gradient(135deg, #d9f99d, #65a30d 60%, #365314);
+}
+@utility tile-ocean {
+  background: linear-gradient(135deg, #bae6fd, #0284c7 60%, #0c4a6e);
+}
+@utility tile-coal {
+  background: linear-gradient(135deg, #52525b, #27272a 60%, #09090b);
+}
+
+/* Automation timeline in the AI assistant: items fade in one after another. */
+@keyframes kf-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

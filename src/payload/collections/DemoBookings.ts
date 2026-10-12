@@ -1,22 +1,22 @@
 import type { CollectionConfig } from 'payload'
-import { novaServices } from '@/content/demo-booking'
+import { allBookableServices, bookableBusinesses } from '@/content/demo-businesses'
 import { isAdmin, isLoggedIn, nobody } from '../access'
 
 export const demoBookingStatuses = ['requested', 'confirmed', 'cancelled'] as const
 
 /**
- * Appointments created through the Booking Website demo. Shows what the
- * owner's view looks like. Retention 90 days.
+ * Appointments and reservations created through the live demos. Shows what
+ * the owner's view looks like. One row per (business, date, time). Retention 90 days.
  */
 export const DemoBookings: CollectionConfig = {
   slug: 'demo-bookings',
   labels: { singular: 'Demo Booking', plural: 'Demo Bookings' },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['date', 'time', 'service', 'name', 'status', 'createdAt'],
+    defaultColumns: ['business', 'date', 'time', 'service', 'name', 'status', 'createdAt'],
     group: 'Demos',
-    description: 'Appointments made on the Booking demo site. Sample business: Nova Studio.',
-    listSearchableFields: ['name', 'phone', 'service'],
+    description: 'Appointments and table reservations made on the demo sites.',
+    listSearchableFields: ['name', 'phone', 'service', 'reference'],
   },
   access: {
     create: nobody, // server action via Local API
@@ -25,17 +25,30 @@ export const DemoBookings: CollectionConfig = {
     delete: isAdmin,
   },
   defaultSort: '-createdAt',
-  indexes: [{ fields: ['date', 'time'], unique: true }],
+  indexes: [{ fields: ['business', 'date', 'time'], unique: true }],
   fields: [
     {
       type: 'row',
       fields: [
         {
+          name: 'business',
+          type: 'select',
+          required: true,
+          defaultValue: 'booking',
+          index: true,
+          options: bookableBusinesses.map((b) => ({ label: b.name, value: b.id })),
+        },
+        {
           name: 'service',
           type: 'select',
           required: true,
-          options: novaServices.map((s) => ({ label: s.name, value: s.slug })),
+          options: allBookableServices,
         },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
         {
           name: 'date',
           type: 'text',

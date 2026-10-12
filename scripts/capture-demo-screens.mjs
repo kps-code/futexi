@@ -21,19 +21,40 @@ if (!slug) {
 const SIZES = { desktop: { width: 1440, height: 900 }, mobile: { width: 390, height: 844 } }
 
 /** Per-demo capture plans: name -> steps to reach the screen. */
+const bookTime = (bookPath, service) => ({
+  name: 'book-time',
+  path: bookPath,
+  steps: [
+    { click: `button:has-text("${service}")` },
+    { click: '[data-testid="date-list"] button >> nth=1' },
+    { waitFor: '[data-testid="slot-list"] button' },
+  ],
+})
+
 const PLANS = {
   booking: [
     { name: 'home', path: '/demo/booking', steps: [] },
     { name: 'book-service', path: '/demo/booking/book', steps: [] },
+    bookTime('/demo/booking/book', 'Signature Facial'),
+  ],
+  salon: [
+    { name: 'home', path: '/demo/salon', steps: [] },
+    { name: 'services', path: '/demo/salon#services', steps: [{ scrollTo: '#services' }] },
+    bookTime('/demo/salon/book', 'Haircut & Style'),
+  ],
+  restaurant: [
+    { name: 'home', path: '/demo/restaurant', steps: [] },
+    { name: 'menu', path: '/demo/restaurant#menu', steps: [{ scrollTo: '#menu' }] },
+    bookTime('/demo/restaurant/reserve', 'Table for 4'),
+  ],
+  'ai-business': [
+    { name: 'home', path: '/demo/ai-business', steps: [] },
     {
-      name: 'book-time',
-      path: '/demo/booking/book',
-      steps: [
-        { click: 'button:has-text("Signature Facial")' },
-        { click: 'ul[class*="overflow-x-auto"] button >> nth=1' },
-        { waitFor: 'button:has-text("AM"), button:has-text("PM")' },
-      ],
+      name: 'chat',
+      path: '/demo/ai-business',
+      steps: [{ click: 'button:has-text("Plans and pricing")' }, { waitFor: 'text=Monthly ₹1,999' }],
     },
+    { name: 'plans', path: '/demo/ai-business#plans', steps: [{ scrollTo: '#plans' }] },
   ],
 }
 
@@ -63,6 +84,13 @@ try {
       for (const step of shot.steps) {
         if (step.click) await page.locator(step.click).first().click()
         if (step.waitFor) await page.locator(step.waitFor).first().waitFor({ timeout: 15_000 })
+        if (step.scrollTo) {
+          await page.evaluate(
+            (sel) => document.querySelector(sel)?.scrollIntoView({ block: 'start' }),
+            step.scrollTo,
+          )
+          await page.waitForTimeout(300)
+        }
       }
       // Let fonts and reveals settle.
       await page.evaluate(() => document.fonts.ready)

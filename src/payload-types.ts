@@ -77,6 +77,7 @@ export interface Config {
     'page-views': PageView;
     events: Event;
     'demo-bookings': DemoBooking;
+    'demo-leads': DemoLead;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -94,6 +95,7 @@ export interface Config {
     'page-views': PageViewsSelect<false> | PageViewsSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     'demo-bookings': DemoBookingsSelect<false> | DemoBookingsSelect<true>;
+    'demo-leads': DemoLeadsSelect<false> | DemoLeadsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -443,14 +445,29 @@ export interface Event {
   createdAt: string;
 }
 /**
- * Appointments made on the Booking demo site. Sample business: Nova Studio.
+ * Appointments and table reservations made on the demo sites.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "demo-bookings".
  */
 export interface DemoBooking {
   id: number;
-  service: 'signature-facial' | 'deep-tissue-massage' | 'hair-spa' | 'skin-consultation';
+  business: 'booking' | 'salon' | 'restaurant';
+  service:
+    | 'signature-facial'
+    | 'deep-tissue-massage'
+    | 'hair-spa'
+    | 'skin-consultation'
+    | 'velvet-haircut'
+    | 'velvet-colour'
+    | 'velvet-keratin'
+    | 'velvet-facial'
+    | 'velvet-mani-pedi'
+    | 'velvet-bridal'
+    | 'table-2'
+    | 'table-4'
+    | 'table-6'
+    | 'table-8';
   /**
    * YYYY-MM-DD (IST)
    */
@@ -463,6 +480,36 @@ export interface DemoBooking {
   phone: string;
   notes?: string | null;
   status: 'requested' | 'confirmed' | 'cancelled';
+  reference: string;
+  visitorId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Leads the AI assistant captured on demo sites, with the conversation that led there.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "demo-leads".
+ */
+export interface DemoLead {
+  id: number;
+  business: 'ai-business';
+  interest: string;
+  name: string;
+  phone: string;
+  /**
+   * The conversation, oldest first.
+   */
+  transcript?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  status: 'new' | 'contacted' | 'won' | 'lost';
   reference: string;
   visitorId?: string | null;
   updatedAt: string;
@@ -531,6 +578,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'demo-bookings';
         value: number | DemoBooking;
+      } | null)
+    | ({
+        relationTo: 'demo-leads';
+        value: number | DemoLead;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -810,12 +861,29 @@ export interface EventsSelect<T extends boolean = true> {
  * via the `definition` "demo-bookings_select".
  */
 export interface DemoBookingsSelect<T extends boolean = true> {
+  business?: T;
   service?: T;
   date?: T;
   time?: T;
   name?: T;
   phone?: T;
   notes?: T;
+  status?: T;
+  reference?: T;
+  visitorId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "demo-leads_select".
+ */
+export interface DemoLeadsSelect<T extends boolean = true> {
+  business?: T;
+  interest?: T;
+  name?: T;
+  phone?: T;
+  transcript?: T;
   status?: T;
   reference?: T;
   visitorId?: T;

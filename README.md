@@ -6,6 +6,7 @@ Planning documents, read these first:
 
 - [docs/content-lock.md](docs/content-lock.md) — every heading, button and text on the site
 - [docs/architecture.md](docs/architecture.md) — system design, logging, analytics, performance budgets
+- [docs/launch.md](docs/launch.md) — step-by-step production launch: Neon, Resend, Vercel, Sentry, domain
 
 ## Stack
 
@@ -62,10 +63,12 @@ src/
   app/
     (site)/            public website: layout, pages, globals.css
     (payload)/         Payload admin and REST (generated, REST wrapped for logging)
-    (demos)/           live demo mini-sites with their own root layout and theme (demo.css)
+    (demos)/           live demo mini-sites: booking (Nova Studio), salon (Velvet Salon),
+                       restaurant (Saffron Kitchen), ai-business (Pulse Fitness); shared root layout + demo.css
     _shared/           CSS shared by the main site and the demos (rupee font-face, reveals)
     api/health         uptime check
   components/
+    demos-shared/      DemoShell, generic BookingFlow, sections, menu tabs, AI assistant
     site/              header, footer, theme, page intro
     ui/                button and primitives
   content/             static copy from docs/content-lock.md

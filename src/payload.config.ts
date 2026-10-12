@@ -16,6 +16,7 @@ import { Sessions } from './payload/collections/Sessions'
 import { PageViews } from './payload/collections/PageViews'
 import { Events } from './payload/collections/Events'
 import { DemoBookings } from './payload/collections/DemoBookings'
+import { DemoLeads } from './payload/collections/DemoLeads'
 import { SiteSettings } from './payload/globals/SiteSettings'
 import { AboutPage } from './payload/globals/AboutPage'
 import { getDatabaseUrl } from './server/env'
@@ -58,6 +59,7 @@ export default buildConfig({
     PageViews,
     Events,
     DemoBookings,
+    DemoLeads,
   ],
   globals: [SiteSettings, AboutPage],
   editor: lexicalEditor(),

@@ -101,7 +101,20 @@ export const demos: readonly Demo[] = [
     tags: ['Booking', 'Gallery', 'WhatsApp'],
     cta: 'Build My Salon Website',
     contactType: 'website',
-    status: 'coming-soon',
+    status: 'live',
+    liveHref: '/demo/salon',
+    screens: {
+      desktop: [
+        { src: '/demos/salon/desktop-home.webp', alt: 'Velvet Salon home page with hero and gallery tiles' },
+        { src: '/demos/salon/desktop-services.webp', alt: 'Velvet Salon services and prices' },
+        { src: '/demos/salon/desktop-book-time.webp', alt: 'Choosing an appointment time at Velvet Salon' },
+      ],
+      mobile: [
+        { src: '/demos/salon/mobile-home.webp', alt: 'Velvet Salon home on a phone' },
+        { src: '/demos/salon/mobile-services.webp', alt: 'Salon services on a phone' },
+        { src: '/demos/salon/mobile-book-time.webp', alt: 'Picking a time slot on a phone' },
+      ],
+    },
     challenge: 'Customers ask the same questions on Instagram every day: price, timing, availability.',
     solution: [
       'Hero',
@@ -136,7 +149,20 @@ export const demos: readonly Demo[] = [
     tags: ['Menu', 'Reservation', 'Maps'],
     cta: 'Build My Restaurant Website',
     contactType: 'website',
-    status: 'coming-soon',
+    status: 'live',
+    liveHref: '/demo/restaurant',
+    screens: {
+      desktop: [
+        { src: '/demos/restaurant/desktop-home.webp', alt: 'Saffron Kitchen home page' },
+        { src: '/demos/restaurant/desktop-menu.webp', alt: 'Digital menu with category tabs' },
+        { src: '/demos/restaurant/desktop-book-time.webp', alt: 'Reserving a table: choosing a time' },
+      ],
+      mobile: [
+        { src: '/demos/restaurant/mobile-home.webp', alt: 'Saffron Kitchen home on a phone' },
+        { src: '/demos/restaurant/mobile-menu.webp', alt: 'Digital menu on a phone' },
+        { src: '/demos/restaurant/mobile-book-time.webp', alt: 'Reserving a table on a phone' },
+      ],
+    },
     challenge:
       'The menu lives in blurry photos. Reservations happen over calls that get missed during service.',
     solution: [
@@ -250,7 +276,23 @@ export const demos: readonly Demo[] = [
     tags: ['AI Chat', 'Lead Capture', 'Automation'],
     cta: 'Build My AI Website',
     contactType: 'ai',
-    status: 'coming-soon',
+    status: 'live',
+    liveHref: '/demo/ai-business',
+    screens: {
+      desktop: [
+        { src: '/demos/ai-business/desktop-home.webp', alt: 'Pulse Fitness home with the AI assistant' },
+        {
+          src: '/demos/ai-business/desktop-chat.webp',
+          alt: 'The assistant answering a question about plans',
+        },
+        { src: '/demos/ai-business/desktop-plans.webp', alt: 'Membership plans and classes' },
+      ],
+      mobile: [
+        { src: '/demos/ai-business/mobile-home.webp', alt: 'Pulse Fitness home on a phone' },
+        { src: '/demos/ai-business/mobile-chat.webp', alt: 'Chatting with the assistant on a phone' },
+        { src: '/demos/ai-business/mobile-plans.webp', alt: 'Plans on a phone' },
+      ],
+    },
     challenge: 'Visitors leave without asking. The owner answers the same questions all day.',
     solution: ['Landing page', 'AI assistant', 'Lead capture', 'WhatsApp handoff', 'Automation'],
     features: ['AI Chat', 'Lead Capture', 'Smart FAQ', 'WhatsApp', 'Automation'],
