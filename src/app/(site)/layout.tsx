@@ -4,8 +4,10 @@ import type { ReactNode } from 'react'
 import { Footer } from '@/components/site/footer'
 import { Header } from '@/components/site/header'
 import { ThemeProvider } from '@/components/site/theme-provider'
-import { brand, contactDefaults } from '@/content/site'
+import { Tracker } from '@/components/tracking/tracker'
+import { brand } from '@/content/site'
 import { clientEnv } from '@/server/env'
+import { getSiteSettings } from '@/server/site-data'
 import './globals.css'
 
 const inter = Inter({
@@ -45,7 +47,9 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-export default function SiteLayout({ children }: { children: ReactNode }) {
+export default async function SiteLayout({ children }: { children: ReactNode }) {
+  const settings = await getSiteSettings()
+
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${sora.variable}`}>
       <body className="flex min-h-dvh flex-col">
@@ -56,14 +60,15 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
           </main>
           <Footer
             contact={{
-              phone: contactDefaults.phoneDisplay,
-              whatsappNumber: contactDefaults.whatsappNumber,
-              email: contactDefaults.email,
-              linkedin: contactDefaults.linkedin,
-              instagram: contactDefaults.instagram,
-              github: contactDefaults.github,
+              phone: settings.phone,
+              whatsappNumber: settings.whatsappNumber,
+              email: settings.email,
+              linkedin: settings.linkedin,
+              instagram: settings.instagram,
+              github: settings.github,
             }}
           />
+          <Tracker />
         </ThemeProvider>
       </body>
     </html>

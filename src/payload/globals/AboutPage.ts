@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { anyone, isLoggedIn } from '../access'
+import { revalidateAboutPage } from '../hooks/revalidate'
 
 export const AboutPage: GlobalConfig = {
   slug: 'about-page',
@@ -12,6 +13,7 @@ export const AboutPage: GlobalConfig = {
     read: anyone,
     update: isLoggedIn,
   },
+  hooks: { afterChange: [revalidateAboutPage] },
   fields: [
     {
       name: 'heading',

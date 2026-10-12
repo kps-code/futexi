@@ -72,6 +72,10 @@ export interface Config {
     'team-members': TeamMember;
     leads: Lead;
     'api-logs': ApiLog;
+    visitors: Visitor;
+    sessions: Session;
+    'page-views': PageView;
+    events: Event;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +88,10 @@ export interface Config {
     'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
     leads: LeadsSelect<false> | LeadsSelect<true>;
     'api-logs': ApiLogsSelect<false> | ApiLogsSelect<true>;
+    visitors: VisitorsSelect<false> | VisitorsSelect<true>;
+    sessions: SessionsSelect<false> | SessionsSelect<true>;
+    'page-views': PageViewsSelect<false> | PageViewsSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -318,6 +326,121 @@ export interface ApiLog {
   createdAt: string;
 }
 /**
+ * One row per browser. Anonymous until the visitor submits the contact form.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "visitors".
+ */
+export interface Visitor {
+  id: number;
+  visitorId: string;
+  firstSeen: string;
+  lastSeen: string;
+  visitsCount: number;
+  firstReferrer?: string | null;
+  firstLandingPath?: string | null;
+  firstUtm?: {
+    source?: string | null;
+    medium?: string | null;
+    campaign?: string | null;
+  };
+  device?: ('desktop' | 'mobile' | 'tablet') | null;
+  browser?: string | null;
+  os?: string | null;
+  country?: string | null;
+  city?: string | null;
+  /**
+   * Set when this visitor submits the contact form.
+   */
+  lead?: (number | null) | Lead;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * One row per visit. Retention 180 days.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions".
+ */
+export interface Session {
+  id: number;
+  sessionId: string;
+  visitorId: string;
+  startedAt: string;
+  endedAt: string;
+  durationMs: number;
+  pageCount: number;
+  landingPath: string;
+  exitPath?: string | null;
+  referrer?: string | null;
+  utm?: {
+    source?: string | null;
+    medium?: string | null;
+    campaign?: string | null;
+  };
+  device?: ('desktop' | 'mobile' | 'tablet') | null;
+  country?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Every page view with time on page and scroll depth.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-views".
+ */
+export interface PageView {
+  id: number;
+  visitorId: string;
+  sessionId: string;
+  path: string;
+  title?: string | null;
+  referrer?: string | null;
+  /**
+   * Filled when the visitor leaves the page.
+   */
+  durationMs?: number | null;
+  maxScrollPct?: number | null;
+  theme?: ('dark' | 'light') | null;
+  viewportWidth?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Tracked interactions. Names are fixed in code.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  visitorId: string;
+  sessionId: string;
+  name:
+    | 'cta_click'
+    | 'whatsapp_click'
+    | 'demo_open'
+    | 'demo_filter'
+    | 'ai_demo_chip'
+    | 'theme_toggle'
+    | 'form_start'
+    | 'form_submit'
+    | 'form_error'
+    | 'outbound_click';
+  path: string;
+  props?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -360,6 +483,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'api-logs';
         value: number | ApiLog;
+      } | null)
+    | ({
+        relationTo: 'visitors';
+        value: number | Visitor;
+      } | null)
+    | ({
+        relationTo: 'sessions';
+        value: number | Session;
+      } | null)
+    | ({
+        relationTo: 'page-views';
+        value: number | PageView;
+      } | null)
+    | ({
+        relationTo: 'events';
+        value: number | Event;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -548,6 +687,89 @@ export interface ApiLogsSelect<T extends boolean = true> {
   inputSummary?: T;
   errorCode?: T;
   errorMessage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "visitors_select".
+ */
+export interface VisitorsSelect<T extends boolean = true> {
+  visitorId?: T;
+  firstSeen?: T;
+  lastSeen?: T;
+  visitsCount?: T;
+  firstReferrer?: T;
+  firstLandingPath?: T;
+  firstUtm?:
+    | T
+    | {
+        source?: T;
+        medium?: T;
+        campaign?: T;
+      };
+  device?: T;
+  browser?: T;
+  os?: T;
+  country?: T;
+  city?: T;
+  lead?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions_select".
+ */
+export interface SessionsSelect<T extends boolean = true> {
+  sessionId?: T;
+  visitorId?: T;
+  startedAt?: T;
+  endedAt?: T;
+  durationMs?: T;
+  pageCount?: T;
+  landingPath?: T;
+  exitPath?: T;
+  referrer?: T;
+  utm?:
+    | T
+    | {
+        source?: T;
+        medium?: T;
+        campaign?: T;
+      };
+  device?: T;
+  country?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-views_select".
+ */
+export interface PageViewsSelect<T extends boolean = true> {
+  visitorId?: T;
+  sessionId?: T;
+  path?: T;
+  title?: T;
+  referrer?: T;
+  durationMs?: T;
+  maxScrollPct?: T;
+  theme?: T;
+  viewportWidth?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  visitorId?: T;
+  sessionId?: T;
+  name?: T;
+  path?: T;
+  props?: T;
   updatedAt?: T;
   createdAt?: T;
 }

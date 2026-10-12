@@ -1,6 +1,6 @@
 import 'server-only'
 import { headers as nextHeaders } from 'next/headers'
-import { after } from 'next/server'
+import { runAfter } from '@/server/after'
 import { getServerEnv } from '@/server/env'
 import { logger } from './logger'
 import { persistApiLog, type ApiLogKind } from './persist'
@@ -67,7 +67,7 @@ function finishLog(
   else if (result.status >= 400) logger.warn(line, 'request rejected')
   else logger.info(line, 'request')
 
-  after(() =>
+  runAfter(() =>
     persistApiLog({
       meta,
       kind,

@@ -24,7 +24,8 @@
     "db:down": "docker compose down",
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
-    "db:create": "node scripts/db-create.mjs"
+    "db:create": "node scripts/db-create.mjs",
+    "vercel-build": "npm run migrate && npm run build"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.90.2",
@@ -47,6 +48,7 @@
     "postcss": "^8.5.29",
     "react": "19.2.6",
     "react-dom": "19.2.6",
+    "resend": "^6.32.1",
     "server-only": "^0.0.1",
     "sharp": "0.35.4",
     "tailwind-merge": "^3.7.0",

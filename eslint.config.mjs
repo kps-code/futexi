@@ -30,6 +30,7 @@ const eslintConfig = [
       'media/',
       'src/payload-types.ts',
       'src/payload-generated-schema.ts',
+      'src/migrations/',
       'src/app/(payload)/admin/importMap.js',
       'playwright-report/',
       'test-results/',

@@ -1,27 +1,6 @@
 import type { CollectionConfig } from 'payload'
+import { budgetOptions, leadStatuses, needOptions } from '@/content/contact'
 import { isAdmin, isLoggedIn, nobody } from '../access'
-
-export const needOptions = [
-  'Website',
-  'Landing Page',
-  'Booking Website',
-  'AI Integration',
-  'Automation',
-  'Web Application',
-  'Mobile App',
-  'Custom Software',
-  'Other',
-] as const
-
-export const budgetOptions = [
-  'Under ₹10,000',
-  '₹10,000 to ₹25,000',
-  '₹25,000 to ₹50,000',
-  'Above ₹50,000',
-  'Not sure yet',
-] as const
-
-export const leadStatuses = ['new', 'contacted', 'quoted', 'won', 'lost'] as const
 
 export const Leads: CollectionConfig = {
   slug: 'leads',
@@ -74,6 +53,13 @@ export const Leads: CollectionConfig = {
     },
     { name: 'details', type: 'textarea' },
     {
+      name: 'journey',
+      type: 'ui',
+      admin: {
+        components: { Field: '/payload/admin/fields/LeadJourney#LeadJourney' },
+      },
+    },
+    {
       name: 'status',
       type: 'select',
       required: true,
@@ -96,7 +82,7 @@ export const Leads: CollectionConfig = {
     {
       name: 'source',
       type: 'group',
-      admin: { readOnly: true },
+      admin: { position: 'sidebar', readOnly: true },
       fields: [
         { name: 'utmSource', type: 'text' },
         { name: 'utmMedium', type: 'text' },

@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 import { anyone, isLoggedIn } from '../access'
 import { contactDefaults, brand } from '@/content/site'
+import { revalidateSiteSettings } from '../hooks/revalidate'
 
 const httpsUrl = (value: unknown) => {
   if (!value) return true
@@ -22,6 +23,7 @@ export const SiteSettings: GlobalConfig = {
     read: anyone,
     update: isLoggedIn,
   },
+  hooks: { afterChange: [revalidateSiteSettings] },
   fields: [
     {
       type: 'tabs',

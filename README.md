@@ -51,6 +51,8 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 | `npm run generate:types`             | Regenerate `src/payload-types.ts` after changing collections |
 | `npm run migrate:create` / `migrate` | Payload migrations for production                            |
 | `npm run db:up` / `db:down`          | Local Postgres via Docker                                    |
+| `npm run db:create`                  | Creates the database named in .env if missing                |
+| `npm run vercel-build`               | What Vercel runs: migrations, then build                     |
 
 ## Project layout
 
@@ -83,12 +85,16 @@ tests/
 
 Every route handler and server action is wrapped with `withRoute` / `withAction` from `src/server/logging/with-logging.ts`. Each call emits one JSON log line and one row in the `api-logs` collection (written after the response is sent). Admin users see them under System > API Logs. See architecture doc §3.
 
+## Analytics
+
+Every page view, time on page, scroll depth and tracked click is stored first-party (`visitors`, `sessions`, `page-views`, `events`). The proxy issues the `kf_vid` (13 months) and `kf_sid` (30 minutes idle) cookies; the tracker in `src/components/tracking/tracker.tsx` batches to `/api/track`. Admin > Analytics shows KPIs, funnel, top pages, referrers, devices and a live feed. Each lead shows the visitor journey that led to the form. Retention runs daily via `/api/cron/cleanup` (Vercel Cron, `CRON_SECRET`). See architecture doc §4.
+
 ## Environments
 
-| Env        | Database                       | Notes                     |
-| ---------- | ------------------------------ | ------------------------- |
-| local      | Docker Postgres or Neon branch | schema auto-pushed in dev |
-| preview    | Neon branch                    | Vercel preview per PR     |
-| production | Neon main                      | migrations, cron, Sentry  |
+| Env        | Database                       | Notes                                        |
+| ---------- | ------------------------------ | -------------------------------------------- |
+| local      | Docker Postgres or Neon branch | schema auto-pushed in dev                    |
+| preview    | Neon branch                    | Vercel preview per PR                        |
+| production | Neon main                      | `vercel-build` runs migrations, cron, Sentry |
 
 Required variables are listed in `.env.example` and validated in `src/server/env.ts`.

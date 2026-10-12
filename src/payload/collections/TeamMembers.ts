@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { anyone, isAdmin, isLoggedIn } from '../access'
+import { revalidateTeamMembers, revalidateTeamMembersOnDelete } from '../hooks/revalidate'
 
 const urlField = (name: string, label: string): CollectionConfig['fields'][number] => ({
   name,
@@ -32,6 +33,7 @@ export const TeamMembers: CollectionConfig = {
     delete: isAdmin,
   },
   defaultSort: 'order',
+  hooks: { afterChange: [revalidateTeamMembers], afterDelete: [revalidateTeamMembersOnDelete] },
   fields: [
     {
       type: 'row',

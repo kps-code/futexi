@@ -31,6 +31,9 @@ const serverSchema = z
     SENTRY_DSN: z.preprocess(emptyToUndefined, z.url().optional()),
     SENTRY_AUTH_TOKEN: optionalString(),
     CRON_SECRET: z.preprocess(emptyToUndefined, z.string().min(16).optional()),
+    RESEND_API_KEY: optionalString(),
+    LEAD_NOTIFY_EMAIL: z.preprocess(emptyToUndefined, z.email().optional()),
+    LEAD_FROM_EMAIL: optionalString(),
     LOG_LEVEL: z.preprocess(
       emptyToUndefined,
       z.enum(['trace', 'debug', 'info', 'warn', 'error']).default('info'),

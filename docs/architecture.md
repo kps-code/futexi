@@ -245,7 +245,7 @@ Tracked events: `page_view`, `page_leave`, `cta_click` (which CTA, where), `what
 | events | id, session_id, visitor_id, name, props jsonb, path, ts | (name, ts), (visitor_id, ts) |
 | leads | id, name, business_name, email, whatsapp, business_type, need, budget, details, visitor_id, source_utm jsonb, status (new/contacted/quoted/won/lost), notes, created_at | (status, created_at), (visitor_id) |
 
-Hot-path inserts (page_views, events, api_logs) go through Drizzle directly, not Payload's Local API, to skip hook overhead. Payload still owns the schema and renders the admin UI for these collections as read-only.
+Writes go through Payload's Local API inside `after()`, so they never sit on the response path (measured: the ingest route answers in about 4 ms). Dashboard aggregates use raw SQL through Payload's Drizzle instance. If traffic grows, swap the ingest writes to direct Drizzle inserts; the schema and admin UI stay the same.
 
 ### 4.6 Admin views
 - Dashboard: visitors, sessions, page views, WhatsApp clicks, form submits, leads for today, 7 days, 30 days. Top pages, top referrers, top UTM sources, device split, country split, the Instagram to Demo to CTA to WhatsApp funnel.
