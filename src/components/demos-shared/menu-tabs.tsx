@@ -42,38 +42,40 @@ export function MenuTabs({ categories }: { categories: readonly MenuCategory[] }
           </button>
         ))}
       </div>
-      <ul role="tabpanel" className="mt-6 grid gap-3 md:grid-cols-2">
-        {cat.items.map((m) => (
-          <li key={m.name} className="dm-card flex items-start justify-between gap-4 p-4">
-            <div className="min-w-0">
-              <p className="flex items-center gap-2 font-display font-semibold">
-                <span
-                  className={cn(
-                    'inline-block h-3 w-3 shrink-0 rounded-sm border-2',
-                    m.veg ? 'border-emerald-500' : 'border-red-500',
-                  )}
-                >
+      <div role="tabpanel" aria-label={cat.name}>
+        <ul className="mt-6 grid gap-3 md:grid-cols-2">
+          {cat.items.map((m) => (
+            <li key={m.name} className="dm-card flex items-start justify-between gap-4 p-4">
+              <div className="min-w-0">
+                <p className="flex items-center gap-2 font-display font-semibold">
                   <span
                     className={cn(
-                      'block h-full w-full scale-50 rounded-full',
-                      m.veg ? 'bg-emerald-500' : 'bg-red-500',
+                      'inline-block h-3 w-3 shrink-0 rounded-sm border-2',
+                      m.veg ? 'border-emerald-500' : 'border-red-500',
                     )}
-                  />
-                </span>
-                {m.name}
-                {m.spicy && <Flame className="text-dm-accent h-3.5 w-3.5" aria-label="Spicy" />}
-                {m.popular && (
-                  <span className="bg-dm-brand-soft text-dm-brand-ink rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase">
-                    Popular
+                  >
+                    <span
+                      className={cn(
+                        'block h-full w-full scale-50 rounded-full',
+                        m.veg ? 'bg-emerald-500' : 'bg-red-500',
+                      )}
+                    />
                   </span>
-                )}
-              </p>
-              <p className="text-dm-muted mt-1 text-sm">{m.line}</p>
-            </div>
-            <span className="shrink-0 font-semibold">{formatInr(m.price)}</span>
-          </li>
-        ))}
-      </ul>
+                  {m.name}
+                  {m.spicy && <Flame className="text-dm-accent h-3.5 w-3.5" aria-label="Spicy" />}
+                  {m.popular && (
+                    <span className="bg-dm-brand-soft text-dm-brand-ink rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase">
+                      Popular
+                    </span>
+                  )}
+                </p>
+                <p className="text-dm-muted mt-1 text-sm">{m.line}</p>
+              </div>
+              <span className="shrink-0 font-semibold">{formatInr(m.price)}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
       <p className="text-dm-muted mt-4 flex items-center gap-1.5 text-xs">
         <Leaf className="h-3.5 w-3.5 text-emerald-500" /> Green mark: vegetarian. Prices include taxes.
       </p>
