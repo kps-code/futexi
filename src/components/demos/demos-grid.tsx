@@ -33,6 +33,7 @@ export function DemosGrid() {
         ))}
       </div>
 
+      <h2 className="sr-only">All demos</h2>
       <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-live="polite">
         {visible.map((d) => (
           <li key={d.slug}>

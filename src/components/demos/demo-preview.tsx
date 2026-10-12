@@ -82,7 +82,7 @@ export function DemoPreview({
       <span
         className={cn(
           'absolute top-2 right-2 rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase',
-          demo.status === 'live' ? 'bg-emerald-500 text-white' : 'bg-background/90 text-muted',
+          demo.status === 'live' ? 'bg-emerald-700 text-white' : 'bg-background/90 text-muted',
         )}
       >
         {demo.status === 'live' ? 'Live' : 'Coming soon'}
