@@ -38,6 +38,7 @@ export default buildConfig({
     },
     components: {
       beforeNavLinks: ['/payload/admin/DashboardNavLink#DashboardNavLink'],
+      afterNavLinks: ['/payload/admin/LogoutNavLink#LogoutNavLink'],
       providers: ['/payload/admin/PasswordRevealProvider#PasswordRevealProvider'],
       views: {
         analytics: {

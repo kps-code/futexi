@@ -234,3 +234,11 @@
     background: var(--theme-elevation-100);
   }
 }
+
+/* Log out entry below the groups, set apart with a divider. */
+.kf-nav-link--logout {
+  margin-top: calc(var(--base) * 0.75);
+  padding-top: calc(var(--base) * 0.5);
+  border-top: 1px solid var(--theme-elevation-150);
+  color: var(--theme-elevation-600);
+}
