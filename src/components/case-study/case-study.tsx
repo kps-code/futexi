@@ -73,7 +73,12 @@ export function CaseStudy({ demo, whatsappNumber }: { demo: Demo; whatsappNumber
             </div>
           </div>
           <Reveal>
-            <DemoPreview demo={demo} className="mx-auto w-full max-w-xl scale-[1.02]" />
+            <DemoPreview
+              demo={demo}
+              className="mx-auto w-full max-w-xl scale-[1.02]"
+              sizes="(min-width: 1024px) 55vw, 100vw"
+              priority
+            />
           </Reveal>
         </div>
       </section>
