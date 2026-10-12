@@ -73,7 +73,8 @@ export function EveryScreen() {
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          <div className="flex h-[22rem] items-start justify-center sm:h-[26rem]">
+          <div className="relative flex h-[22rem] items-start justify-center sm:h-[26rem]">
+            <div aria-hidden className="glow-blob inset-x-[12%] -inset-y-8 -z-10" />
             <div
               className="relative h-full overflow-hidden rounded-2xl frame-glass transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)]"
               style={{ width: device.width }}

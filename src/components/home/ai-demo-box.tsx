@@ -52,14 +52,20 @@ export function AiDemoBox() {
   }
 
   return (
-    <div className="rounded-2xl p-5 frame-glass sm:p-6">
+    <div className="glow-ring glow-ring-on rounded-2xl p-5 frame-glass sm:p-6">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-accent-gradient text-white">
             <Bot className="h-4 w-4" />
           </span>
           <div>
-            <p className="font-display text-sm font-semibold">{aiSection.demoTitle}</p>
+            <p className="flex items-center gap-2 font-display text-sm font-semibold">
+              {aiSection.demoTitle}
+              <span aria-hidden className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping-soft rounded-full bg-emerald-400" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+            </p>
             <p className="text-[11px] text-muted">{aiSection.demoLabel}</p>
           </div>
         </div>

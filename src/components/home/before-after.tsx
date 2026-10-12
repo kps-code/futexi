@@ -26,14 +26,16 @@ export function BeforeAfter() {
         </Reveal>
 
         <Reveal className="flex justify-center">
-          <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-accent-gradient text-white shadow-lg">
-            <ArrowRight className="hidden h-5 w-5 lg:block" />
-            <ArrowDown className="h-5 w-5 lg:hidden" />
+          <span className="relative inline-flex h-12 w-12 items-center justify-center rounded-full bg-accent-gradient text-white shadow-lg">
+            <span aria-hidden className="absolute inset-0 animate-ping-soft rounded-full bg-accent/60" />
+            <ArrowRight className="relative hidden h-5 w-5 lg:block" />
+            <ArrowDown className="relative h-5 w-5 lg:hidden" />
           </span>
         </Reveal>
 
-        <Reveal index={2}>
-          <div className="rounded-2xl p-6 frame-glass">
+        <Reveal index={2} className="relative">
+          <div aria-hidden className="glow-blob -inset-8 -z-10" />
+          <div className="glow-ring glow-ring-on rounded-2xl p-6 frame-glass">
             <p className="text-xs font-semibold tracking-[0.2em] text-accent uppercase">After</p>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {beforeAfter.after.map((a, i) => (

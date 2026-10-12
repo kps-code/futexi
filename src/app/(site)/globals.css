@@ -17,6 +17,9 @@
   --accent-to: #8b5cf6;
   --accent: #6366f1;
   --ring: rgba(99, 102, 241, 0.45);
+  --glow: color-mix(in oklab, var(--accent) 16%, transparent);
+  --shadow-card: 0 24px 48px -28px rgba(11, 15, 26, 0.18);
+  --grid-line: rgba(11, 15, 26, 0.06);
 }
 
 .dark {
@@ -29,6 +32,9 @@
   --border-strong: rgba(255, 255, 255, 0.16);
   --accent: #818cf8;
   --ring: rgba(129, 140, 248, 0.5);
+  --glow: color-mix(in oklab, var(--accent) 28%, transparent);
+  --shadow-card: 0 24px 60px -32px rgba(99, 102, 241, 0.55);
+  --grid-line: rgba(255, 255, 255, 0.05);
 }
 
 @theme inline {
@@ -131,4 +137,177 @@
 @utility cv-auto {
   content-visibility: auto;
   contain-intrinsic-size: auto 800px;
+}
+
+/* ---------------------------------------------------------------------------
+   Depth and motion (docs/visual-polish.md). Transform and opacity only; the
+   reduced-motion rule in base.css switches every animation off.
+   --------------------------------------------------------------------------- */
+
+/* Faint 48px grid, faded out towards the edges. Sits under hero and CTA. */
+@utility bg-grid {
+  /* Desktop only: on phones the 48px cells are barely visible and the mask costs paint time. */
+  @media (width >= 64rem) {
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
+  }
+}
+
+/* Soft accent glow. Position and size it with inset/width utilities. */
+@utility glow-blob {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, var(--glow), transparent);
+  pointer-events: none;
+}
+
+/* 1px gradient border drawn with a masked pseudo-element. Fades in on hover;
+   add `glow-ring-on` to keep it visible. */
+@utility glow-ring {
+  position: relative;
+  /* Pointer devices only: phones cannot hover, so they never create the masked pseudo-element. */
+  @media (hover: hover) {
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, var(--accent-from), var(--accent-to));
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    &:hover::after,
+    &:focus-within::after {
+      opacity: 1;
+    }
+  }
+}
+/* Always-visible ring (AI box, After card, Investment), on every device. */
+@utility glow-ring-on {
+  &.glow-ring::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--accent-from), var(--accent-to));
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 1;
+    pointer-events: none;
+  }
+}
+
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+/* Gradient text that drifts slowly. Desktop hero headline only. */
+@utility text-gradient-live {
+  background-image: linear-gradient(90deg, var(--accent-from), var(--accent-to), var(--accent-from));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: kf-drift 10s linear infinite;
+}
+
+/* Light sweep across a primary button on hover. */
+@utility btn-shine {
+  position: relative;
+  overflow: hidden;
+  @media (hover: hover) {
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+      transform: translateX(-120%);
+      transition: transform 0.7s ease;
+      pointer-events: none;
+    }
+    &:hover::before {
+      transform: translateX(120%);
+    }
+  }
+}
+
+@keyframes kf-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes kf-rise-soft {
+  from {
+    transform: translateY(12px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes kf-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes kf-drift {
+  to {
+    background-position: 200% 0;
+  }
+}
+@keyframes kf-ping-soft {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  80%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* Entrance: rise and fade. Set --rise-delay to stagger. */
+@utility animate-rise {
+  animation: kf-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+/* Entrance without the fade, for the LCP heading. */
+@utility animate-rise-soft {
+  animation: kf-rise-soft 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@utility animate-float {
+  animation: kf-float 7s ease-in-out infinite;
+  animation-delay: var(--float-delay, 0ms);
+}
+@utility animate-ping-soft {
+  animation: kf-ping-soft 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
 }

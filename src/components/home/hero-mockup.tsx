@@ -37,7 +37,7 @@ export function HeroMockup() {
 
   return (
     <div
-      className="relative mx-auto w-full max-w-xl"
+      className="relative mx-auto w-full max-w-xl lg:animate-float"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       aria-label="How a KAPOSA FUTEXI website turns a visitor into a WhatsApp enquiry"
@@ -48,7 +48,8 @@ export function HeroMockup() {
         className="absolute -inset-6 -z-10 rounded-[2rem] bg-accent-gradient opacity-20 blur-3xl"
       />
 
-      <div className="overflow-hidden rounded-2xl frame-glass">
+      {/* Leans towards the copy on desktop; turns to face the visitor on hover. */}
+      <div className="overflow-hidden rounded-2xl frame-glass transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] lg:[transform:perspective(1400px)_rotateY(-7deg)_rotateX(2deg)] lg:hover:[transform:perspective(1400px)_rotateY(0deg)_rotateX(0deg)]">
         {/* Browser bar */}
         <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
           <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />

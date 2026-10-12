@@ -2,12 +2,13 @@ import type { Metadata } from 'next'
 import { Check } from 'lucide-react'
 import { Icon } from '@/components/home/icons'
 import { FinalCta } from '@/components/home/final-cta'
-import { IconBadge } from '@/components/home/section'
+import { cardClasses, IconBadge } from '@/components/home/section'
 import { Investment } from '@/components/home/investment'
 import { PageIntro } from '@/components/site/page-intro'
 import { ButtonLink } from '@/components/ui/button'
 import { Reveal } from '@/components/reveal'
 import { services, servicesPage } from '@/content/services'
+import { cn } from '@/lib/utils'
 import { getSiteSettings } from '@/server/site-data'
 
 export const metadata: Metadata = {
@@ -28,10 +29,7 @@ export default async function ServicesPage() {
         <ul className="grid gap-6 lg:grid-cols-2">
           {services.map((s, i) => (
             <Reveal key={s.id} as="li" index={i}>
-              <article
-                id={s.id}
-                className="flex h-full scroll-mt-28 flex-col rounded-2xl border border-border bg-surface p-7"
-              >
+              <article id={s.id} className={cn(cardClasses, 'flex h-full scroll-mt-28 flex-col p-7')}>
                 <div className="flex items-center gap-4">
                   <IconBadge>
                     <Icon name={s.icon} className="h-5 w-5" />

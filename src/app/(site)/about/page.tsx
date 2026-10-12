@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { cardClasses } from '@/components/home/section'
 import { Avatar } from '@/components/site/avatar'
 import { PageIntro } from '@/components/site/page-intro'
 import { GithubIcon, LinkedinIcon } from '@/components/site/social-icons'
@@ -33,9 +34,17 @@ export default async function AboutPage() {
         ) : (
           <ul className="grid gap-6 md:grid-cols-3">
             {team.map((m) => (
-              <li key={m.id} className="rounded-2xl border border-border bg-surface p-6">
+              <li key={m.id} className={cardClasses}>
                 <div className="flex items-center gap-4">
-                  <Avatar name={m.name} photoUrl={m.photoUrl} photoAlt={m.photoAlt} size={72} />
+                  <span className="shrink-0 rounded-full bg-accent-gradient p-0.5">
+                    <Avatar
+                      name={m.name}
+                      photoUrl={m.photoUrl}
+                      photoAlt={m.photoAlt}
+                      size={72}
+                      className="block"
+                    />
+                  </span>
                   <div>
                     <h2 className="font-display text-lg font-semibold">{m.name}</h2>
                     <p className="text-sm text-muted">{m.role}</p>
@@ -109,7 +118,10 @@ export default async function AboutPage() {
           <h2 className="font-display text-2xl font-bold sm:text-3xl">Who We Build For</h2>
           <ul className="mt-8 flex flex-wrap gap-2">
             {audiences.map((a) => (
-              <li key={a} className="rounded-full border border-border bg-background px-4 py-2 text-sm">
+              <li
+                key={a}
+                className="rounded-full border border-border bg-background px-4 py-2 text-sm transition-[border-color,color] hover:border-accent/60 hover:text-accent"
+              >
                 {a}
               </li>
             ))}

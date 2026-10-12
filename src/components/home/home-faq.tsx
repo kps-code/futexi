@@ -12,9 +12,12 @@ export function HomeFaq({ startingPriceText }: { startingPriceText: string }) {
           <div className="divide-y divide-border rounded-2xl border border-border bg-surface px-6">
             {faq.slice(0, homeFaqCount).map((item) => (
               <details key={item.q} className="group py-4">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium transition-colors group-open:text-accent hover:text-accent">
                   {item.q}
-                  <span aria-hidden className="text-muted transition-transform group-open:rotate-45">
+                  <span
+                    aria-hidden
+                    className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border text-muted transition-[transform,border-color,color] duration-300 group-open:rotate-45 group-open:border-accent group-open:text-accent"
+                  >
                     +
                   </span>
                 </summary>

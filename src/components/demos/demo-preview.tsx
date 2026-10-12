@@ -23,7 +23,8 @@ type Props = {
 
 /**
  * Browser-framed preview of a demo. Live demos show their real home-page
- * screenshot; demos still in progress show a lightweight CSS mock.
+ * screenshot, which zooms slightly when the surrounding `.group` is hovered;
+ * demos still in progress show a lightweight CSS mock.
  */
 export function DemoPreview({
   demo,
@@ -33,6 +34,7 @@ export function DemoPreview({
 }: Props) {
   const shot = demo.screens?.desktop[0]
   const a = accents[demo.accent]
+  const live = demo.status === 'live'
 
   return (
     <div
@@ -47,15 +49,27 @@ export function DemoPreview({
       </div>
 
       {shot ? (
-        <Image
-          src={shot.src}
-          alt={shot.alt}
-          width={screenSizes.desktop.width}
-          height={screenSizes.desktop.height}
-          sizes={sizes}
-          priority={priority}
-          className="block h-auto w-full"
-        />
+        <div className="relative overflow-hidden">
+          <Image
+            src={shot.src}
+            alt={shot.alt}
+            width={screenSizes.desktop.width}
+            height={screenSizes.desktop.height}
+            sizes={sizes}
+            priority={priority}
+            className="block h-auto w-full transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.04]"
+          />
+          {live && (
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-black/60 to-transparent pt-12 pb-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            >
+              <span className="translate-y-2 rounded-full bg-white px-3 py-1 text-xs font-semibold text-gray-900 shadow-lg transition-transform duration-300 group-hover:translate-y-0">
+                Open live demo
+              </span>
+            </div>
+          )}
+        </div>
       ) : (
         <div className="p-3">
           <div className="flex items-center justify-between">
@@ -81,11 +95,17 @@ export function DemoPreview({
 
       <span
         className={cn(
-          'absolute top-2 right-2 rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase',
-          demo.status === 'live' ? 'bg-emerald-700 text-white' : 'bg-background/90 text-muted',
+          'absolute top-2 right-2 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase',
+          live ? 'bg-emerald-700 text-white' : 'bg-background/90 text-muted',
         )}
       >
-        {demo.status === 'live' ? 'Live' : 'Coming soon'}
+        {live && (
+          <span aria-hidden className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping-soft rounded-full bg-white/80" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
+          </span>
+        )}
+        {live ? 'Live' : 'Coming soon'}
       </span>
     </div>
   )

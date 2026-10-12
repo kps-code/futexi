@@ -53,7 +53,9 @@ export function Header() {
               aria-current={isActive(item.href) ? 'page' : undefined}
               className={cn(
                 'rounded-full px-4 py-2 text-sm font-medium transition-colors',
-                isActive(item.href) ? 'text-foreground' : 'text-muted hover:text-foreground',
+                isActive(item.href)
+                  ? 'bg-surface text-foreground'
+                  : 'text-muted hover:bg-surface/60 hover:text-foreground',
               )}
             >
               {item.label}

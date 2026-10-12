@@ -22,10 +22,10 @@ export function DemosGrid({ demos }: { demos: readonly Demo[] }) {
             data-track="demo_filter"
             data-track-props={`{"category":"${c}"}`}
             className={cn(
-              'rounded-full border px-4 py-2 text-sm font-medium transition-colors',
+              'rounded-full border px-4 py-2 text-sm font-medium transition-[color,background-color,border-color,transform] duration-200',
               filter === c
                 ? 'border-transparent bg-accent-gradient text-white'
-                : 'border-border bg-surface text-foreground/85 hover:border-border-strong',
+                : 'border-border bg-surface text-foreground/85 hover:-translate-y-0.5 hover:border-accent/60 hover:text-foreground',
             )}
           >
             {c}

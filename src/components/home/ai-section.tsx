@@ -33,7 +33,8 @@ export function AiSection() {
             </ButtonLink>
           </Reveal>
         </ul>
-        <Reveal index={2}>
+        <Reveal index={2} className="relative">
+          <div aria-hidden className="glow-blob -inset-10 -z-10" />
           <AiDemoBox />
         </Reveal>
       </div>
