@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { demos } from '@/content/demos'
-import { anyone, isLoggedIn } from '../access'
+import { anyone, edit, hiddenUnless } from '../access'
 import { revalidateDemoSettings } from '../hooks/revalidate'
 
 const options = demos.map((d) => ({ label: `${d.title} (${d.slug})`, value: d.slug }))
@@ -11,11 +11,12 @@ export const DemoSettings: GlobalConfig = {
   label: 'Demos',
   admin: {
     group: 'Settings',
+    hidden: hiddenUnless('demoSettings'),
     description: 'Control which demos appear on the website. Changes go live within seconds.',
   },
   access: {
     read: anyone,
-    update: isLoggedIn,
+    update: edit('demoSettings'),
   },
   hooks: { afterChange: [revalidateDemoSettings] },
   fields: [

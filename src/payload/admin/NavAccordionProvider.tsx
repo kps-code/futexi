@@ -8,7 +8,8 @@ import { useEffect, type ReactNode } from 'react'
  * only remembers manual toggles; with six groups that is a wall of links.
  *
  * - On load and on every route change, only the group holding the current
- *   page's link stays open.
+ *   page's link stays open; on the dashboard and other pages outside the
+ *   groups every group is collapsed.
  * - Opening a group, or clicking a link inside it, closes the other groups.
  *
  * Toggles are driven by clicking Payload's own group buttons, so its
@@ -81,13 +82,14 @@ export function NavAccordionProvider({ children }: { children?: ReactNode }) {
     let tries = 0
     const id = window.setInterval(() => {
       tries += 1
-      const active = activeGroup()
-      // No matching link (dashboard, account): leave the user's layout alone.
-      if (!active) {
+      const all = groups()
+      if (all.length === 0) {
         if (tries >= 200) window.clearInterval(id)
         return
       }
-      const settled = groups().every((g) => isOpen(g) === (g === active))
+      // Pages outside the groups (dashboard, analytics, account): everything collapsed.
+      const active = activeGroup()
+      const settled = all.every((g) => isOpen(g) === (g === active))
       if (settled || tries >= 200) {
         window.clearInterval(id)
         return

@@ -1,6 +1,6 @@
 import type { Field, GlobalConfig } from 'payload'
 import { privacyDefaults, termsDefaults, type LegalPageContent } from '@/content/legal'
-import { anyone, isLoggedIn } from '../access'
+import { anyone, edit, hiddenUnless } from '../access'
 import { revalidateLegalPages } from '../hooks/revalidate'
 
 const PLACEHOLDERS =
@@ -49,11 +49,12 @@ export const LegalPages: GlobalConfig = {
   label: 'Legal Pages',
   admin: {
     group: 'Content',
+    hidden: hiddenUnless('legalPages'),
     description: 'Privacy Policy and Terms. Each page is a title, an intro line and a list of sections.',
   },
   access: {
     read: anyone,
-    update: isLoggedIn,
+    update: edit('legalPages'),
   },
   hooks: { afterChange: [revalidateLegalPages] },
   fields: [

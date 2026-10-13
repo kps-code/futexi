@@ -20,6 +20,7 @@ Date: 2026-10-07
 1. Create an account at resend.com. Create an API key named `futexi-production`.
 2. Add and verify the domain `kaposafutexi.com` (DNS records are shown there; they go into the domain registrar in step 5).
 3. Until the domain is verified, leads still save in the admin; only the email notification is skipped.
+4. The same key powers admin emails ("Forgot password" on /admin/login, sent from `LEAD_FROM_EMAIL`). With Resend's test sender (`onboarding@resend.dev`) those emails reach only the Resend account owner's address; after the domain is verified they reach every team member.
 
 ## 3. Hosting: Vercel (free Hobby plan is enough to start)
 
@@ -40,7 +41,8 @@ Date: 2026-10-07
 | `LOG_LEVEL` | `info` |
 
 4. Storage: add **Vercel Blob** to the project (Storage tab). It injects `BLOB_READ_WRITE_TOKEN` automatically. Team photos upload there.
-5. Deploy. The first deploy runs `payload migrate` against Neon, then builds. Open `/admin` on the Vercel URL and create the first admin user.
+5. Deploy. The first deploy runs `payload migrate` against Neon, then builds. Open `/admin` on the Vercel URL and create the first admin user (it gets the built-in Admin role automatically).
+5a. Team access: Admin → Roles has Admin and Editor; create more roles if needed (per menu: no access / view / edit). Admin → Users → Create New → choose the role. That person sees only what the role allows.
 6. Seed content into production once, from your PC with the Neon URL: `DATABASE_URL=<neon pooled url> npm run seed`. This creates the three team members and the eight FAQ entries, and fills Site Settings, About, Home Page texts and the AI Assistant Demo if they are empty.
 7. In the admin, open Settings → Site Settings → SEO and upload a 1200 x 630 share image if you want your own; otherwise the built-in one is used in WhatsApp and Instagram link previews. For testimonials: Content → Testimonials → Create New, enter the client's name and business, Save, copy the Feedback link and send it on WhatsApp. The client fills in the rating and quote; tick Visible to publish it on the home page.
 7. Turn on **Speed Insights** and **Web Analytics** in the Vercel project (free). Speed Insights gives real-visitor LCP, the number that matters.

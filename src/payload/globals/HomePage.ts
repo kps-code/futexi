@@ -2,7 +2,7 @@ import type { GlobalConfig } from 'payload'
 import { finalCta, howWeWork, technology, whyUs } from '@/content/home'
 import { iconNames } from '@/content/icon-names'
 import { hero } from '@/content/site'
-import { anyone, isLoggedIn } from '../access'
+import { anyone, edit, hiddenUnless } from '../access'
 import { revalidateHomePage } from '../hooks/revalidate'
 
 /** Marketing lines on the home page that change with campaigns. Links stay in code. */
@@ -11,12 +11,13 @@ export const HomePage: GlobalConfig = {
   label: 'Home Page',
   admin: {
     group: 'Content',
+    hidden: hiddenUnless('homePage'),
     description:
       'Home page texts: hero, closing call to action, technology list, "Why Build With Us?" cards and "How We Work" steps. Changes go live within seconds.',
   },
   access: {
     read: anyone,
-    update: isLoggedIn,
+    update: edit('homePage'),
   },
   hooks: { afterChange: [revalidateHomePage] },
   fields: [

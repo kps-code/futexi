@@ -1,5 +1,5 @@
 import type { GlobalConfig } from 'payload'
-import { anyone, isLoggedIn } from '../access'
+import { anyone, edit, hiddenUnless } from '../access'
 import { contactDefaults, brand, whatsappDefaultMessage } from '@/content/site'
 import { revalidateSiteSettings } from '../hooks/revalidate'
 
@@ -17,11 +17,12 @@ export const SiteSettings: GlobalConfig = {
   label: 'Site Settings',
   admin: {
     group: 'Settings',
+    hidden: hiddenUnless('siteSettings'),
     description: 'Contact details and short texts shown across the whole website.',
   },
   access: {
     read: anyone,
-    update: isLoggedIn,
+    update: edit('siteSettings'),
   },
   hooks: { afterChange: [revalidateSiteSettings] },
   fields: [

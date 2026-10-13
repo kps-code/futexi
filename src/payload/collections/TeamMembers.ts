@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { anyone, isAdmin, isLoggedIn } from '../access'
+import { anyone, edit, hiddenUnless } from '../access'
 import { revalidateTeamMembers, revalidateTeamMembersOnDelete } from '../hooks/revalidate'
 
 const urlField = (name: string, label: string): CollectionConfig['fields'][number] => ({
@@ -24,14 +24,15 @@ export const TeamMembers: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'role', 'order', 'visible'],
     group: 'Settings',
+    hidden: hiddenUnless('teamMembers'),
     description:
       'The builders shown on the About page and the home page. Untick Visible to hide someone without deleting; Delete is in the record menu.',
   },
   access: {
     read: anyone,
-    create: isLoggedIn,
-    update: isLoggedIn,
-    delete: isAdmin,
+    create: edit('teamMembers'),
+    update: edit('teamMembers'),
+    delete: edit('teamMembers'),
   },
   defaultSort: 'order',
   hooks: { afterChange: [revalidateTeamMembers], afterDelete: [revalidateTeamMembersOnDelete] },

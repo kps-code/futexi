@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { contactTypes } from '@/content/contact'
 import { iconNames } from '@/content/icon-names'
-import { anyone, isAdmin, isLoggedIn } from '../access'
+import { anyone, edit, hiddenUnless } from '../access'
 import { revalidateServices, revalidateServicesOnDelete } from '../hooks/revalidate'
 
 function slugify(s: string) {
@@ -20,14 +20,15 @@ export const Services: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'order', 'visible'],
     group: 'Content',
+    hidden: hiddenUnless('services'),
     description:
       'What you offer. Each service is a card on the Services page, a card in the home "What We Build" section and a link in the footer. Untick Visible to hide one without deleting it. Changes go live within seconds.',
   },
   access: {
     read: anyone,
-    create: isLoggedIn,
-    update: isLoggedIn,
-    delete: isAdmin,
+    create: edit('services'),
+    update: edit('services'),
+    delete: edit('services'),
   },
   defaultSort: 'order',
   hooks: {

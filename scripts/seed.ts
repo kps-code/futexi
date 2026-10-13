@@ -12,6 +12,7 @@ import { faq, homeFaqCount } from '../src/content/faq'
 import { finalCta, technology, whatWeBuild } from '../src/content/home'
 import { services } from '../src/content/services'
 import { contactDefaults, brand, hero, whatsappDefaultMessage } from '../src/content/site'
+import { ensureDefaultRoles } from '../src/payload/roles-default'
 
 const team = [
   {
@@ -56,6 +57,25 @@ const team = [
 ]
 
 export async function seed(payload: Payload) {
+  // Roles first: Admin and Editor always exist, and any user without a role becomes Admin.
+  const { adminId } = await ensureDefaultRoles(payload)
+  const roleless = await payload.find({
+    collection: 'users',
+    where: { assignedRole: { exists: false } },
+    limit: 100,
+    depth: 0,
+    overrideAccess: true,
+  })
+  for (const u of roleless.docs) {
+    await payload.update({
+      collection: 'users',
+      id: u.id,
+      data: { assignedRole: adminId },
+      overrideAccess: true,
+    })
+  }
+  payload.logger.info(`roles: Admin and Editor present; ${roleless.docs.length} user(s) assigned Admin`)
+
   let created = 0
   for (const member of team) {
     const existing = await payload.find({

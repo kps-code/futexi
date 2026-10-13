@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, nobody } from '../access'
+import { hiddenUnless, isAdmin, nobody, view } from '../access'
 
 export const deviceOptions = ['desktop', 'mobile', 'tablet'] as const
 
@@ -22,13 +22,14 @@ export const Visitors: CollectionConfig = {
     useAsTitle: 'visitorId',
     defaultColumns: ['visitorId', 'lastSeen', 'visitsCount', 'country', 'device', 'lead'],
     group: 'Analytics',
+    hidden: hiddenUnless('analytics'),
     description: 'One row per browser. Anonymous until the visitor submits the contact form.',
     listSearchableFields: ['visitorId', 'firstReferrer', 'city'],
     pagination: { defaultLimit: 50 },
   },
   access: {
     create: nobody,
-    read: isAdmin,
+    read: view('analytics'),
     update: nobody,
     delete: isAdmin,
   },

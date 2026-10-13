@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, nobody } from '../access'
+import { hiddenUnless, isAdmin, nobody, view } from '../access'
 
 /** One row per page view. `createdAt` is the view time. Retention 180 days. */
 export const PageViews: CollectionConfig = {
@@ -9,13 +9,14 @@ export const PageViews: CollectionConfig = {
     useAsTitle: 'path',
     defaultColumns: ['createdAt', 'path', 'visitorId', 'durationMs', 'maxScrollPct', 'referrer'],
     group: 'Analytics',
+    hidden: hiddenUnless('analytics'),
     description: 'Every page view with time on page and scroll depth.',
     listSearchableFields: ['path', 'visitorId', 'sessionId', 'referrer'],
     pagination: { defaultLimit: 50 },
   },
   access: {
     create: nobody,
-    read: isAdmin,
+    read: view('analytics'),
     update: nobody,
     delete: isAdmin,
   },

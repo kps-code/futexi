@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, isLoggedIn, nobody } from '../access'
+import { edit, hiddenUnless, nobody, view } from '../access'
 
 export const demoLeadStatuses = ['new', 'contacted', 'won', 'lost'] as const
 
@@ -14,14 +14,15 @@ export const DemoLeads: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['business', 'name', 'interest', 'status', 'createdAt'],
     group: 'Demos',
+    hidden: hiddenUnless('demoLeads'),
     description: 'Leads from the demo sites, with the conversation or message that led there.',
     listSearchableFields: ['name', 'phone', 'reference', 'interest'],
   },
   access: {
     create: nobody,
-    read: isLoggedIn,
-    update: isLoggedIn,
-    delete: isAdmin,
+    read: view('demoLeads'),
+    update: edit('demoLeads'),
+    delete: edit('demoLeads'),
   },
   defaultSort: '-createdAt',
   fields: [

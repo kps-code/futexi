@@ -23,6 +23,30 @@ test.describe('Frontend', () => {
     expect((business?.address as Record<string, string>).addressLocality).toBe('Chennai')
   })
 
+  test('phone: the menu button opens the navigation', async ({ browser }) => {
+    const ctx = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      isMobile: true,
+      hasTouch: true,
+    })
+    const page = await ctx.newPage()
+    await page.goto('/')
+    await page.locator('html.reveal-ready').waitFor({ timeout: 15_000 })
+    const nav = page.getByRole('navigation', { name: 'Mobile' })
+    await expect(nav).toBeHidden()
+    await page.getByRole('button', { name: 'Open menu' }).click()
+    await expect(nav).toBeVisible()
+    const box = await nav.boundingBox()
+    expect(box?.height ?? 0).toBeGreaterThan(200)
+    for (const label of ['Home', 'Services', 'Demos', 'About', 'Contact']) {
+      await expect(nav.getByRole('link', { name: label })).toBeVisible()
+    }
+    await nav.getByRole('link', { name: 'Services' }).click()
+    await expect(page).toHaveURL(/\/services$/)
+    await expect(nav).toBeHidden()
+    await ctx.close()
+  })
+
   test('theme toggle switches the html class', async ({ page }) => {
     await page.goto('/')
     const html = page.locator('html')

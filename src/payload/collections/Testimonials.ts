@@ -1,6 +1,6 @@
 import { randomBytes } from 'node:crypto'
 import type { CollectionConfig, FieldAccess } from 'payload'
-import { anyone, isAdmin, isLoggedIn } from '../access'
+import { anyone, edit, hiddenUnless } from '../access'
 import { revalidateTestimonials, revalidateTestimonialsOnDelete } from '../hooks/revalidate'
 
 /** Only logged-in users may read the private link parts through the API. */
@@ -25,14 +25,15 @@ export const Testimonials: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'business', 'rating', 'submittedAt', 'visible', 'order'],
     group: 'Content',
+    hidden: hiddenUnless('testimonials'),
     description:
       'Client feedback shown on the home page under "What Clients Say". To collect one: Create New, enter the client name and business, Save, then copy the Feedback link and send it on WhatsApp. When the client submits, the quote appears here; tick Visible to publish it.',
   },
   access: {
     read: anyone,
-    create: isLoggedIn,
-    update: isLoggedIn,
-    delete: isAdmin,
+    create: edit('testimonials'),
+    update: edit('testimonials'),
+    delete: edit('testimonials'),
   },
   defaultSort: 'order',
   hooks: {

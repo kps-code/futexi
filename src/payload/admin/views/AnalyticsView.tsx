@@ -3,14 +3,16 @@ import { Gutter } from '@payloadcms/ui'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import type { AdminViewServerProps } from 'payload'
+import { canView, permissionsOf } from '@/payload/permissions'
 import { getDashboardStats, type Kpis, type NamedCount } from '@/server/analytics/stats'
 
-/** Admin > Analytics. Server component, data via raw SQL aggregates. */
+/** Admin > Analytics. Server component, data via raw SQL aggregates. Roles without analytics access are sent to the admin home. */
 export async function AnalyticsView({ initPageResult, params, searchParams }: AdminViewServerProps) {
   const { req, permissions, visibleEntities, locale } = initPageResult
   const user = req.user
   if (!user)
     redirect(`${req.payload.config.routes.admin}/login?redirect=${encodeURIComponent('/admin/analytics')}`)
+  if (!canView(permissionsOf(user), 'analytics')) redirect(req.payload.config.routes.admin)
 
   const stats = await getDashboardStats(req.payload)
   const fmtTime = (iso: string) =>

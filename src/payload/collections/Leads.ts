@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { budgetOptions, leadStatuses, needOptions } from '@/content/contact'
-import { isAdmin, isLoggedIn, nobody } from '../access'
+import { edit, hiddenUnless, nobody, view } from '../access'
 
 export const Leads: CollectionConfig = {
   slug: 'leads',
@@ -8,15 +8,16 @@ export const Leads: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'need', 'status', 'createdAt'],
     group: 'Sales',
+    hidden: hiddenUnless('leads'),
     description: 'Every contact form submission. Created by the website, never by hand.',
     listSearchableFields: ['name', 'businessName', 'email', 'whatsapp'],
   },
   access: {
     // Created only through the server action (Local API, overrideAccess).
     create: nobody,
-    read: isLoggedIn,
-    update: isLoggedIn,
-    delete: isAdmin,
+    read: view('leads'),
+    update: edit('leads'),
+    delete: edit('leads'),
   },
   defaultSort: '-createdAt',
   fields: [

@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, nobody } from '../access'
+import { hiddenUnless, isAdmin, nobody, view } from '../access'
 
 export const apiLogKinds = ['route', 'action', 'payload'] as const
 
@@ -14,13 +14,14 @@ export const ApiLogs: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['createdAt', 'name', 'status', 'durationMs', 'path', 'country'],
     group: 'System',
+    hidden: hiddenUnless('apiLogs'),
     description: 'Every API call. Read-only. Rows older than 90 days are removed daily.',
     listSearchableFields: ['requestId', 'name', 'path', 'visitorId'],
     pagination: { defaultLimit: 50 },
   },
   access: {
     create: nobody, // written via Local API with overrideAccess
-    read: isAdmin,
+    read: view('apiLogs'),
     update: nobody,
     delete: isAdmin,
   },

@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, nobody } from '../access'
+import { hiddenUnless, isAdmin, nobody, view } from '../access'
 import { eventNames } from '@/server/analytics/schema'
 
 /** Clicks and actions: CTA, WhatsApp, demo open, form submit. Retention 180 days. */
@@ -9,13 +9,14 @@ export const Events: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['createdAt', 'name', 'path', 'visitorId', 'props'],
     group: 'Analytics',
+    hidden: hiddenUnless('analytics'),
     description: 'Tracked interactions. Names are fixed in code.',
     listSearchableFields: ['name', 'path', 'visitorId'],
     pagination: { defaultLimit: 50 },
   },
   access: {
     create: nobody,
-    read: isAdmin,
+    read: view('analytics'),
     update: nobody,
     delete: isAdmin,
   },

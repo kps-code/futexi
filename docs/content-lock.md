@@ -427,7 +427,7 @@ Every answer ends with the button **Build This For My Business**.
 
 ## 11. Admin panel scope (v1)
 
-Login at /admin. One account per team member.
+Login at /admin. One account per team member. Access is role-based (added 2026-10-13): Admin > Roles holds named permission sets (per menu item: no access / view / edit; "Full access" for owners); every user has one role; menus the role cannot view are hidden and their data is refused by the API. Built-in roles: Admin (everything) and Editor (content, team, leads, demos; analytics read-only). The first user created is Admin automatically.
 
 | Collection | Fields | Used on |
 |---|---|---|

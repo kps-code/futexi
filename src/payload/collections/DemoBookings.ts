@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { allBookableServices, bookableBusinesses } from '@/content/demo-businesses'
-import { isAdmin, isLoggedIn, nobody } from '../access'
+import { edit, hiddenUnless, nobody, view } from '../access'
 
 export const demoBookingStatuses = ['requested', 'confirmed', 'cancelled'] as const
 
@@ -15,14 +15,15 @@ export const DemoBookings: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['business', 'date', 'time', 'service', 'name', 'status', 'createdAt'],
     group: 'Demos',
+    hidden: hiddenUnless('demoBookings'),
     description: 'Appointments and table reservations made on the demo sites.',
     listSearchableFields: ['name', 'phone', 'service', 'reference'],
   },
   access: {
     create: nobody, // server action via Local API
-    read: isLoggedIn,
-    update: isLoggedIn,
-    delete: isAdmin,
+    read: view('demoBookings'),
+    update: edit('demoBookings'),
+    delete: edit('demoBookings'),
   },
   defaultSort: '-createdAt',
   indexes: [{ fields: ['business', 'date', 'time'], unique: true }],

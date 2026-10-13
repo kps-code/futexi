@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, nobody } from '../access'
+import { hiddenUnless, isAdmin, nobody, view } from '../access'
 import { deviceOptions, utmGroup } from './Visitors'
 
 /** One visit: 30 minutes idle or 4 hours max. Written by the ingest route only. */
@@ -9,13 +9,14 @@ export const Sessions: CollectionConfig = {
     useAsTitle: 'sessionId',
     defaultColumns: ['startedAt', 'visitorId', 'landingPath', 'pageCount', 'referrer', 'country'],
     group: 'Analytics',
+    hidden: hiddenUnless('analytics'),
     description: 'One row per visit. Retention 180 days.',
     listSearchableFields: ['sessionId', 'visitorId', 'landingPath', 'referrer'],
     pagination: { defaultLimit: 50 },
   },
   access: {
     create: nobody,
-    read: isAdmin,
+    read: view('analytics'),
     update: nobody,
     delete: isAdmin,
   },

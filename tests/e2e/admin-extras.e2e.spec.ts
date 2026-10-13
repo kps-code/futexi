@@ -60,5 +60,10 @@ test.describe('Admin extras', () => {
     await settings.locator('.nav-group__toggle').click()
     await expect(settings).not.toHaveClass(/nav-group--collapsed/)
     await expect(content).toHaveClass(/nav-group--collapsed/)
+    // On the dashboard (no group link active) every group is collapsed.
+    await page.goto('/admin/analytics')
+    await page.locator('html[data-kf-nav-accordion="on"]').waitFor({ timeout: 30_000 })
+    await expect(page.locator('aside.nav .nav-group').first()).toBeAttached()
+    await expect(page.locator('aside.nav .nav-group:not(.nav-group--collapsed)')).toHaveCount(0)
   })
 })

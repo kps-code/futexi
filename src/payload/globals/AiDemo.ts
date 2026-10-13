@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { aiScript } from '@/content/ai-script'
-import { anyone, isLoggedIn } from '../access'
+import { anyone, edit, hiddenUnless } from '../access'
 import { revalidateAiDemo } from '../hooks/revalidate'
 
 /** The scripted "Ask our AI Assistant" conversation on the home page. No live model. */
@@ -9,12 +9,13 @@ export const AiDemo: GlobalConfig = {
   label: 'AI Assistant Demo',
   admin: {
     group: 'Content',
+    hidden: hiddenUnless('aiDemo'),
     description:
       'The sample conversation in the "Ask our AI Assistant" box on the home page. Each row is a chip the visitor can click: the question appears, then the answer is typed out.',
   },
   access: {
     read: anyone,
-    update: isLoggedIn,
+    update: edit('aiDemo'),
   },
   hooks: { afterChange: [revalidateAiDemo] },
   fields: [

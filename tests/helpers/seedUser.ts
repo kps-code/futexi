@@ -1,18 +1,19 @@
 import { getPayload } from 'payload'
 import config from '../../src/payload.config.js'
+import { ensureDefaultRoles } from '../../src/payload/roles-default.js'
 
 export const testUser = {
   email: 'dev@payloadcms.com',
   password: 'test',
   name: 'Test Admin',
-  role: 'admin' as const,
 }
 
 /**
- * Seeds a test user for e2e admin tests.
+ * Seeds an admin test user for e2e admin tests (assigned the built-in Admin role).
  */
 export async function seedTestUser(): Promise<void> {
   const payload = await getPayload({ config })
+  const { adminId } = await ensureDefaultRoles(payload)
 
   // Delete existing test user if any
   await payload.delete({
@@ -27,7 +28,7 @@ export async function seedTestUser(): Promise<void> {
   // Create fresh test user
   await payload.create({
     collection: 'users',
-    data: testUser,
+    data: { ...testUser, assignedRole: adminId },
   })
 }
 

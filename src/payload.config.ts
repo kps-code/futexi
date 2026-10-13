@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import path from 'path'
@@ -7,6 +8,7 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { Users } from './payload/collections/Users'
+import { Roles } from './payload/collections/Roles'
 import { Media } from './payload/collections/Media'
 import { TeamMembers } from './payload/collections/TeamMembers'
 import { Leads } from './payload/collections/Leads'
@@ -33,6 +35,19 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN || ''
+
+/**
+ * Admin emails (forgot password, verification) go through Resend with the same
+ * key as lead notifications. Until the domain is verified, Resend's test sender
+ * only delivers to the Resend account owner's address.
+ */
+const resendKey = process.env.RESEND_API_KEY || ''
+function fromParts(raw: string | undefined): { name: string; address: string } {
+  const m = raw?.match(/^\s*(.*?)\s*<([^>]+)>\s*$/)
+  if (m) return { name: m[1] || 'KAPOSA FUTEXI', address: m[2] }
+  return { name: 'KAPOSA FUTEXI', address: raw?.trim() || 'onboarding@resend.dev' }
+}
+const from = fromParts(process.env.LEAD_FROM_EMAIL)
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
@@ -62,6 +77,7 @@ export default buildConfig({
   },
   collections: [
     Users,
+    Roles,
     Media,
     TeamMembers,
     Leads,
@@ -78,6 +94,9 @@ export default buildConfig({
   ],
   globals: [SiteSettings, AboutPage, DemoSettings, HomePage, AiDemo, ServicesPage, LegalPages],
   editor: lexicalEditor(),
+  email: resendKey
+    ? resendAdapter({ apiKey: resendKey, defaultFromAddress: from.address, defaultFromName: from.name })
+    : undefined,
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

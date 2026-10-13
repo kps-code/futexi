@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { anyone, isAdmin, isLoggedIn } from '../access'
+import { anyone, edit, hiddenUnless } from '../access'
 import { revalidateFaqs, revalidateFaqsOnDelete } from '../hooks/revalidate'
 
 export const faqPlacements = [
@@ -18,14 +18,15 @@ export const Faqs: CollectionConfig = {
     useAsTitle: 'question',
     defaultColumns: ['question', 'placement', 'order'],
     group: 'Content',
+    hidden: hiddenUnless('faqs'),
     description:
       'Questions and answers for the website. "Where to show" decides the page: the Contact page lists every question, the home page shows a short list. Changes go live within seconds.',
   },
   access: {
     read: anyone,
-    create: isLoggedIn,
-    update: isLoggedIn,
-    delete: isAdmin,
+    create: edit('faqs'),
+    update: edit('faqs'),
+    delete: edit('faqs'),
   },
   defaultSort: 'order',
   hooks: { afterChange: [revalidateFaqs], afterDelete: [revalidateFaqsOnDelete] },

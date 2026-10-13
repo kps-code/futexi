@@ -1,5 +1,5 @@
 import type { GlobalConfig } from 'payload'
-import { anyone, isLoggedIn } from '../access'
+import { anyone, edit, hiddenUnless } from '../access'
 import { revalidateAboutPage } from '../hooks/revalidate'
 
 export const AboutPage: GlobalConfig = {
@@ -7,11 +7,12 @@ export const AboutPage: GlobalConfig = {
   label: 'About Page',
   admin: {
     group: 'Content',
+    hidden: hiddenUnless('aboutPage'),
     description: 'Heading, intro and values on the About page.',
   },
   access: {
     read: anyone,
-    update: isLoggedIn,
+    update: edit('aboutPage'),
   },
   hooks: { afterChange: [revalidateAboutPage] },
   fields: [

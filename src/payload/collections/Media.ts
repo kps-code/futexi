@@ -1,17 +1,18 @@
 import type { CollectionConfig } from 'payload'
-import { anyone, isAdmin, isLoggedIn } from '../access'
+import { anyone, edit, hiddenUnless } from '../access'
 
 export const Media: CollectionConfig = {
   slug: 'media',
   admin: {
     group: 'Content',
+    hidden: hiddenUnless('media'),
     description: 'Images used on the website. Team photos, demo screenshots.',
   },
   access: {
     read: anyone,
-    create: isLoggedIn,
-    update: isLoggedIn,
-    delete: isAdmin,
+    create: edit('media'),
+    update: edit('media'),
+    delete: edit('media'),
   },
   upload: {
     mimeTypes: ['image/*'],

@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { servicesPage } from '@/content/services'
-import { anyone, isLoggedIn } from '../access'
+import { anyone, edit, hiddenUnless } from '../access'
 import { revalidateServicesPage } from '../hooks/revalidate'
 
 /** Heading and sub-text at the top of the Services page. The cards come from Content > Services. */
@@ -9,12 +9,13 @@ export const ServicesPage: GlobalConfig = {
   label: 'Services Page',
   admin: {
     group: 'Content',
+    hidden: hiddenUnless('servicesPage'),
     description:
       'Heading and sub-text at the top of the Services page. The service cards are under Content > Services.',
   },
   access: {
     read: anyone,
-    update: isLoggedIn,
+    update: edit('servicesPage'),
   },
   hooks: { afterChange: [revalidateServicesPage] },
   fields: [

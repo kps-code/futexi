@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
+    roles: Role;
     media: Media;
     'team-members': TeamMember;
     leads: Lead;
@@ -89,6 +90,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
+    roles: RolesSelect<false> | RolesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
     leads: LeadsSelect<false> | LeadsSelect<true>;
@@ -158,13 +160,28 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * People who can log in to this admin. What each person sees is decided by their role.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
   id: number;
   name: string;
-  role: 'admin' | 'editor';
+  /**
+   * Decides which menus this person can see and edit. Roles are under Admin > Roles.
+   */
+  assignedRole: number | Role;
+  role?: ('admin' | 'editor') | null;
+  permissions?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -184,6 +201,42 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * A role is a set of permissions. Create a role, choose what it can see and edit, then assign it to users under Admin > Users. Changes apply to those users immediately.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "roles".
+ */
+export interface Role {
+  id: number;
+  name: string;
+  description?: string | null;
+  /**
+   * Everything, including Users, Roles and API logs. Tick this only for owners.
+   */
+  isAdmin?: boolean | null;
+  areas?: {
+    media?: ('none' | 'view' | 'edit') | null;
+    faqs?: ('none' | 'view' | 'edit') | null;
+    testimonials?: ('none' | 'view' | 'edit') | null;
+    services?: ('none' | 'view' | 'edit') | null;
+    aboutPage?: ('none' | 'view' | 'edit') | null;
+    homePage?: ('none' | 'view' | 'edit') | null;
+    aiDemo?: ('none' | 'view' | 'edit') | null;
+    servicesPage?: ('none' | 'view' | 'edit') | null;
+    legalPages?: ('none' | 'view' | 'edit') | null;
+    teamMembers?: ('none' | 'view' | 'edit') | null;
+    siteSettings?: ('none' | 'view' | 'edit') | null;
+    demoSettings?: ('none' | 'view' | 'edit') | null;
+    leads?: ('none' | 'view' | 'edit') | null;
+    demoBookings?: ('none' | 'view' | 'edit') | null;
+    demoLeads?: ('none' | 'view' | 'edit') | null;
+    analytics?: ('none' | 'view' | 'edit') | null;
+    apiLogs?: ('none' | 'view' | 'edit') | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Images used on the website. Team photos, demo screenshots.
@@ -691,6 +744,10 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'roles';
+        value: number | Role;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -790,7 +847,9 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  assignedRole?: T;
   role?: T;
+  permissions?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -808,6 +867,38 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "roles_select".
+ */
+export interface RolesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  isAdmin?: T;
+  areas?:
+    | T
+    | {
+        media?: T;
+        faqs?: T;
+        testimonials?: T;
+        services?: T;
+        aboutPage?: T;
+        homePage?: T;
+        aiDemo?: T;
+        servicesPage?: T;
+        legalPages?: T;
+        teamMembers?: T;
+        siteSettings?: T;
+        demoSettings?: T;
+        leads?: T;
+        demoBookings?: T;
+        demoLeads?: T;
+        analytics?: T;
+        apiLogs?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
