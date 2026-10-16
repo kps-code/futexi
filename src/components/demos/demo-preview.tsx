@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { screenSizes, type Demo } from '@/content/demos'
+import { screenSizes, screenSrc, type Demo } from '@/content/demos'
 import { cn } from '@/lib/utils'
 
 const accents: Record<Demo['accent'], { bar: string; soft: string; text: string }> = {
@@ -51,7 +51,7 @@ export function DemoPreview({
       {shot ? (
         <div className="relative overflow-hidden">
           <Image
-            src={shot.src}
+            src={screenSrc(demo, shot.src)}
             alt={shot.alt}
             width={screenSizes.desktop.width}
             height={screenSizes.desktop.height}

@@ -3,7 +3,7 @@ import { ArrowRight, Check, ExternalLink, MessageCircle } from 'lucide-react'
 import { ButtonLink } from '@/components/ui/button'
 import { DemoPreview } from '@/components/demos/demo-preview'
 import { Reveal } from '@/components/reveal'
-import { screenSizes, type Demo } from '@/content/demos'
+import { screenSizes, screenSrc, type Demo } from '@/content/demos'
 import { whatsappLink } from '@/lib/whatsapp'
 import type { ReactNode } from 'react'
 
@@ -142,7 +142,7 @@ export function CaseStudy({ demo, whatsappNumber }: { demo: Demo; whatsappNumber
                   <span className="ml-2 h-2 flex-1 rounded bg-background/70" />
                 </div>
                 <Image
-                  src={s.src}
+                  src={screenSrc(demo, s.src)}
                   alt={s.alt}
                   width={screenSizes.desktop.width}
                   height={screenSizes.desktop.height}
@@ -174,7 +174,7 @@ export function CaseStudy({ demo, whatsappNumber }: { demo: Demo; whatsappNumber
                   className="mx-auto w-full max-w-[15rem] overflow-hidden rounded-[2rem] border-[6px] border-foreground/80 bg-background shadow-xl"
                 >
                   <Image
-                    src={s.src}
+                    src={screenSrc(demo, s.src)}
                     alt={s.alt}
                     width={screenSizes.mobile.width}
                     height={screenSizes.mobile.height}
