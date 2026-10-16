@@ -12,6 +12,7 @@ export type JsonLdSettings = {
   city: string
   region: string
   ogImageUrl?: string
+  logo?: { url: string } | null
 }
 
 /**
@@ -23,11 +24,9 @@ export function buildJsonLd(settings: JsonLdSettings, siteUrl: string) {
   const sameAs = [settings.instagram, settings.linkedin, settings.github].filter((x): x is string =>
     Boolean(x),
   )
-  const image = settings.ogImageUrl
-    ? settings.ogImageUrl.startsWith('http')
-      ? settings.ogImageUrl
-      : `${base}${settings.ogImageUrl}`
-    : `${base}/og-default.png`
+  const absolute = (url: string) => (url.startsWith('http') ? url : `${base}${url}`)
+  const image = settings.ogImageUrl ? absolute(settings.ogImageUrl) : `${base}/og-default.png`
+  const logo = settings.logo?.url ? absolute(settings.logo.url) : undefined
 
   return [
     {
@@ -37,6 +36,7 @@ export function buildJsonLd(settings: JsonLdSettings, siteUrl: string) {
       name: brand.name,
       url: base,
       image,
+      logo,
       description: settings.seoDescription,
       slogan: settings.tagline,
       email: settings.email,

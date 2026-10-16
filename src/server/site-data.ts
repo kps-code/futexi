@@ -8,6 +8,7 @@ import { demoBySlug, demos, type Demo } from '@/content/demos'
 import { faq, homeFaqCount } from '@/content/faq'
 import { finalCta, howWeWork, technology, whatWeBuild, whyUs } from '@/content/home'
 import { isIconName, type IconName } from '@/content/icon-names'
+import { brandLogoFrom, themeName, type BrandLogo, type ThemeName } from '@/lib/branding'
 import { privacyDefaults, termsDefaults, type LegalPageContent } from '@/content/legal'
 import { services as serviceDefaults, servicesPage } from '@/content/services'
 import { brand, contactDefaults, hero, whatsappDefaultMessage } from '@/content/site'
@@ -37,6 +38,14 @@ export type SiteSettings = {
   serviceAreaText: string
   /** Absolute or site-relative URL of the uploaded share image, if any. */
   ogImageUrl?: string
+  /** Uploaded logo for the header and footer; the text wordmark is used when absent. */
+  logo?: BrandLogo
+  /** Logo variant for the dark theme; the main logo is used when absent. */
+  logoDark?: BrandLogo
+  /** Uploaded browser-tab icon; the built-in /icon.svg is used when absent. */
+  siteIcon?: { url: string; mimeType?: string }
+  /** Theme first-time visitors get. The header toggle stores a visitor's own choice. */
+  defaultTheme: ThemeName
 }
 
 const ONE_HOUR = 60 * 60
@@ -55,6 +64,12 @@ function mediaUrl(v: unknown, size?: 'thumbnail' | 'card' | 'large'): string | u
   if (!v || typeof v !== 'object') return undefined
   const m = v as Media
   return (size && m.sizes?.[size]?.url) || m.url || undefined
+}
+function siteIconFrom(v: unknown): { url: string; mimeType?: string } | undefined {
+  const url = mediaUrl(v)
+  if (!url) return undefined
+  const mime = (v as Media).mimeType
+  return { url, mimeType: typeof mime === 'string' && mime ? mime : undefined }
 }
 function iconName(v: unknown, fallback: IconName): IconName {
   return isIconName(v) ? v : fallback
@@ -80,6 +95,10 @@ export const getSiteSettings = unstable_cache(
       region: text(s?.region, contactDefaults.region),
       serviceAreaText: text(s?.serviceAreaText, contactDefaults.serviceAreaText),
       ogImageUrl: mediaUrl(s?.ogImage),
+      logo: brandLogoFrom(s?.logo, brand.name),
+      logoDark: brandLogoFrom(s?.logoDark, brand.name),
+      siteIcon: siteIconFrom(s?.siteIcon),
+      defaultTheme: themeName(s?.defaultTheme),
     }
   },
   ['site-settings'],

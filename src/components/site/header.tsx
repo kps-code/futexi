@@ -5,12 +5,20 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { nav, primaryCta } from '@/content/site'
+import type { BrandLogo } from '@/lib/branding'
 import { cn } from '@/lib/utils'
 import { ButtonLink } from '@/components/ui/button'
 import { ThemeToggle } from './theme-toggle'
 import { Wordmark } from './wordmark'
 
-export function Header() {
+export type HeaderProps = {
+  logo?: BrandLogo | null
+  logoDark?: BrandLogo | null
+  /** Theme first-time visitors get; keeps the toggle icon right before hydration. */
+  defaultDark?: boolean
+}
+
+export function Header({ logo, logoDark, defaultDark = false }: HeaderProps) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -44,7 +52,7 @@ export function Header() {
         )}
       >
         <div className="container-site flex h-16 items-center justify-between gap-4 sm:h-[4.5rem]">
-          <Wordmark />
+          <Wordmark logo={logo} logoDark={logoDark} />
 
           <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
             {nav.map((item) => (
@@ -65,7 +73,7 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <ThemeToggle />
+            <ThemeToggle initialDark={defaultDark} />
             <ButtonLink
               href={primaryCta.href}
               size="sm"

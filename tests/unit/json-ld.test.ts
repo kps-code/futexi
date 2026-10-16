@@ -38,3 +38,15 @@ describe('buildJsonLd', () => {
     expect(business.image).toBe('https://kaposafutexi.com/api/media/file/share.png')
   })
 })
+
+describe('buildJsonLd logo', () => {
+  it('adds the uploaded logo as an absolute URL and omits it otherwise', () => {
+    const [withLogo] = buildJsonLd(
+      { ...settings, logo: { url: '/api/media/file/logo.svg' } },
+      'https://kaposafutexi.com',
+    )
+    expect(withLogo.logo).toBe('https://kaposafutexi.com/api/media/file/logo.svg')
+    const [without] = buildJsonLd(settings, 'https://kaposafutexi.com')
+    expect(without.logo).toBeUndefined()
+  })
+})

@@ -4,6 +4,7 @@ import * as migration_20261007_182907_demo_enquiries from './20261007_182907_dem
 import * as migration_20261008_051300_demo_settings from './20261008_051300_demo_settings'
 import * as migration_20261012_110214_phase7_content from './20261012_110214_phase7_content'
 import * as migration_20261013_061105_roles from './20261013_061105_roles'
+import * as migration_20261015_103409_branding from './20261015_103409_branding'
 
 export const migrations = [
   {
@@ -35,5 +36,10 @@ export const migrations = [
     up: migration_20261013_061105_roles.up,
     down: migration_20261013_061105_roles.down,
     name: '20261013_061105_roles',
+  },
+  {
+    up: migration_20261015_103409_branding.up,
+    down: migration_20261015_103409_branding.down,
+    name: '20261015_103409_branding',
   },
 ]

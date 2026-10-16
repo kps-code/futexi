@@ -1,6 +1,7 @@
 import { MapPin } from 'lucide-react'
 import Link from 'next/link'
 import { brand, footerColumns, legal } from '@/content/site'
+import type { BrandLogo } from '@/lib/branding'
 import { whatsappLink } from '@/lib/whatsapp'
 import { Wordmark } from './wordmark'
 
@@ -19,7 +20,17 @@ export type FooterContact = {
 
 export type FooterLink = { label: string; href: string }
 
-export function Footer({ contact, solutions }: { contact: FooterContact; solutions: FooterLink[] }) {
+export function Footer({
+  contact,
+  solutions,
+  logo,
+  logoDark,
+}: {
+  contact: FooterContact
+  solutions: FooterLink[]
+  logo?: BrandLogo | null
+  logoDark?: BrandLogo | null
+}) {
   const columns = footerColumns.map((col) =>
     col.title === 'Solutions' && solutions.length > 0 ? { title: col.title, links: solutions } : col,
   )
@@ -38,7 +49,7 @@ export function Footer({ contact, solutions }: { contact: FooterContact; solutio
       />
       <div className="container-site grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div className="space-y-4">
-          <Wordmark withSubline={false} />
+          <Wordmark withSubline={false} logo={logo} logoDark={logoDark} />
           <p className="text-sm text-muted">{brand.positioning}</p>
           <p className="font-display text-lg font-semibold">{brand.footerLine}</p>
           <p className="flex items-start gap-2 text-sm text-muted">

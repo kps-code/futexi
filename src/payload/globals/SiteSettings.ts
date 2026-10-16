@@ -30,6 +30,56 @@ export const SiteSettings: GlobalConfig = {
       type: 'tabs',
       tabs: [
         {
+          label: 'Branding',
+          fields: [
+            {
+              name: 'logo',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description:
+                  'Replaces the "KAPOSA FUTEXI" text in the header and footer. SVG or transparent PNG about 40 px tall, under 20 KB. Leave empty to keep the text.',
+              },
+            },
+            {
+              name: 'logoDark',
+              label: 'Logo for dark theme',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description:
+                  'Optional. Used when a visitor is in the dark theme, for example a white version. Leave empty to use the same logo.',
+                condition: (data) => Boolean(data?.logo),
+              },
+            },
+            {
+              name: 'siteIcon',
+              label: 'Site icon (browser tab)',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description:
+                  'The small icon in the browser tab and bookmarks. Square PNG or SVG, 512 x 512 recommended. Leave empty to use the built-in icon.',
+              },
+            },
+            {
+              name: 'defaultTheme',
+              label: 'Default theme',
+              type: 'radio',
+              options: [
+                { label: 'Light', value: 'light' },
+                { label: 'Dark', value: 'dark' },
+              ],
+              defaultValue: 'light',
+              admin: {
+                layout: 'horizontal',
+                description:
+                  'What first-time visitors see. A visitor who presses the sun / moon button keeps their own choice on that device.',
+              },
+            },
+          ],
+        },
+        {
           label: 'Contact',
           fields: [
             {

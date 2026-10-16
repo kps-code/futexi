@@ -48,11 +48,14 @@ test.describe('Frontend', () => {
   })
 
   test('theme toggle switches the html class', async ({ page }) => {
+    // Light is the default (Site Settings > Branding); the toggle flips to dark and back.
     await page.goto('/')
     const html = page.locator('html')
-    await expect(html).toHaveClass(/dark/)
+    await expect(html).toContainClass('light')
+    await page.getByRole('button', { name: /switch to dark theme/i }).click()
+    await expect(html).toContainClass('dark')
     await page.getByRole('button', { name: /switch to light theme/i }).click()
-    await expect(html).not.toHaveClass(/dark/)
+    await expect(html).not.toContainClass('dark')
   })
 
   test('health endpoint responds and echoes a request id', async ({ request }) => {

@@ -27,11 +27,21 @@ const sora = Sora({
 
 /** Built-in share image, used until an image is uploaded in Site Settings > SEO. */
 const DEFAULT_OG_IMAGE = '/og-default.png'
+/** Built-in browser-tab icon, used until one is uploaded in Site Settings > Branding. */
+const DEFAULT_ICON = { url: '/icon.svg', type: 'image/svg+xml' }
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings()
   const image = settings.ogImageUrl ?? DEFAULT_OG_IMAGE
+  const icon = settings.siteIcon
+    ? { url: settings.siteIcon.url, type: settings.siteIcon.mimeType }
+    : DEFAULT_ICON
   return {
+    icons: {
+      icon: [icon],
+      // Apple ignores SVG; only offer a raster upload as the home-screen icon.
+      ...(settings.siteIcon && settings.siteIcon.mimeType !== 'image/svg+xml' ? { apple: [icon] } : {}),
+    },
     metadataBase: new URL(clientEnv.NEXT_PUBLIC_SITE_URL),
     title: {
       default: `${brand.name} · ${brand.positioning}`,
@@ -65,8 +75,12 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${sora.variable}`}>
       <body className="flex min-h-dvh flex-col">
-        <ThemeProvider>
-          <Header />
+        <ThemeProvider defaultTheme={settings.defaultTheme}>
+          <Header
+            logo={settings.logo}
+            logoDark={settings.logoDark}
+            defaultDark={settings.defaultTheme === 'dark'}
+          />
           <main id="main" className="flex-1">
             {children}
           </main>
@@ -84,6 +98,8 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
               github: settings.github,
             }}
             solutions={services.map((s) => ({ label: s.title, href: `/services#${s.slug}` }))}
+            logo={settings.logo}
+            logoDark={settings.logoDark}
           />
           <RevealObserver />
           <Tracker />

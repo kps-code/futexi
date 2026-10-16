@@ -16,13 +16,18 @@ export const Media: CollectionConfig = {
   },
   upload: {
     mimeTypes: ['image/*'],
-    adminThumbnail: 'thumbnail',
+    // SVG uploads get no resized versions, so fall back to the file itself (logos, icons).
+    adminThumbnail: ({ doc }) =>
+      ((doc.sizes as { thumbnail?: { url?: string } } | undefined)?.thumbnail?.url as string | undefined) ||
+      (doc.url as string | undefined) ||
+      null,
     imageSizes: [
       {
         name: 'thumbnail',
         width: 320,
         height: 320,
-        position: 'centre',
+        // Fit inside the box instead of cropping, so logos and wide images preview whole.
+        fit: 'inside',
         formatOptions: { format: 'webp', options: { quality: 80 } },
       },
       {

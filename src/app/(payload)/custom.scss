@@ -279,3 +279,35 @@ aside.nav .nav-group {
   border-top: 1px solid var(--theme-elevation-150);
   color: var(--theme-elevation-600);
 }
+
+/* Branding previews: show logos whole instead of a centre crop, the dark logo on a dark backdrop,
+   and give wide logos a wider box. The media editor preview shows the whole file too. */
+.global-edit--site-settings {
+  #field-logo,
+  #field-logoDark,
+  #field-siteIcon {
+    .thumbnail {
+      background: var(--theme-elevation-100);
+      border-radius: var(--style-radius-s);
+      img,
+      svg {
+        object-fit: contain;
+        padding: 4px;
+      }
+    }
+  }
+  #field-logo .thumbnail,
+  #field-logoDark .thumbnail {
+    width: calc(var(--base) * 9);
+  }
+  #field-logoDark .thumbnail {
+    background: #0b0f1a;
+  }
+}
+.collection-edit--media .thumbnail {
+  background: var(--theme-elevation-100);
+  img,
+  svg {
+    object-fit: contain;
+  }
+}

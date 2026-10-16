@@ -1238,6 +1238,22 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface SiteSetting {
   id: number;
   /**
+   * Replaces the "KAPOSA FUTEXI" text in the header and footer. SVG or transparent PNG about 40 px tall, under 20 KB. Leave empty to keep the text.
+   */
+  logo?: (number | null) | Media;
+  /**
+   * Optional. Used when a visitor is in the dark theme, for example a white version. Leave empty to use the same logo.
+   */
+  logoDark?: (number | null) | Media;
+  /**
+   * The small icon in the browser tab and bookmarks. Square PNG or SVG, 512 x 512 recommended. Leave empty to use the built-in icon.
+   */
+  siteIcon?: (number | null) | Media;
+  /**
+   * What first-time visitors see. A visitor who presses the sun / moon button keeps their own choice on that device.
+   */
+  defaultTheme?: ('light' | 'dark') | null;
+  /**
    * Shown as text. Example: +91 88836 73422
    */
   phone: string;
@@ -1491,6 +1507,10 @@ export interface LegalPage {
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
+  logo?: T;
+  logoDark?: T;
+  siteIcon?: T;
+  defaultTheme?: T;
   phone?: T;
   whatsappNumber?: T;
   email?: T;

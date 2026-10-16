@@ -16,11 +16,18 @@ function useMounted() {
   )
 }
 
-export function ThemeToggle({ className }: { className?: string }) {
+export function ThemeToggle({
+  className,
+  initialDark = false,
+}: {
+  className?: string
+  initialDark?: boolean
+}) {
   const { resolvedTheme, setTheme } = useTheme()
   const mounted = useMounted()
 
-  const isDark = mounted ? resolvedTheme === 'dark' : true
+  // Before hydration, assume the site's default theme so the icon does not flip on load.
+  const isDark = mounted ? resolvedTheme === 'dark' : initialDark
   const label = isDark ? 'Switch to light theme' : 'Switch to dark theme'
 
   return (
