@@ -10,7 +10,7 @@ export type DemoService = {
   /** 0 hides the price (restaurant tables). */
   price: number
   line: string
-  tone: 'teal' | 'rose' | 'amber' | 'violet' | 'lime' | 'sky'
+  tone: 'teal' | 'rose' | 'amber' | 'violet' | 'lime' | 'sky' | 'oat'
   category?: string
 }
 
@@ -259,8 +259,9 @@ export const saffron: DemoBusiness = {
   ],
   nav: [
     { label: 'Menu', href: '/demo/restaurant#menu' },
+    { label: 'Order', href: '/demo/restaurant/order' },
+    { label: 'Private dining', href: '/demo/restaurant/private-dining' },
     { label: 'Offers', href: '/demo/restaurant#offers' },
-    { label: 'About', href: '/demo/restaurant#about' },
     { label: 'Visit', href: '/demo/restaurant#visit' },
   ],
   ctaLabel: 'Reserve a table',
@@ -352,7 +353,7 @@ export const nila: DemoBusiness = {
       minutes: 0,
       price: 0,
       line: 'Apartments and villas, from a single room to a full home.',
-      tone: 'teal',
+      tone: 'oat',
     },
     {
       slug: 'nila-kitchen',
@@ -360,7 +361,7 @@ export const nila: DemoBusiness = {
       minutes: 0,
       price: 0,
       line: 'Designed around how you cook, built in our own workshop.',
-      tone: 'amber',
+      tone: 'oat',
     },
     {
       slug: 'nila-office',
@@ -368,7 +369,7 @@ export const nila: DemoBusiness = {
       minutes: 0,
       price: 0,
       line: 'Workplaces that people want to show up to.',
-      tone: 'sky',
+      tone: 'oat',
     },
     {
       slug: 'nila-turnkey',
@@ -376,12 +377,12 @@ export const nila: DemoBusiness = {
       minutes: 0,
       price: 0,
       line: 'Civil, electrical, carpentry and styling under one contract.',
-      tone: 'rose',
+      tone: 'oat',
     },
   ],
   nav: [
-    { label: 'Projects', href: '/demo/interior#projects' },
-    { label: 'Services', href: '/demo/interior#services' },
+    { label: 'Projects', href: '/demo/interior/projects' },
+    { label: 'Services', href: '/demo/interior/services' },
     { label: 'Studio', href: '/demo/interior#studio' },
     { label: 'Contact', href: '/demo/interior#enquire' },
   ],

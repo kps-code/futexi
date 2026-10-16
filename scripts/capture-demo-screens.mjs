@@ -51,6 +51,18 @@ const PLANS = {
   restaurant: [
     { name: 'home', path: '/demo/restaurant', steps: [] },
     { name: 'menu', path: '/demo/restaurant#menu', steps: [{ scrollTo: '#menu' }] },
+    {
+      name: 'order',
+      path: '/demo/restaurant/order',
+      steps: [
+        { click: 'button[aria-label="Add Chettinad Pepper Chicken"]' },
+        { click: 'button[aria-label="Add Mutton Kuzhambu"]' },
+        { click: 'button[aria-label="Add one more Mutton Kuzhambu"]' },
+        { click: 'button[aria-label="Add Nannari Sherbet"]' },
+        { scrollTo: 'body' },
+      ],
+    },
+    { name: 'private-dining', path: '/demo/restaurant/private-dining', steps: [] },
     bookTime('/demo/restaurant/reserve', 'Table for 4'),
   ],
   'ai-business': [
@@ -64,7 +76,9 @@ const PLANS = {
   ],
   interior: [
     { name: 'home', path: '/demo/interior', steps: [] },
+    { name: 'projects', path: '/demo/interior/projects', steps: [] },
     { name: 'project', path: '/demo/interior/projects/sea-breeze-apartment', steps: [] },
+    { name: 'services', path: '/demo/interior/services', steps: [] },
     { name: 'enquire', path: '/demo/interior#enquire', steps: [{ scrollTo: '#enquire' }] },
   ],
   tuition: [

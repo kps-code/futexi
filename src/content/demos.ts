@@ -29,6 +29,13 @@ export type Demo = {
     desktop: readonly { src: string; alt: string }[]
     mobile: readonly { src: string; alt: string }[]
   }
+  /** Bump after recapturing screens so browser and image-optimizer caches fetch the new files. */
+  screensVersion?: number
+}
+
+/** Screenshot URL with a cache-busting version when the demo declares one. */
+export function screenSrc(demo: Pick<Demo, 'screensVersion'>, src: string): string {
+  return demo.screensVersion ? `${src}?v=${demo.screensVersion}` : src
 }
 
 /** Capture sizes used by scripts/capture-demo-screens.mjs. */
@@ -152,31 +159,43 @@ export const demos: readonly Demo[] = [
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/restaurant',
+    screensVersion: 5,
     screens: {
       desktop: [
         { src: '/demos/restaurant/desktop-home.webp', alt: 'Saffron Kitchen home page' },
-        { src: '/demos/restaurant/desktop-menu.webp', alt: 'Digital menu with category tabs' },
+        { src: '/demos/restaurant/desktop-menu.webp', alt: 'Digital menu with category tabs and photos' },
+        { src: '/demos/restaurant/desktop-order.webp', alt: 'Online ordering with a WhatsApp order summary' },
+        { src: '/demos/restaurant/desktop-private-dining.webp', alt: 'Private dining packages' },
         { src: '/demos/restaurant/desktop-book-time.webp', alt: 'Reserving a table: choosing a time' },
       ],
       mobile: [
         { src: '/demos/restaurant/mobile-home.webp', alt: 'Saffron Kitchen home on a phone' },
-        { src: '/demos/restaurant/mobile-menu.webp', alt: 'Digital menu on a phone' },
+        { src: '/demos/restaurant/mobile-order.webp', alt: 'Online ordering on a phone' },
         { src: '/demos/restaurant/mobile-book-time.webp', alt: 'Reserving a table on a phone' },
       ],
     },
     challenge:
       'The menu lives in blurry photos. Reservations happen over calls that get missed during service.',
     solution: [
-      'Hero',
-      'Menu with categories',
+      'Hero with photography',
+      'Menu with categories and dish photos',
+      'Online ordering, confirmed on WhatsApp or by call',
+      'Private dining packages',
       'Food gallery',
       'About',
       'Offers',
       'Reservation',
       'Location',
-      'Contact',
     ],
-    features: ['Digital Menu', 'Reservation', 'WhatsApp', 'Google Maps', 'Responsive UI'],
+    features: [
+      'Digital Menu',
+      'Online Ordering',
+      'WhatsApp Orders',
+      'Private Dining',
+      'Reservations',
+      'Maps',
+      'Responsive',
+    ],
     automation: 'Table reservations confirmed on WhatsApp. Daily offers updated from the admin.',
     technology: ['Next.js', 'TypeScript', 'Tailwind'],
     outcomes: ['Menu visible before guests arrive', 'Reservations without calls', 'Easy to find on Maps'],
@@ -193,34 +212,45 @@ export const demos: readonly Demo[] = [
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/interior',
+    screensVersion: 2,
     screens: {
       desktop: [
         { src: '/demos/interior/desktop-home.webp', alt: 'Atelier Nila home with featured projects' },
+        { src: '/demos/interior/desktop-projects.webp', alt: 'Projects gallery with filters by type' },
         {
           src: '/demos/interior/desktop-project.webp',
           alt: 'A project page with gallery, highlights and palette',
         },
+        { src: '/demos/interior/desktop-services.webp', alt: 'Services and pricing page' },
         { src: '/demos/interior/desktop-enquire.webp', alt: 'Project enquiry form' },
       ],
       mobile: [
         { src: '/demos/interior/mobile-home.webp', alt: 'Atelier Nila home on a phone' },
-        { src: '/demos/interior/mobile-project.webp', alt: 'Project page on a phone' },
-        { src: '/demos/interior/mobile-enquire.webp', alt: 'Enquiry form on a phone' },
+        { src: '/demos/interior/mobile-projects.webp', alt: 'Projects gallery on a phone' },
+        { src: '/demos/interior/mobile-services.webp', alt: 'Services and pricing on a phone' },
       ],
     },
     challenge:
       'Great work, but no place to show it professionally. Instagram hides the detail that wins clients.',
     solution: [
-      'Premium hero',
-      'Featured projects',
-      'Project gallery with hover preview',
-      'Project details',
-      'Services',
+      'Editorial hero with photography',
+      'Projects gallery with filters',
+      'Project pages with gallery and palette',
+      'Services with indicative pricing',
+      'Five-stage process and FAQ',
       'About studio',
       'Testimonials',
       'Contact',
     ],
-    features: ['Project Portfolio', 'Gallery', 'Project Pages', 'Enquiry Form', 'WhatsApp', 'Responsive'],
+    features: [
+      'Project Portfolio',
+      'Filters',
+      'Project Pages',
+      'Pricing',
+      'Enquiry Form',
+      'WhatsApp',
+      'Responsive',
+    ],
     automation: 'Project enquiries reach WhatsApp with the project name attached.',
     technology: ['Next.js', 'TypeScript', 'Tailwind'],
     outcomes: [

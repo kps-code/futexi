@@ -1,10 +1,20 @@
 import type { Metadata } from 'next'
-import { CalendarCheck, Clock, Flame, MapPin } from 'lucide-react'
+import Link from 'next/link'
+import { ArrowRight, CalendarCheck, Clock, Flame, MapPin, ShoppingBag } from 'lucide-react'
 import { DemoButton, DemoShell, SectionTitle } from '@/components/demos-shared/chrome'
-import { MenuTabs, type MenuCategory } from '@/components/demos-shared/menu-tabs'
-import { CtaBand, RatingPill, Testimonials, Tile } from '@/components/demos-shared/sections'
+import { MenuTabs } from '@/components/demos-shared/menu-tabs'
+import { Photo } from '@/components/demos-shared/photo'
+import { CtaBand, RatingPill, Testimonials } from '@/components/demos-shared/sections'
 import { Reveal } from '@/components/reveal'
 import { saffron } from '@/content/demo-businesses'
+import {
+  saffronGallery,
+  saffronMenu,
+  saffronOffers,
+  saffronPhotos,
+  saffronPrivate,
+  saffronTestimonials,
+} from '@/content/demo-restaurant'
 import { getSiteSettings } from '@/server/site-data'
 
 export const metadata: Metadata = {
@@ -12,102 +22,10 @@ export const metadata: Metadata = {
   description: `${saffron.blurb} Restaurant website concept by KAPOSA FUTEXI.`,
 }
 
-const menu: readonly MenuCategory[] = [
-  {
-    name: 'Starters',
-    items: [
-      {
-        name: 'Chettinad Pepper Chicken',
-        line: 'Slow-fried with black pepper, curry leaf and fennel.',
-        price: 349,
-        spicy: true,
-        popular: true,
-      },
-      { name: 'Banana Flower Vadai', line: 'Crisp lentil fritters, coconut chutney.', price: 199, veg: true },
-      {
-        name: 'Karaikudi Prawn Fry',
-        line: 'Tiger prawns, roasted spice crust, lime.',
-        price: 429,
-        spicy: true,
-      },
-      { name: 'Paniyaram Trio', line: 'Sweet, savoury and herb, with podi.', price: 179, veg: true },
-    ],
-  },
-  {
-    name: 'Mains',
-    items: [
-      {
-        name: 'Mutton Kuzhambu',
-        line: 'Shoulder cut, tamarind, shallots. Served with idiyappam.',
-        price: 549,
-        spicy: true,
-        popular: true,
-      },
-      {
-        name: 'Kathirikai Kara Kuzhambu',
-        line: 'Baby brinjal in a smoky tamarind gravy.',
-        price: 299,
-        veg: true,
-        spicy: true,
-      },
-      { name: 'Meen Varuval Thali', line: 'Seer fish fry, rasam, poriyal, rice, appalam.', price: 599 },
-      {
-        name: 'Vegetable Biryani',
-        line: 'Seeraga samba rice, seasonal vegetables, raita.',
-        price: 329,
-        veg: true,
-      },
-    ],
-  },
-  {
-    name: 'Breads & Rice',
-    items: [
-      { name: 'Malabar Parotta (2)', line: 'Layered and flaky, griddled to order.', price: 99, veg: true },
-      { name: 'Ghee Rice', line: 'Short-grain rice, cashew, clove.', price: 179, veg: true },
-      { name: 'Idiyappam (4)', line: 'Steamed rice noodles.', price: 119, veg: true },
-    ],
-  },
-  {
-    name: 'Desserts & Drinks',
-    items: [
-      {
-        name: 'Filter Coffee Panna Cotta',
-        line: 'Our signature. Strong, silky, not too sweet.',
-        price: 229,
-        veg: true,
-        popular: true,
-      },
-      { name: 'Elaneer Payasam', line: 'Tender coconut, jaggery, cardamom.', price: 199, veg: true },
-      { name: 'Nannari Sherbet', line: 'Sarsaparilla root, lime, soda.', price: 129, veg: true },
-    ],
-  },
-]
-
-const gallery = [
-  { tile: 'tile-ember', label: 'Open fire kitchen' },
-  { tile: 'tile-gold', label: 'Meen varuval thali' },
-  { tile: 'tile-sand', label: 'Courtyard seating' },
-  { tile: 'tile-coal', label: 'Pepper chicken' },
-] as const
-
-const offers = [
-  { title: 'Weekday lunch thali', line: 'Unlimited thali, 12 to 3 PM, Monday to Friday.', price: '₹349' },
-  {
-    title: 'Family Sunday',
-    line: 'Tables of 6 or more get a complimentary dessert platter.',
-    price: 'Free dessert',
-  },
-] as const
-
-const testimonials = [
-  { quote: 'The pepper chicken alone is worth the drive across the city.', name: 'Vignesh R.' },
-  { quote: 'Reserved online, table ready at 8 sharp on a Saturday. Unheard of.', name: 'Lakshmi N.' },
-  { quote: 'Menu on the website meant no squinting at a blurry photo on Instagram.', name: 'Jonathan P.' },
-] as const
-
 /** Restaurant Website demo (Post 2): Saffron Kitchen home. */
 export default async function SaffronHomePage() {
   const settings = await getSiteSettings()
+  const occasions = [saffronPrivate[0], saffronPrivate[2]]
   return (
     <DemoShell business={saffron} whatsappNumber={settings.whatsappNumber}>
       <section className="relative overflow-hidden">
@@ -131,8 +49,14 @@ export default async function SaffronHomePage() {
               >
                 <CalendarCheck className="h-4 w-4" /> Reserve a table
               </DemoButton>
-              <DemoButton href="#menu" variant="secondary" size="lg">
-                See the menu
+              <DemoButton
+                href={`${saffron.path}/order`}
+                variant="secondary"
+                size="lg"
+                data-track="cta_click"
+                data-track-props='{"cta":"demo_hero_order","demo":"restaurant"}'
+              >
+                <ShoppingBag className="h-4 w-4" /> Order online
               </DemoButton>
             </div>
             <ul className="text-dm-muted mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
@@ -145,21 +69,41 @@ export default async function SaffronHomePage() {
             </ul>
           </div>
           <Reveal className="grid grid-cols-2 gap-3">
-            <Tile tile="tile-ember" label="Open fire kitchen" className="aspect-[4/5]" />
-            <Tile tile="tile-gold" label="Meen varuval thali" className="mt-8 aspect-[4/5]" />
+            <Photo
+              photo={saffronPhotos.heroFire}
+              label="From the fire"
+              priority
+              sizes="(min-width: 1024px) 24vw, 50vw"
+              className="aspect-[4/5]"
+            />
+            <Photo
+              photo={saffronPhotos.heroCandle}
+              label="Candle-light dinner"
+              priority
+              sizes="(min-width: 1024px) 24vw, 50vw"
+              className="mt-8 aspect-[4/5]"
+            />
           </Reveal>
         </div>
       </section>
 
       <section id="menu" className="bg-dm-surface scroll-mt-20 py-16 sm:py-20">
         <div className="container-dm">
-          <SectionTitle
-            eyebrow="Menu"
-            title="Tonight's menu"
-            sub="Updated by the kitchen from the admin. No PDFs, no blurry photos."
-          />
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <SectionTitle
+              eyebrow="Menu"
+              title="Tonight's menu"
+              sub="Updated by the kitchen from the admin. No PDFs, no blurry photos."
+            />
+            <Link
+              href={`${saffron.path}/order`}
+              className="text-dm-brand inline-flex items-center gap-1 text-sm font-medium hover:underline"
+            >
+              Order for delivery or pickup <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
           <div className="mt-10">
-            <MenuTabs categories={menu} />
+            <MenuTabs categories={saffronMenu} />
           </div>
         </div>
       </section>
@@ -168,25 +112,73 @@ export default async function SaffronHomePage() {
         <div className="container-dm">
           <SectionTitle eyebrow="Gallery" title="From the pass" />
           <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
-            {gallery.map((g, i) => (
+            {saffronGallery.map((g, i) => (
               <Reveal key={g.label} as="li" index={i}>
-                <Tile tile={g.tile} label={g.label} className="aspect-square" />
+                <Photo
+                  photo={g.photo}
+                  label={g.label}
+                  className="aspect-square"
+                  sizes="(min-width: 768px) 25vw, 50vw"
+                />
               </Reveal>
             ))}
           </ul>
         </div>
       </section>
 
-      <section id="offers" className="bg-dm-surface scroll-mt-20 py-16 sm:py-20">
+      <section id="occasions" className="bg-dm-surface scroll-mt-20 py-16 sm:py-20">
+        <div className="container-dm">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <SectionTitle
+              eyebrow="Private dining"
+              title="Dinner, made an occasion"
+              sub="A candle-lit table for two or the whole hall for forty."
+            />
+            <Link
+              href={`${saffron.path}/private-dining`}
+              className="text-dm-brand inline-flex items-center gap-1 text-sm font-medium hover:underline"
+            >
+              All packages <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <ul className="mt-10 grid gap-5 md:grid-cols-2">
+            {occasions.map((pk, i) => (
+              <Reveal key={pk.slug} as="li" index={i}>
+                <Link
+                  href={`${saffron.path}/private-dining#packages`}
+                  className="group dm-card dm-lift bg-dm-bg flex gap-5 overflow-hidden p-3"
+                >
+                  <Photo
+                    photo={pk.photo}
+                    className="h-36 w-36 shrink-0 rounded-xl sm:h-40 sm:w-44"
+                    sizes="176px"
+                    imgClassName="transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="flex flex-col justify-center py-2">
+                    <p className="text-dm-muted text-xs font-medium">{pk.guests}</p>
+                    <h3 className="mt-1 font-display text-xl font-semibold">{pk.name}</h3>
+                    <p className="text-dm-muted mt-1 text-sm">{pk.line}</p>
+                    <p className="mt-3 text-sm font-semibold">
+                      {pk.price} <span className="text-dm-muted font-normal">{pk.priceNote}</span>
+                    </p>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section id="offers" className="scroll-mt-20 py-16 sm:py-20">
         <div className="container-dm">
           <SectionTitle eyebrow="Offers" title="This week" />
           <ul className="mt-10 grid gap-4 md:grid-cols-2">
-            {offers.map((o, i) => (
+            {saffronOffers.map((o, i) => (
               <Reveal
                 key={o.title}
                 as="li"
                 index={i}
-                className="dm-card bg-dm-bg flex items-start justify-between gap-4 p-6"
+                className="dm-card dm-lift flex items-start justify-between gap-4 p-6"
               >
                 <div>
                   <p className="font-display text-lg font-semibold">{o.title}</p>
@@ -201,10 +193,15 @@ export default async function SaffronHomePage() {
         </div>
       </section>
 
-      <section id="about" className="scroll-mt-20 py-16 sm:py-20">
+      <section id="about" className="bg-dm-surface scroll-mt-20 py-16 sm:py-20">
         <div className="container-dm grid gap-10 md:grid-cols-[1fr_1.2fr] md:items-center">
           <Reveal>
-            <Tile tile="tile-sand" label="Chef Meenakshi" className="aspect-[4/3]" />
+            <Photo
+              photo={saffronPhotos.about}
+              label="The dining room"
+              className="aspect-[4/3]"
+              sizes="(min-width: 768px) 40vw, 100vw"
+            />
           </Reveal>
           <Reveal index={1}>
             <SectionTitle eyebrow="About" title="Recipes from the Chettinad coast" />
@@ -219,7 +216,7 @@ export default async function SaffronHomePage() {
         </div>
       </section>
 
-      <Testimonials items={testimonials} />
+      <Testimonials items={saffronTestimonials} tone="bg" />
       <CtaBand
         business={saffron}
         title="Dinner, sorted."

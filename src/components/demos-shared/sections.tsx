@@ -43,7 +43,7 @@ export function ServicesGrid({
           className={cn('mt-10 grid gap-4 sm:grid-cols-2', cols === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3')}
         >
           {business.services.map((s, i) => (
-            <Reveal key={s.slug} as="li" index={i} className="dm-card bg-dm-bg flex flex-col p-5">
+            <Reveal key={s.slug} as="li" index={i} className="dm-card dm-lift bg-dm-bg flex flex-col p-5">
               <span className={cn('h-1.5 w-10 rounded-full', toneBar(s.tone))} />
               {s.category && (
                 <p className="text-dm-muted mt-3 text-[11px] font-semibold tracking-wide uppercase">
@@ -96,6 +96,7 @@ export function toneBar(t: string) {
       violet: 'bg-violet-400',
       lime: 'bg-lime-400',
       sky: 'bg-sky-400',
+      oat: 'bg-dm-accent',
     }[t] ?? 'bg-dm-brand'
   )
 }
@@ -141,7 +142,7 @@ export function Testimonials({
       <div className="container-dm">
         <ul className="grid gap-4 md:grid-cols-3">
           {items.map((t, i) => (
-            <Reveal key={t.name} as="li" index={i} className="dm-card bg-dm-bg p-6">
+            <Reveal key={t.name} as="li" index={i} className="dm-card dm-lift bg-dm-bg p-6">
               <div className="text-dm-accent flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, k) => (
                   <Star key={k} className="h-4 w-4 fill-current" />
@@ -192,7 +193,7 @@ export function CtaBand({
   )
 }
 
-/** Abstract image tile for galleries. No stock photos, no licensing. */
+/** Abstract colour tile for galleries without photos (the interior demo uses Photo instead). */
 export function Tile({ tile, label, className }: { tile: string; label: string; className?: string }) {
   return (
     <figure className={cn('relative overflow-hidden rounded-2xl', tile, className)} aria-label={label}>

@@ -61,7 +61,7 @@ export function DemoNav({ business, ctaHref }: { business: DemoBusiness; ctaHref
           className="text-dm-muted hidden items-center gap-6 text-sm font-medium md:flex"
         >
           {business.nav.map((l) => (
-            <a key={l.href} href={l.href} className="hover:text-dm-ink">
+            <a key={l.href} href={l.href} className="dm-underline hover:text-dm-ink">
               {l.label}
             </a>
           ))}
@@ -163,7 +163,7 @@ export function DemoButton({
     <Link
       href={href}
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-full font-medium transition-[background-color,transform,filter] active:scale-[0.98]',
+        'dm-btn-motion inline-flex items-center justify-center gap-2 rounded-full font-medium',
         variant === 'primary' && 'bg-dm-brand text-dm-on-brand hover:brightness-110',
         variant === 'secondary' && 'border-dm-line-strong text-dm-ink hover:bg-dm-surface border',
         variant === 'inverse' && 'bg-dm-ink text-dm-bg hover:brightness-110',
@@ -185,14 +185,17 @@ export function DemoShell({
   children,
   whatsappNumber,
   ctaHref,
+  className,
 }: {
   business: DemoBusiness
   children: React.ReactNode
   whatsappNumber?: string
   ctaHref?: string
+  /** Extra classes on the wrapper, e.g. a next/font variable for this demo's display face. */
+  className?: string
 }) {
   return (
-    <div className={cn(business.theme, 'bg-dm-bg text-dm-ink flex min-h-dvh flex-col')}>
+    <div className={cn(business.theme, className, 'bg-dm-bg text-dm-ink flex min-h-dvh flex-col')}>
       <DemoRibbon business={business} />
       <DemoNav business={business} ctaHref={ctaHref} />
       <main className="flex-1">{children}</main>

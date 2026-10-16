@@ -23,7 +23,7 @@ Date: 2026-10-07
 | Team | Kannan A (Senior Software Engineer), Sankaralingam K (Software Engineer), Nanthakumar G (Software Engineer) |
 | Tech shown on site | React, Next.js, React Native, TypeScript, Python, Django, Flask, PostgreSQL, REST APIs, AI APIs / LLM integrations |
 | Pricing rule | No price list. Only "Projects start from ₹5,000". Quote after discussion. |
-| Theme | Dark and light, toggle button in header. Dark is default. |
+| Theme | Dark and light, toggle button in header. The default for first-time visitors is set in admin (Site Settings > Branding); light since 2026-10-15. |
 | AI demo | Scripted sample conversations. No live AI at launch. Label it "Sample". |
 | Photos | None at launch. Initials avatar placeholder. Upload later via admin. |
 | Admin panel | Yes. Team, contact details, about text, photos editable. See section 11. |
@@ -309,7 +309,11 @@ Choose Service → Choose Date → Choose Time → Enter Details → Confirm Boo
 |---|---|---|---|
 | Salon | Customers ask the same questions on Instagram: price, timing, availability. | Hero, Services, Pricing, Gallery, Team, Testimonials, Booking, WhatsApp, Location | Appointment Booking · Service Showcase · Gallery · WhatsApp · Google Maps · Mobile Responsive |
 | Restaurant | The menu lives in blurry photos. Reservations happen over calls. | Hero, Menu with categories, Food gallery, About, Offers, Reservation, Location, Contact | Digital Menu · Reservation · WhatsApp · Google Maps · Responsive UI |
-| Interior Designer | Great work, but no place to show it professionally. | Premium hero, Featured projects, Project gallery with hover preview, Project details, Services, About studio, Testimonials, Contact | Project Portfolio · Gallery · Project Pages · Enquiry Form · WhatsApp · Responsive |
+| Interior Designer | Great work, but no place to show it professionally. | Editorial hero with photography, Projects gallery with filters, Project pages with gallery and palette, Services with indicative pricing, Five-stage process and FAQ, About studio, Testimonials, Contact | Project Portfolio · Filters · Project Pages · Pricing · Enquiry Form · WhatsApp · Responsive |
+
+Interior demo update (2026-10-16): palette changed from sage green to warm neutral (ivory #f5f0e8, oat #c9a97d, espresso #3b2a1e) with a Playfair Display heading face; abstract colour tiles replaced by real photos (Unsplash licence, credits in `public/demos/interior/photos/CREDITS.md`); six projects; two new pages, `/demo/interior/projects` (filters: homes, offices, cafes) and `/demo/interior/services` (three packages with indicative prices, five stages, FAQ). The Salon, Booking, AI and Tuition demos keep the abstract tiles.
+
+Restaurant demo update (2026-10-16): same dark amber palette; abstract tiles replaced by real photos (Unsplash licence, credits in `public/demos/restaurant/photos/CREDITS.md`); menu items carry dish photos; two new pages, `/demo/restaurant/order` (menu with quantity steppers, delivery or pickup, ₹300 minimum and free delivery above ₹999, the order handed to WhatsApp as a prefilled message, plus a "Call to order" link) and `/demo/restaurant/private-dining` (candle-light dinner for two, celebration table, private hall; WhatsApp enquiry and call). Home gained an "Occasions" section and an "Order online" button. Content lives in `src/content/demo-restaurant.ts`. Every Saffron Kitchen page sits on a blurred, darkened candle-light photo (`bg-dinner.webp`, 32 KB) painted by a fixed pseudo-element under a dark gradient; surfaces and cards are slightly translucent. Image optimization is WebP only (AVIF encoding hung on one size).
 | Tuition Centre | Parents want course details, timings and results before they call. | Hero, Courses, Classes, Faculty, Results, Testimonials, Gallery, Location, Enquiry | Course Information · Student Enquiries · WhatsApp · Contact Form · Responsive |
 | Before and After | Business exists only on Instagram and Maps. No trust, no enquiries. | Transformation animation from scattered presence to one professional website | Website · Services · Gallery · Contact · WhatsApp · Location · Enquiries |
 | AI-Powered Business | Visitors leave without asking. Owner answers the same questions all day. | Landing page → AI assistant → lead capture → WhatsApp → automation | AI Chat · Lead Capture · Smart FAQ · WhatsApp · Automation |
@@ -381,7 +385,7 @@ Below form: full FAQ (8).
 
 ## 8. Theme
 
-| Token | Dark (default) | Light |
+| Token | Dark | Light (default) |
 |---|---|---|
 | Background | #0B0F1A (near-black navy) | #FFFFFF |
 | Surface / card | #111827 | #F6F7FB |
@@ -450,6 +454,7 @@ Added 2026-10-12 (Phase 7):
 | Services Page (single) | heading, sub-text | Top of the Services page |
 | Legal Pages (single) | Privacy and Terms: title, last updated, intro, sections (title + paragraphs); placeholders `{brand}` `{email}` `{phone}` `{price}` | /privacy, /terms |
 | Home Page (single), extended | Why Us heading + cards; How We Work heading + steps (title, line, icon), numbered automatically | Home "Why Build With Us?" and "From Idea to Launch" |
+| Site Settings, Branding tab (added 2026-10-15) | logo (SVG or PNG), logo for dark theme, site icon (browser tab), default theme (light / dark) | Header and footer logo (the text wordmark stays until a logo is uploaded); favicon (built-in `public/icon.svg` until uploaded); theme first-time visitors see; logo in the ProfessionalService structured data |
 
 Stays in code: demos, case studies, demo mini-sites, section structure, the AI feature list, Before/After lists, Every Screen chips, trust strip, nav and footer company links, contact form options.
 
@@ -460,5 +465,5 @@ Stays in code: demos, case studies, demo mini-sites, section structure, the AI f
 1. Instagram handle.
 2. GitHub org or profile URL.
 3. Confirm the three bio lines in section 6.
-4. Logo: wordmark only at launch, or do you have a symbol?
+4. Logo: wordmark at launch. When a logo is ready, upload it in Site Settings > Branding (SVG or transparent PNG, about 40 px tall, under 20 KB).
 5. Privacy Policy and Terms pages: short standard text, I will draft.

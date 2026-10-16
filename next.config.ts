@@ -29,7 +29,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   serverExternalPackages: ['pino', 'thread-stream'],
   images: {
-    formats: ['image/avif', 'image/webp'],
+    // WebP only: sharp's AVIF encoder hangs on some size combinations (seen with an 828 px request), which left a photo blank.
+    formats: ['image/webp'],
     localPatterns: [{ pathname: '/api/media/file/**' }, { pathname: '/demos/**' }],
     remotePatterns: [{ protocol: 'https', hostname: '*.public.blob.vercel-storage.com' }],
   },

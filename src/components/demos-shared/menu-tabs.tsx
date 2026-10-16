@@ -4,6 +4,7 @@ import { Flame, Leaf } from 'lucide-react'
 import { useState } from 'react'
 import { formatInr } from '@/lib/booking'
 import { cn } from '@/lib/utils'
+import { Photo, type DemoPhoto } from './photo'
 
 export type MenuItem = {
   name: string
@@ -12,6 +13,26 @@ export type MenuItem = {
   veg?: boolean
   spicy?: boolean
   popular?: boolean
+  /** Optional dish photo, shown as a thumbnail. */
+  photo?: DemoPhoto
+}
+
+/** Veg / non-veg mark used by the menu and the order page. */
+export function VegMark({ veg }: { veg?: boolean }) {
+  return (
+    <span
+      className={cn(
+        'inline-block h-3 w-3 shrink-0 rounded-sm border-2',
+        veg ? 'border-emerald-500' : 'border-red-500',
+      )}
+      role="img"
+      aria-label={veg ? 'Vegetarian' : 'Non-vegetarian'}
+    >
+      <span
+        className={cn('block h-full w-full scale-50 rounded-full', veg ? 'bg-emerald-500' : 'bg-red-500')}
+      />
+    </span>
+  )
 }
 export type MenuCategory = { name: string; items: readonly MenuItem[] }
 
@@ -45,22 +66,11 @@ export function MenuTabs({ categories }: { categories: readonly MenuCategory[] }
       <div role="tabpanel" aria-label={cat.name}>
         <ul className="mt-6 grid gap-3 md:grid-cols-2">
           {cat.items.map((m) => (
-            <li key={m.name} className="dm-card flex items-start justify-between gap-4 p-4">
-              <div className="min-w-0">
+            <li key={m.name} className="dm-card dm-lift flex items-start justify-between gap-4 p-4">
+              {m.photo && <Photo photo={m.photo} className="h-16 w-16 shrink-0 rounded-xl" sizes="64px" />}
+              <div className="min-w-0 flex-1">
                 <p className="flex items-center gap-2 font-display font-semibold">
-                  <span
-                    className={cn(
-                      'inline-block h-3 w-3 shrink-0 rounded-sm border-2',
-                      m.veg ? 'border-emerald-500' : 'border-red-500',
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        'block h-full w-full scale-50 rounded-full',
-                        m.veg ? 'bg-emerald-500' : 'bg-red-500',
-                      )}
-                    />
-                  </span>
+                  <VegMark veg={m.veg} />
                   {m.name}
                   {m.spicy && <Flame className="text-dm-accent h-3.5 w-3.5" aria-label="Spicy" />}
                   {m.popular && (

@@ -91,6 +91,7 @@
   --color-dm-brand-soft: var(--dm-brand-soft);
   --color-dm-on-brand: var(--dm-on-brand);
   --color-dm-accent: var(--dm-accent);
+  --color-dm-accent-ink: var(--dm-accent-ink, var(--dm-accent));
   --color-dm-ring: var(--dm-ring);
 
   --font-sans: 'KF Rupee', var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -165,22 +166,30 @@
   }
 }
 
-/* Atelier Nila (interior): warm stone, deep sage, brass. */
+/* Atelier Nila (interior): ivory, oat beige, ash wood, espresso. Editorial serif headings. */
 .theme-nila {
-  --dm-bg: #f7f4ef;
+  --dm-bg: #f5f0e8;
   --dm-surface: #ffffff;
-  --dm-surface-2: #ece7df;
-  --dm-ink: #1f2420;
-  --dm-muted: #5f635b;
-  --dm-line: rgba(31, 36, 32, 0.1);
-  --dm-line-strong: rgba(31, 36, 32, 0.22);
-  --dm-brand: #3f5a4a;
-  --dm-brand-ink: #2f4538;
-  --dm-brand-soft: #dde8df;
-  --dm-on-brand: #ffffff;
-  --dm-accent: #b58b5a;
-  --dm-ring: rgba(63, 90, 74, 0.35);
+  --dm-surface-2: #ebe3d8;
+  --dm-ink: #3b2a1e;
+  --dm-muted: #6f5f52;
+  --dm-line: rgba(59, 42, 30, 0.1);
+  --dm-line-strong: rgba(59, 42, 30, 0.22);
+  --dm-brand: #3b2a1e;
+  --dm-brand-ink: #2a1d14;
+  --dm-brand-soft: #e9dfd2;
+  --dm-on-brand: #f7f2ea;
+  --dm-accent: #c9a97d;
+  --dm-accent-ink: #7a5a38;
+  --dm-ring: rgba(59, 42, 30, 0.3);
   color-scheme: light;
+
+  /* Serif display face (loaded by the interior pages only); Sora is never requested here. */
+  .font-display {
+    font-family: var(--font-playfair), 'KF Rupee', Georgia, 'Times New Roman', serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
 }
 
 /* Vidya Academy (tuition): clean paper, indigo, saffron. */
@@ -199,4 +208,126 @@
   --dm-accent: #f59e0b;
   --dm-ring: rgba(55, 48, 163, 0.35);
   color-scheme: light;
+}
+
+/* Hover motion for the demo sites. Hover-capable devices only; off under reduced motion. */
+@utility dm-zoom {
+  overflow: hidden;
+  img {
+    transition:
+      transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      filter 700ms ease;
+  }
+  figcaption {
+    transition:
+      transform 300ms ease,
+      background-color 300ms ease;
+  }
+  @media (hover: hover) {
+    &:hover img {
+      transform: scale(1.06);
+      filter: saturate(1.08);
+    }
+    &:hover figcaption {
+      transform: translateY(-2px);
+      background-color: rgba(0, 0, 0, 0.55);
+    }
+  }
+}
+
+/* Cards that respond to the cursor: a small lift, a deeper shadow, a stronger edge. */
+@utility dm-lift {
+  transition:
+    transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 300ms ease,
+    border-color 300ms ease;
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.6);
+      border-color: var(--dm-line-strong);
+    }
+  }
+}
+
+/* Buttons: lift on hover, press on click. */
+@utility dm-btn-motion {
+  transition:
+    transform 250ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 250ms ease,
+    filter 250ms ease,
+    background-color 250ms ease;
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.55);
+    }
+  }
+  &:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: none;
+  }
+}
+
+/* Nav links: an underline that draws in from the left. */
+@utility dm-underline {
+  padding-bottom: 2px;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition:
+    background-size 300ms ease,
+    color 200ms ease;
+  @media (hover: hover) {
+    &:hover {
+      background-size: 100% 1px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dm-zoom img,
+  .dm-zoom figcaption,
+  .dm-lift,
+  .dm-btn-motion,
+  .dm-underline {
+    transition: none !important;
+  }
+  .dm-zoom:hover img,
+  .dm-lift:hover,
+  .dm-btn-motion:hover {
+    transform: none !important;
+  }
+}
+
+/* Saffron Kitchen: a dim candle-lit dining room sits behind every page. The photo is
+   painted by a fixed pseudo-element under a dark gradient so text keeps its contrast;
+   surfaces and cards go slightly translucent to let the scene through. */
+.theme-saffron {
+  position: relative;
+  isolation: isolate;
+  --dm-surface: rgba(33, 26, 22, 0.9);
+  --dm-surface-2: rgba(43, 34, 29, 0.93);
+}
+.theme-saffron::before,
+.theme-saffron::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.theme-saffron::before {
+  background: url('/demos/restaurant/photos/bg-dinner.webp') center / cover no-repeat;
+}
+.theme-saffron::after {
+  background:
+    radial-gradient(70% 50% at 70% 20%, rgba(224, 137, 43, 0.12), transparent 70%),
+    linear-gradient(
+      180deg,
+      rgba(23, 18, 16, 0.78) 0%,
+      rgba(23, 18, 16, 0.88) 55%,
+      rgba(23, 18, 16, 0.93) 100%
+    );
 }
