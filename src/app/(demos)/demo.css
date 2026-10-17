@@ -6,40 +6,114 @@
  * Each business sets the tokens through a theme class on its wrapper.
  */
 
-/* Nova Studio (Booking demo): light, warm, teal. */
+/* Nova Studio (Booking demo): Sand and Sea. Resort calm: sand paper, navy ink, gold accent,
+   Cormorant headings, Jost body, soft 24px radii, slow eases. */
 .theme-nova {
-  --dm-bg: #fbfaf7;
+  --dm-bg: #f6f1ea;
   --dm-surface: #ffffff;
-  --dm-surface-2: #f3f0ea;
-  --dm-ink: #1c1917;
-  --dm-muted: #6b665f;
-  --dm-line: rgba(28, 25, 23, 0.1);
-  --dm-line-strong: rgba(28, 25, 23, 0.2);
-  --dm-brand: #0f766e;
-  --dm-brand-ink: #115e59;
-  --dm-brand-soft: #ccfbf1;
+  --dm-surface-2: #ece4d8;
+  --dm-ink: #1b2a41;
+  --dm-muted: #4f5d75;
+  --dm-line: rgba(27, 42, 65, 0.1);
+  --dm-line-strong: rgba(27, 42, 65, 0.26);
+  --dm-brand: #1b2a41;
+  --dm-brand-ink: #8a6424;
+  --dm-brand-soft: #e6ecf3;
   --dm-on-brand: #ffffff;
-  --dm-accent: #d97706;
-  --dm-ring: rgba(15, 118, 110, 0.35);
+  --dm-accent: #b8893f;
+  --dm-accent-ink: #7a5520;
+  --dm-ring: rgba(27, 42, 65, 0.3);
+  --dm-glass: rgba(255, 255, 255, 0.78);
+  --dm-font-body: var(--font-jost);
+  --dm-font-display: var(--font-cormorant), Georgia, 'Times New Roman', serif;
+  --dm-radius: 1.5rem;
+  --dm-radius-btn: 999px;
+  --dm-radius-img: 1.5rem;
+  --dm-dur: 1s;
+  --dm-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dm-word-gap: 110ms;
   color-scheme: light;
+  .font-display {
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+  .font-display em {
+    font-style: italic;
+    color: var(--dm-accent-ink);
+  }
+  /* One Jost file: heavier utilities render as 400 (no faux bold); hierarchy comes from size and caps. */
+  .font-medium,
+  .font-semibold,
+  .font-bold {
+    font-weight: 400;
+  }
+  /* Brand is the navy ink, so text links take the gold to stay distinguishable from body text. */
+  a.text-dm-brand {
+    color: var(--dm-accent-ink);
+  }
 }
 
-/* Velvet Salon: blush paper, deep rose, gold accent. */
+/* Velvet Salon: Champagne Noir. Fashion editorial: warm black, champagne gold, blush accent,
+   Bodoni headings with italic accents, Montserrat body, sharp 4px radii, gold hairlines. */
 .theme-velvet {
-  --dm-bg: #fdf8f6;
-  --dm-surface: #ffffff;
-  --dm-surface-2: #f7ebe7;
-  --dm-ink: #2a1b1e;
-  --dm-muted: #76616a;
-  --dm-line: rgba(42, 27, 30, 0.1);
-  --dm-line-strong: rgba(42, 27, 30, 0.22);
-  --dm-brand: #9f1239;
-  --dm-brand-ink: #881337;
-  --dm-brand-soft: #ffe4e6;
-  --dm-on-brand: #ffffff;
-  --dm-accent: #c49a5a;
-  --dm-ring: rgba(159, 18, 57, 0.35);
-  color-scheme: light;
+  --dm-bg: #141210;
+  --dm-surface: #1c1917;
+  --dm-surface-2: #23201c;
+  --dm-ink: #f5efe6;
+  --dm-muted: #b9ae9f;
+  --dm-line: rgba(212, 167, 87, 0.22);
+  --dm-line-strong: rgba(212, 167, 87, 0.5);
+  --dm-brand: #d4a757;
+  --dm-brand-ink: #e2bb72;
+  --dm-brand-soft: rgba(212, 167, 87, 0.14);
+  --dm-on-brand: #1a1410;
+  --dm-accent: #e8b4b8;
+  --dm-accent-ink: #e8b4b8;
+  --dm-ring: rgba(212, 167, 87, 0.45);
+  --dm-glass: rgba(28, 25, 23, 0.8);
+  --dm-font-body: var(--font-montserrat);
+  --dm-font-display: var(--font-bodoni), 'Didot', 'Bodoni MT', Georgia, serif;
+  --dm-radius: 4px;
+  --dm-radius-btn: 2px;
+  --dm-radius-img: 2px;
+  --dm-dur: 0.9s;
+  --dm-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dm-word-gap: 100ms;
+  color-scheme: dark;
+  font-weight: 300;
+  .font-display {
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .font-display em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--dm-brand-ink);
+  }
+  .font-semibold,
+  .font-bold {
+    font-weight: 500;
+  }
+  /* Buttons read as uppercase tracked labels. */
+  .dm-btn-motion {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.72rem;
+    font-weight: 500;
+  }
+  /* Gold hairline frame around every photo. */
+  figure.dm-zoom,
+  figure.dm-frame {
+    outline: 1px solid var(--dm-line-strong);
+    outline-offset: 6px;
+  }
+  /* Champagne shimmer on gold accents and the main button. */
+  .dm-shimmer::after {
+    background: linear-gradient(90deg, transparent, rgba(255, 244, 214, 0.45), transparent);
+  }
+  .dm-progress {
+    background: var(--dm-brand);
+  }
 }
 
 /* Saffron Kitchen: dark, warm, amber. */
@@ -60,22 +134,60 @@
   color-scheme: dark;
 }
 
-/* Pulse Fitness: deep navy, electric lime. */
+/* Pulse Fitness (AI demo): dark navy, electric green, sky accent. Sporty tech: Bebas Neue
+   uppercase headings, Space Grotesk body and numbers, 6px radii, thick buttons, fast motion. */
 .theme-pulse {
   --dm-bg: #0b1020;
   --dm-surface: #121a30;
   --dm-surface-2: #1a2440;
   --dm-ink: #f3f6ff;
-  --dm-muted: #9aa5c4;
+  --dm-muted: #a4aec9;
   --dm-line: rgba(243, 246, 255, 0.1);
-  --dm-line-strong: rgba(243, 246, 255, 0.22);
+  --dm-line-strong: rgba(243, 246, 255, 0.24);
   --dm-brand: #a3e635;
   --dm-brand-ink: #bef264;
   --dm-brand-soft: rgba(163, 230, 53, 0.14);
   --dm-on-brand: #0b1020;
   --dm-accent: #38bdf8;
+  --dm-accent-ink: #7dd3fc;
   --dm-ring: rgba(163, 230, 53, 0.4);
+  --dm-glass: rgba(18, 26, 48, 0.82);
+  --dm-font-body: var(--font-space);
+  --dm-font-display: var(--font-bebas), 'Impact', 'Arial Narrow Bold', sans-serif;
+  --dm-radius: 6px;
+  --dm-radius-btn: 6px;
+  --dm-radius-img: 6px;
+  --dm-dur: 0.4s;
+  --dm-ease: cubic-bezier(0.2, 0, 0, 1);
+  --dm-word-gap: 45ms;
   color-scheme: dark;
+  .font-display {
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 0.95;
+  }
+  .font-display em {
+    font-style: normal;
+    color: var(--dm-brand);
+  }
+  .dm-btn-motion {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .dm-progress {
+    background: var(--dm-brand);
+    height: 4px;
+  }
+  /* Gritty, high-contrast photo treatment. */
+  figure.dm-zoom img,
+  figure.dm-grit img {
+    filter: contrast(1.12) saturate(0.9);
+  }
+  .dm-word > span {
+    animation-timing-function: cubic-bezier(0.2, 0.9, 0.1, 1);
+  }
 }
 
 @theme inline {
@@ -94,8 +206,10 @@
   --color-dm-accent-ink: var(--dm-accent-ink, var(--dm-accent));
   --color-dm-ring: var(--dm-ring);
 
-  --font-sans: 'KF Rupee', var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'KF Rupee', var(--font-sora), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'KF Rupee', var(--dm-font-body, var(--font-inter)), ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    'KF Rupee', var(--dm-font-display, var(--font-sora)), var(--dm-font-body, var(--font-inter)),
+    ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -124,7 +238,7 @@
 @utility dm-card {
   background: var(--dm-surface);
   border: 1px solid var(--dm-line);
-  border-radius: 1.25rem;
+  border-radius: var(--dm-radius, 1.25rem);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
@@ -184,21 +298,22 @@
   --dm-ring: rgba(59, 42, 30, 0.3);
   color-scheme: light;
 
-  /* Serif display face (loaded by the interior pages only); Sora is never requested here. */
+  /* Serif display face, loaded by the interior pages only. */
+  --dm-font-display: var(--font-playfair), Georgia, 'Times New Roman', serif;
   .font-display {
-    font-family: var(--font-playfair), 'KF Rupee', Georgia, 'Times New Roman', serif;
     font-weight: 600;
     letter-spacing: -0.01em;
   }
 }
 
-/* Vidya Academy (tuition): clean paper, indigo, saffron. */
+/* Vidya Academy (tuition): clean paper, indigo, saffron. Friendly and readable: Lexend headings,
+   Nunito body at 17px, rounded 20px cards, pill buttons, soft pastel section tints, bouncy motion. */
 .theme-vidya {
   --dm-bg: #f8f9ff;
   --dm-surface: #ffffff;
   --dm-surface-2: #eef0fb;
   --dm-ink: #151a3a;
-  --dm-muted: #5c6283;
+  --dm-muted: #525a7d;
   --dm-line: rgba(21, 26, 58, 0.1);
   --dm-line-strong: rgba(21, 26, 58, 0.22);
   --dm-brand: #3730a3;
@@ -206,8 +321,43 @@
   --dm-brand-soft: #e0e7ff;
   --dm-on-brand: #ffffff;
   --dm-accent: #f59e0b;
+  --dm-accent-ink: #9a5b00;
   --dm-ring: rgba(55, 48, 163, 0.35);
+  --dm-glass: rgba(255, 255, 255, 0.82);
+  --dm-tint-mint: #e9f7f0;
+  --dm-tint-peach: #fff1e3;
+  --dm-tint-sky: #e8f1ff;
+  --dm-font-body: var(--font-nunito);
+  --dm-font-display: var(--font-lexend);
+  --dm-radius: 1.25rem;
+  --dm-radius-btn: 999px;
+  --dm-radius-img: 1.25rem;
+  --dm-dur: 0.6s;
+  --dm-ease: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --dm-word-gap: 70ms;
   color-scheme: light;
+  font-size: 1.0625rem;
+  .font-display {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .font-display em {
+    font-style: normal;
+    color: var(--dm-brand);
+  }
+  .dm-btn-motion {
+    font-weight: 700;
+  }
+  .dm-progress {
+    background: var(--dm-accent);
+  }
+  /* The bounce is for cards and buttons; text reveals stay smooth. */
+  .dm-word > span,
+  .dm-fade-up,
+  .reveal {
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
 }
 
 /* Hover motion for the demo sites. Hover-capable devices only; off under reduced motion. */
@@ -330,4 +480,475 @@
       rgba(23, 18, 16, 0.88) 55%,
       rgba(23, 18, 16, 0.93) 100%
     );
+}
+
+/* ------------------------------------------------------------------------ */
+/* Motion layer for the demo sites (see components/demos-shared/motion.tsx). */
+/* Transform and opacity only. Personality per theme via --dm-dur / --dm-ease. */
+/* ------------------------------------------------------------------------ */
+
+:root {
+  --dm-dur: 0.7s;
+  --dm-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Scroll reveals (in and out) follow the theme's timing. */
+.reveal {
+  transition-duration: var(--dm-dur);
+  transition-timing-function: var(--dm-ease);
+}
+
+/* Scroll progress bar, driven by the page scroll, no JavaScript. */
+@keyframes dm-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.dm-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 60;
+  height: 3px;
+  transform-origin: 0 50%;
+  background: var(--dm-brand);
+  transform: scaleX(0);
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  .dm-progress {
+    animation: dm-grow linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
+/* Hero headline: each word slides up out of a clipped box, staggered. */
+@keyframes dm-word-in {
+  from {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.dm-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.dm-word > span {
+  display: inline-block;
+  animation: dm-word-in var(--dm-dur) var(--dm-ease) both;
+  animation-delay: calc(var(--i, 0) * var(--dm-word-gap, 90ms) + 120ms);
+}
+@keyframes dm-word-in-soft {
+  from {
+    transform: translateY(0.35em);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@media (max-width: 1023.98px) {
+  .dm-word {
+    overflow: visible;
+  }
+  .dm-word > span {
+    animation-name: dm-word-in-soft;
+    animation-duration: 0.6s;
+  }
+}
+@keyframes dm-fade-up {
+  from {
+    transform: translateY(18px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.dm-fade-up {
+  animation: dm-fade-up var(--dm-dur) var(--dm-ease) both;
+  animation-delay: calc(var(--i, 0) * 110ms + 520ms);
+}
+
+/* Hero photo: settles from a slight zoom. Transform only, so the browser still counts the
+   image as painted for Largest Contentful Paint (an opacity-0 start would not). */
+@keyframes dm-settle {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@media (min-width: 1024px) {
+  .dm-settle {
+    animation: dm-settle calc(var(--dm-dur) * 1.6) var(--dm-ease) both;
+  }
+}
+
+/* Ambient motion: drifting blobs and a shimmer sweep on the main CTA. */
+@keyframes dm-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(4%, -6%, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(-3%, 4%, 0) scale(0.96);
+  }
+}
+.dm-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.55;
+  pointer-events: none;
+  animation: dm-drift 16s ease-in-out infinite alternate;
+}
+@keyframes dm-shimmer {
+  0%,
+  60% {
+    transform: translateX(-130%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(230%) skewX(-18deg);
+  }
+}
+.dm-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.dm-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  animation: dm-shimmer 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Scroll-driven: parallax on large photos, scale-in for cards. Progressive. */
+@keyframes dm-parallax {
+  from {
+    transform: translateY(calc(var(--dm-parallax, 10%) * -1)) scale(1.12);
+  }
+  to {
+    transform: translateY(var(--dm-parallax, 10%)) scale(1.12);
+  }
+}
+@keyframes dm-scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (min-width: 1024px) {
+    .dm-parallax img,
+    .dm-parallax > .dm-parallax-layer {
+      animation: dm-parallax linear both;
+      animation-timeline: view();
+    }
+  }
+  .dm-scale-in {
+    animation: dm-scale-in var(--dm-ease) both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }
+}
+
+/* Pinned horizontal story: the sticky stage holds while the track slides. */
+.dm-pin {
+  position: relative;
+}
+.dm-pin-stage {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+.dm-pin-track {
+  display: flex;
+  gap: 1.5rem;
+  will-change: transform;
+}
+@keyframes dm-slide-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-1 * var(--dm-track-shift, 60%)));
+  }
+}
+@media (min-width: 1024px) {
+  @supports (animation-timeline: view()) {
+    .dm-pin {
+      height: var(--dm-pin-height, 320dvh);
+    }
+    .dm-pin-track {
+      animation: dm-slide-x linear both;
+      animation-timeline: view();
+      animation-range: contain 0% contain 100%;
+    }
+  }
+}
+@media (max-width: 1023.98px) {
+  .dm-pin-stage {
+    position: static;
+    height: auto;
+  }
+  .dm-pin-track {
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scroll-snap-type: x mandatory;
+  }
+  .dm-pin-track > * {
+    scroll-snap-align: start;
+  }
+}
+@supports not (animation-timeline: view()) {
+  .dm-pin-stage {
+    position: static;
+    height: auto;
+  }
+  .dm-pin-track {
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scroll-snap-type: x mandatory;
+  }
+  .dm-pin-track > * {
+    scroll-snap-align: start;
+  }
+}
+
+/* Custom cursor: dot + lagging ring with an optional label. Desktop only. */
+.dm-cursor-dot,
+.dm-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.dm-cursor-visible .dm-cursor-dot,
+.dm-cursor-visible .dm-cursor-ring {
+  opacity: 1;
+}
+.dm-cursor-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dm-brand);
+}
+.dm-cursor-ring {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--dm-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    width 0.3s var(--dm-ease),
+    height 0.3s var(--dm-ease),
+    background-color 0.3s,
+    opacity 0.3s;
+}
+.dm-cursor-ring.is-hover {
+  width: 56px;
+  height: 56px;
+  background: color-mix(in oklab, var(--dm-brand) 14%, transparent);
+}
+.dm-cursor-ring.has-label {
+  width: 84px;
+  height: 84px;
+  background: var(--dm-brand);
+  border-color: var(--dm-brand);
+}
+.dm-cursor-ring.is-down {
+  transform-origin: center;
+}
+.dm-cursor-ring span {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dm-on-brand);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.dm-cursor-ring.has-label span {
+  opacity: 1;
+}
+.dm-has-cursor a,
+.dm-has-cursor button,
+.dm-has-cursor [data-cursor] {
+  cursor: none;
+}
+.dm-has-cursor {
+  cursor: none;
+}
+
+/* Magnetic buttons and tilt cards. */
+[data-magnetic] {
+  transition: transform 0.35s var(--dm-ease);
+}
+[data-tilt] {
+  transform-style: preserve-3d;
+  transition:
+    transform 0.4s var(--dm-ease),
+    box-shadow 0.4s;
+  position: relative;
+}
+[data-tilt].is-tilting {
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-4px);
+  transition: box-shadow 0.4s;
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.5);
+}
+[data-tilt]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--glare-x, 50%) var(--glare-y, 50%),
+    rgba(255, 255, 255, 0.22),
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+[data-tilt].is-tilting::after {
+  opacity: 1;
+}
+
+/* Everything above is decoration: keep it still for people who asked for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .dm-word > span,
+  .dm-fade-up,
+  .dm-settle,
+  .dm-blob,
+  .dm-shimmer::after,
+  .dm-parallax img,
+  .dm-parallax > .dm-parallax-layer,
+  .dm-scale-in,
+  .dm-pin-track {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .dm-pin {
+    height: auto !important;
+  }
+  .dm-pin-stage {
+    position: static;
+    height: auto;
+  }
+  [data-tilt].is-tilting {
+    transform: none;
+  }
+}
+
+/* Small tracked labels and frosted glass panels, used by the resort-style demos. */
+@utility dm-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+@utility dm-glass {
+  background: var(--dm-surface);
+  border: 1px solid var(--dm-line);
+  @media (min-width: 1024px) {
+    background: var(--dm-glass, rgba(255, 255, 255, 0.75));
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+}
+
+/* Photo frame hook (themes decide the look, e.g. the salon's gold hairline). */
+@utility dm-frame {
+  position: relative;
+}
+
+/* Diagonal section cut (top edge) and data widgets for the sporty demo. */
+@utility dm-diagonal {
+  clip-path: polygon(0 0, 100% 3vw, 100% 100%, 0 100%);
+  padding-top: calc(3vw + 1rem);
+}
+@utility dm-grit {
+  position: relative;
+}
+@keyframes dm-ring-fill {
+  from {
+    stroke-dashoffset: 100;
+  }
+}
+@keyframes dm-line-draw {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.dm-ring circle:last-child {
+  stroke-dashoffset: calc(100 - var(--dm-ring-value, 0));
+}
+.is-visible .dm-ring circle:last-child {
+  animation: dm-ring-fill 1.4s var(--dm-ease) both;
+}
+.dm-pulse-line polyline {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+.is-visible .dm-pulse-line polyline {
+  animation: dm-line-draw 1.6s linear 0.2s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .is-visible .dm-ring circle:last-child,
+  .is-visible .dm-pulse-line polyline {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .dm-ring circle:last-child {
+    stroke-dashoffset: calc(100 - var(--dm-ring-value, 0));
+  }
+}
+
+/* Horizontal bar that grows to its value when revealed. */
+.dm-bar {
+  width: var(--dm-bar, 0%);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 1.2s var(--dm-ease) 0.2s;
+}
+.is-visible .dm-bar {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .dm-bar {
+    transform: none;
+    transition: none;
+  }
 }

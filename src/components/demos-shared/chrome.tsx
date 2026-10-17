@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, Clock, MapPin, MessageCircle, Sparkles } from 'lucide-react'
+import { demoFontClass } from '@/app/(demos)/fonts'
 import { demoNotice, type DemoBusiness } from '@/content/demo-businesses'
 import { whatsappLink } from '@/lib/whatsapp'
 import { cn } from '@/lib/utils'
@@ -8,7 +9,9 @@ import { cn } from '@/lib/utils'
 export function DemoRibbon({ business }: { business: DemoBusiness }) {
   return (
     <div className="bg-[#0b0f1a] text-white">
-      <div className="container-dm flex flex-wrap items-center justify-between gap-x-6 gap-y-1 py-2 text-xs">
+      {/* Two fixed rows below sm: wrapping depended on font metrics and shifted the whole page once the
+          web font arrived (CLS). On wider screens one row always fits. */}
+      <div className="container-dm flex flex-col gap-y-1 py-2 text-xs sm:flex-row sm:items-center sm:justify-between sm:gap-x-6">
         <p className="flex items-center gap-2">
           <Sparkles className="h-3.5 w-3.5 text-cyan-300" />
           <span className="text-white/80">{demoNotice.label}</span>
@@ -53,7 +56,7 @@ export function DemoLogo({ business, className }: { business: DemoBusiness; clas
 export function DemoNav({ business, ctaHref }: { business: DemoBusiness; ctaHref?: string }) {
   const href = ctaHref ?? business.bookPath ?? business.path
   return (
-    <header className="border-dm-line bg-dm-bg/85 sticky top-0 z-40 border-b backdrop-blur">
+    <header className="border-dm-line bg-dm-bg/95 lg:bg-dm-bg/85 sticky top-0 z-40 border-b lg:backdrop-blur">
       <div className="container-dm flex h-16 items-center justify-between gap-4">
         <DemoLogo business={business} />
         <nav
@@ -117,7 +120,10 @@ export function DemoFooter({ business }: { business: DemoBusiness }) {
           <p>© 2026 {business.name}. Sample business for a website concept.</p>
           <p>
             Website concept by{' '}
-            <Link href="/" className="text-dm-ink font-medium hover:underline">
+            <Link
+              href="/"
+              className="text-dm-ink decoration-dm-line-strong font-medium underline underline-offset-4 hover:decoration-current"
+            >
               KAPOSA FUTEXI
             </Link>
           </p>
@@ -163,7 +169,7 @@ export function DemoButton({
     <Link
       href={href}
       className={cn(
-        'dm-btn-motion inline-flex items-center justify-center gap-2 rounded-full font-medium',
+        'dm-btn-motion inline-flex items-center justify-center gap-2 rounded-[var(--dm-radius-btn,999px)] font-medium',
         variant === 'primary' && 'bg-dm-brand text-dm-on-brand hover:brightness-110',
         variant === 'secondary' && 'border-dm-line-strong text-dm-ink hover:bg-dm-surface border',
         variant === 'inverse' && 'bg-dm-ink text-dm-bg hover:brightness-110',
@@ -195,7 +201,15 @@ export function DemoShell({
   className?: string
 }) {
   return (
-    <div className={cn(business.theme, className, 'bg-dm-bg text-dm-ink flex min-h-dvh flex-col')}>
+    <div
+      className={cn(
+        business.theme,
+        demoFontClass[business.id],
+        className,
+        'bg-dm-bg text-dm-ink flex min-h-dvh flex-col font-sans',
+      )}
+    >
+      <div className="dm-progress" aria-hidden />
       <DemoRibbon business={business} />
       <DemoNav business={business} ctaHref={ctaHref} />
       <main className="flex-1">{children}</main>

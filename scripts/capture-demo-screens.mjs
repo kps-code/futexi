@@ -40,12 +40,15 @@ const bookTime = (bookPath, service) => ({
 const PLANS = {
   booking: [
     { name: 'home', path: '/demo/booking', steps: [] },
+    { name: 'treatments', path: '/demo/booking/treatments', steps: [] },
+    { name: 'membership', path: '/demo/booking/membership', steps: [] },
     { name: 'book-service', path: '/demo/booking/book', steps: [] },
     bookTime('/demo/booking/book', 'Signature Facial'),
   ],
   salon: [
     { name: 'home', path: '/demo/salon', steps: [] },
-    { name: 'services', path: '/demo/salon#services', steps: [{ scrollTo: '#services' }] },
+    { name: 'services', path: '/demo/salon/services', steps: [] },
+    { name: 'bridal', path: '/demo/salon/bridal', steps: [] },
     bookTime('/demo/salon/book', 'Haircut & Style'),
   ],
   restaurant: [
@@ -72,6 +75,8 @@ const PLANS = {
       path: '/demo/ai-business',
       steps: [{ click: 'button:has-text("Plans and pricing")' }, { waitFor: 'text=Monthly ₹1,999' }],
     },
+    { name: 'schedule', path: '/demo/ai-business/schedule', steps: [] },
+    { name: 'trainers', path: '/demo/ai-business/trainers', steps: [] },
     { name: 'plans', path: '/demo/ai-business#plans', steps: [{ scrollTo: '#plans' }] },
   ],
   interior: [
@@ -83,7 +88,8 @@ const PLANS = {
   ],
   tuition: [
     { name: 'home', path: '/demo/tuition', steps: [] },
-    { name: 'courses', path: '/demo/tuition#services', steps: [{ scrollTo: '#services' }] },
+    { name: 'courses', path: '/demo/tuition/courses', steps: [] },
+    { name: 'results', path: '/demo/tuition/results', steps: [] },
     { name: 'enquire', path: '/demo/tuition#enquire', steps: [{ scrollTo: '#enquire' }] },
   ],
 }
@@ -112,7 +118,8 @@ try {
     const page = await context.newPage()
     for (const shot of plan) {
       if (device === 'tablet' && shot.name !== 'home') continue
-      await page.goto(`${base}${shot.path}`, { waitUntil: 'networkidle' })
+      await page.goto(`${base}${shot.path}`, { waitUntil: 'load', timeout: 120_000 })
+      await page.waitForTimeout(1200)
       for (const step of shot.steps) {
         if (step.click) await page.locator(step.click).first().click()
         if (step.waitFor) await page.locator(step.waitFor).first().waitFor({ timeout: 15_000 })
@@ -129,6 +136,8 @@ try {
       await page.evaluate(() =>
         document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('is-visible')),
       )
+      // The Next.js dev indicator must not appear in case-study images when capturing from the dev server.
+      await page.addStyleTag({ content: 'nextjs-portal { display: none !important; }' })
       await page.waitForTimeout(400)
       const png = await page.screenshot({ type: 'png', fullPage: false })
       const file = path.join(outDir, `${device}-${shot.name}.webp`)

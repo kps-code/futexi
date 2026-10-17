@@ -55,7 +55,7 @@ test.describe('Enquiry demos', () => {
   test('tuition: courses, batches and the admission enquiry', async ({ page }) => {
     await page.goto('/demo/tuition')
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Small batches')
-    await expect(page.getByRole('heading', { name: 'NEET Foundation' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'NEET Foundation' }).first()).toBeVisible()
     await expect(page.locator('#batches')).toBeAttached()
     await expect(page.locator('#results')).toBeAttached()
 

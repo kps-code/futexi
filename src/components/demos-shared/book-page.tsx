@@ -7,11 +7,13 @@ import { DemoShell } from './chrome'
 export function DemoBookPage({
   business,
   initialService,
+  initialDate,
   title,
   intro,
 }: {
   business: DemoBusiness
   initialService?: string
+  initialDate?: string
   title: string
   intro: string
 }) {
@@ -29,6 +31,7 @@ export function DemoBookPage({
             business={business}
             dates={dates}
             initialService={initialService}
+            initialDate={initialDate}
             requestHref={`/contact?type=${business.contactType}`}
           />
         </div>

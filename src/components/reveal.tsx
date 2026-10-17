@@ -7,6 +7,7 @@ type RevealProps = {
   /** Stagger index: delay = index * 80ms (capped at 600ms) */
   index?: number
   as?: 'div' | 'li' | 'section' | 'article'
+  id?: string
 }
 
 /**
@@ -15,11 +16,11 @@ type RevealProps = {
  * flips `is-visible` when the element scrolls into view. Without JavaScript
  * everything stays visible (see globals.css).
  */
-export function Reveal({ children, className, index = 0, as: Tag = 'div' }: RevealProps) {
+export function Reveal({ children, className, index = 0, as: Tag = 'div', id }: RevealProps) {
   const delay = Math.min(index * 80, 600)
   const style = delay ? ({ '--reveal-delay': `${delay}ms` } as CSSProperties) : undefined
   return (
-    <Tag data-reveal="" className={cn('reveal', className)} style={style}>
+    <Tag data-reveal="" id={id} className={cn('reveal', className)} style={style}>
       {children}
     </Tag>
   )

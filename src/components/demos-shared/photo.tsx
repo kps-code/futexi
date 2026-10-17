@@ -19,6 +19,7 @@ export function Photo({
   priority = false,
   imgClassName,
   zoom = true,
+  quality,
 }: {
   photo: DemoPhoto
   label?: string
@@ -28,10 +29,16 @@ export function Photo({
   imgClassName?: string
   /** Zoom the image slightly while the cursor is over it. */
   zoom?: boolean
+  /** Encoder quality for next/image (default 75); heroes use 60 to load faster. */
+  quality?: number
 }) {
   return (
     <figure
-      className={cn('bg-dm-surface-2 relative overflow-hidden rounded-2xl', zoom && 'dm-zoom', className)}
+      className={cn(
+        'bg-dm-surface-2 relative overflow-hidden rounded-[var(--dm-radius-img,1rem)]',
+        zoom && 'dm-zoom',
+        className,
+      )}
     >
       <Image
         src={photo.src}
@@ -39,6 +46,7 @@ export function Photo({
         fill
         sizes={sizes}
         priority={priority}
+        quality={quality}
         className={cn('object-cover', imgClassName)}
       />
       {label && (

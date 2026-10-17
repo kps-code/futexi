@@ -8,13 +8,14 @@ export const dynamic = 'force-dynamic'
 export default async function NovaBookPage({
   searchParams,
 }: {
-  searchParams: Promise<{ service?: string }>
+  searchParams: Promise<{ service?: string; date?: string }>
 }) {
-  const { service } = await searchParams
+  const { service, date } = await searchParams
   return (
     <DemoBookPage
       business={nova}
       initialService={service}
+      initialDate={date}
       title="Book your visit"
       intro="Choose a service, pick a free slot, and confirm. About a minute."
     />

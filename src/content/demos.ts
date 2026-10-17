@@ -57,12 +57,18 @@ export const demos: readonly Demo[] = [
     contactType: 'booking',
     status: 'live',
     liveHref: '/demo/booking',
+    screensVersion: 4,
     screens: {
       desktop: [
         {
           src: '/demos/booking/desktop-home.webp',
-          alt: 'Nova Studio home page with services and booking call to action',
+          alt: 'Nova Studio home page with a resort-style hero and booking bar',
         },
+        {
+          src: '/demos/booking/desktop-treatments.webp',
+          alt: 'Treatments laid out like rooms, with inclusions and prices',
+        },
+        { src: '/demos/booking/desktop-membership.webp', alt: 'Memberships and gift cards' },
         { src: '/demos/booking/desktop-book-service.webp', alt: 'Booking flow step one: choose a service' },
         {
           src: '/demos/booking/desktop-book-time.webp',
@@ -71,13 +77,16 @@ export const demos: readonly Demo[] = [
       ],
       mobile: [
         { src: '/demos/booking/mobile-home.webp', alt: 'Nova Studio home on a phone' },
-        { src: '/demos/booking/mobile-book-service.webp', alt: 'Choosing a service on a phone' },
+        { src: '/demos/booking/mobile-treatments.webp', alt: 'Treatments on a phone' },
         { src: '/demos/booking/mobile-book-time.webp', alt: 'Choosing a time slot on a phone' },
       ],
     },
     challenge:
       'Customers struggle to check availability and book appointments. Calls go unanswered, WhatsApp messages pile up, and bookings get missed.',
     solution: [
+      'Resort-style home with a booking bar',
+      'Treatments with photos, inclusions and prices',
+      'Memberships and gift cards on WhatsApp',
       'Online booking in five steps',
       'Live availability',
       'Service selection with duration and price',
@@ -111,23 +120,28 @@ export const demos: readonly Demo[] = [
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/salon',
+    screensVersion: 4,
     screens: {
       desktop: [
-        { src: '/demos/salon/desktop-home.webp', alt: 'Velvet Salon home page with hero and gallery tiles' },
-        { src: '/demos/salon/desktop-services.webp', alt: 'Velvet Salon services and prices' },
+        {
+          src: '/demos/salon/desktop-home.webp',
+          alt: 'Velvet Salon home page, an editorial layout in black and gold',
+        },
+        { src: '/demos/salon/desktop-services.webp', alt: 'The full price list with photos per category' },
+        { src: '/demos/salon/desktop-bridal.webp', alt: 'Bridal packages with WhatsApp enquiry' },
         { src: '/demos/salon/desktop-book-time.webp', alt: 'Choosing an appointment time at Velvet Salon' },
       ],
       mobile: [
         { src: '/demos/salon/mobile-home.webp', alt: 'Velvet Salon home on a phone' },
-        { src: '/demos/salon/mobile-services.webp', alt: 'Salon services on a phone' },
+        { src: '/demos/salon/mobile-services.webp', alt: 'The price list on a phone' },
         { src: '/demos/salon/mobile-book-time.webp', alt: 'Picking a time slot on a phone' },
       ],
     },
     challenge: 'Customers ask the same questions on Instagram every day: price, timing, availability.',
     solution: [
-      'Hero',
-      'Services',
-      'Pricing',
+      'Editorial hero with photography',
+      'Price list by category',
+      'Bridal packages and enquiry',
       'Gallery',
       'Team',
       'Testimonials',
@@ -271,28 +285,33 @@ export const demos: readonly Demo[] = [
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/tuition',
+    screensVersion: 3,
     screens: {
       desktop: [
         { src: '/demos/tuition/desktop-home.webp', alt: 'Vidya Academy home with results strip' },
-        { src: '/demos/tuition/desktop-courses.webp', alt: 'Courses with fees and batch timings' },
+        {
+          src: '/demos/tuition/desktop-courses.webp',
+          alt: 'Every course in full: coverage, batch size, timing, fee',
+        },
+        { src: '/demos/tuition/desktop-results.webp', alt: 'Results year by year and toppers' },
         { src: '/demos/tuition/desktop-enquire.webp', alt: 'Admission enquiry form' },
       ],
       mobile: [
         { src: '/demos/tuition/mobile-home.webp', alt: 'Vidya Academy home on a phone' },
-        { src: '/demos/tuition/mobile-courses.webp', alt: 'Courses on a phone' },
+        { src: '/demos/tuition/mobile-courses.webp', alt: 'Course details on a phone' },
         { src: '/demos/tuition/mobile-enquire.webp', alt: 'Enquiry form on a phone' },
       ],
     },
     challenge:
       'Parents want course details, timings and results before they call. Nobody has time to repeat them.',
     solution: [
-      'Hero',
-      'Courses',
-      'Classes',
+      'Friendly hero with photos',
+      'Course cards with fees',
+      'Course detail page',
+      'Results year by year and toppers',
+      'Batches timetable',
       'Faculty',
-      'Results',
       'Testimonials',
-      'Gallery',
       'Location',
       'Enquiry',
     ],
@@ -338,6 +357,7 @@ export const demos: readonly Demo[] = [
     contactType: 'ai',
     status: 'live',
     liveHref: '/demo/ai-business',
+    screensVersion: 3,
     screens: {
       desktop: [
         { src: '/demos/ai-business/desktop-home.webp', alt: 'Pulse Fitness home with the AI assistant' },
@@ -345,16 +365,29 @@ export const demos: readonly Demo[] = [
           src: '/demos/ai-business/desktop-chat.webp',
           alt: 'The assistant answering a question about plans',
         },
-        { src: '/demos/ai-business/desktop-plans.webp', alt: 'Membership plans and classes' },
+        { src: '/demos/ai-business/desktop-schedule.webp', alt: 'The weekly class timetable with filters' },
+        {
+          src: '/demos/ai-business/desktop-trainers.webp',
+          alt: 'Coaches with certifications and member results',
+        },
+        { src: '/demos/ai-business/desktop-plans.webp', alt: 'Membership plans' },
       ],
       mobile: [
         { src: '/demos/ai-business/mobile-home.webp', alt: 'Pulse Fitness home on a phone' },
         { src: '/demos/ai-business/mobile-chat.webp', alt: 'Chatting with the assistant on a phone' },
-        { src: '/demos/ai-business/mobile-plans.webp', alt: 'Plans on a phone' },
+        { src: '/demos/ai-business/mobile-schedule.webp', alt: 'The timetable on a phone' },
       ],
     },
     challenge: 'Visitors leave without asking. The owner answers the same questions all day.',
-    solution: ['Landing page', 'AI assistant', 'Lead capture', 'WhatsApp handoff', 'Automation'],
+    solution: [
+      'Landing page',
+      'AI assistant',
+      'Lead capture',
+      'WhatsApp handoff',
+      'Automation',
+      'Class timetable with filters',
+      'Coaches and measured results',
+    ],
     features: ['AI Chat', 'Lead Capture', 'Smart FAQ', 'WhatsApp', 'Automation'],
     flow: ['Landing Page', 'AI Assistant', 'Lead Capture', 'WhatsApp', 'Automation'],
     automation:

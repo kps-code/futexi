@@ -1,18 +1,9 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Sora } from 'next/font/google'
 import type { ReactNode } from 'react'
-import { RevealObserver } from '@/components/reveal-observer'
+import { DemoMotion } from '@/components/demos-shared/motion'
 import { Tracker } from '@/components/tracking/tracker'
 import { clientEnv } from '@/server/env'
 import './demo.css'
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
-const sora = Sora({
-  subsets: ['latin'],
-  variable: '--font-sora',
-  display: 'swap',
-  weight: ['500', '600', '700'],
-})
 
 /**
  * Root layout for the live demo mini-sites. Separate from the main site so
@@ -33,10 +24,10 @@ export const viewport: Viewport = {
 
 export default function DemosLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${sora.variable}`}>
+    <html lang="en">
       <body className="flex min-h-dvh flex-col">
         {children}
-        <RevealObserver />
+        <DemoMotion />
         <Tracker />
       </body>
     </html>

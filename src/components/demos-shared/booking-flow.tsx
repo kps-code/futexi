@@ -14,6 +14,8 @@ type Props = {
   business: DemoBusiness
   dates: readonly string[]
   initialService?: string
+  /** ISO date from the query string; with a service it opens the time step. */
+  initialDate?: string
   requestHref: string
 }
 
@@ -21,13 +23,14 @@ const inputClass =
   'w-full rounded-xl border border-dm-line bg-dm-surface px-4 py-3 text-sm text-dm-ink placeholder:text-dm-muted/70 focus:border-dm-brand focus:outline-none focus:ring-2 focus:ring-dm-ring'
 
 /** Five-step booking with live slot availability, shared by every bookable demo. */
-export function BookingFlow({ business, dates, initialService, requestHref }: Props) {
+export function BookingFlow({ business, dates, initialService, initialDate, requestHref }: Props) {
   const services = business.services
   const steps = [business.showPrice ? 'Service' : 'Table', 'Date', 'Time', 'Details', 'Confirm'] as const
   const preselected = services.find((s) => s.slug === initialService)
-  const [step, setStep] = useState<Step>(preselected ? 2 : 1)
+  const presetDate = preselected && initialDate && dates.includes(initialDate) ? initialDate : null
+  const [step, setStep] = useState<Step>(presetDate ? 3 : preselected ? 2 : 1)
   const [service, setService] = useState<DemoService | null>(preselected ?? null)
-  const [date, setDate] = useState<string | null>(null)
+  const [date, setDate] = useState<string | null>(presetDate)
   const [time, setTime] = useState<string | null>(null)
   const [slots, setSlots] = useState<SlotState[] | null>(null)
   const [slotsError, setSlotsError] = useState<string | null>(null)
