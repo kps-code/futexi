@@ -6,4 +6,6 @@ export const playfair = Playfair_Display({
   weight: ['600'],
   variable: '--font-playfair',
   display: 'swap',
+  // No preload hint: Next would add it to every route, which costs 23 KB on pages that never use it.
+  preload: false,
 })
