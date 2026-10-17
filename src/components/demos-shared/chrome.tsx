@@ -18,6 +18,7 @@ export function DemoRibbon({ business }: { business: DemoBusiness }) {
           <span className="hidden text-white/40 sm:inline">·</span>
           <Link
             href={`/demos/${business.id}`}
+            prefetch={false}
             className="hidden underline-offset-4 hover:underline sm:inline"
           >
             Read the case study
@@ -25,6 +26,7 @@ export function DemoRibbon({ business }: { business: DemoBusiness }) {
         </p>
         <Link
           href={`/contact?type=${business.contactType}`}
+          prefetch={false}
           className="inline-flex items-center gap-1.5 font-medium text-cyan-300 hover:text-white"
           data-track="cta_click"
           data-track-props={`{"cta":"demo_ribbon","demo":"${business.id}"}`}
@@ -122,6 +124,7 @@ export function DemoFooter({ business }: { business: DemoBusiness }) {
             Website concept by{' '}
             <Link
               href="/"
+              prefetch={false}
               className="text-dm-ink decoration-dm-line-strong font-medium underline underline-offset-4 hover:decoration-current"
             >
               KAPOSA FUTEXI

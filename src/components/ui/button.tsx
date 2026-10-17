@@ -53,8 +53,12 @@ export function ButtonLink({
   className,
   children,
   href,
+  prefetch,
   ...props
-}: CommonProps & { href: string } & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>) {
+}: CommonProps & { href: string; prefetch?: boolean } & Omit<
+    AnchorHTMLAttributes<HTMLAnchorElement>,
+    'href'
+  >) {
   const external = /^https?:\/\//.test(href)
   if (external) {
     return (
@@ -70,7 +74,7 @@ export function ButtonLink({
     )
   }
   return (
-    <Link href={href} className={buttonClasses(variant, size, className)} {...props}>
+    <Link href={href} prefetch={prefetch} className={buttonClasses(variant, size, className)} {...props}>
       {children}
     </Link>
   )

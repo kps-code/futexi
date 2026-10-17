@@ -50,6 +50,7 @@ export function CaseStudy({ demo, whatsappNumber }: { demo: Demo; whatsappNumber
               {live ? (
                 <ButtonLink
                   href={demo.liveHref!}
+                  prefetch={false}
                   size="lg"
                   data-track="demo_open"
                   data-track-props={`{"slug":"${demo.slug}","where":"live"}`}

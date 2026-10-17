@@ -62,7 +62,11 @@ export function EnquiryForm({
         <p className="text-dm-muted mt-4 text-[11px]">
           Concept demo: this enquiry is stored in the KAPOSA FUTEXI admin and the WhatsApp message goes to
           KAPOSA.{' '}
-          <Link href={`/contact?type=${business.contactType}`} className="underline underline-offset-2">
+          <Link
+            href={`/contact?type=${business.contactType}`}
+            prefetch={false}
+            className="underline underline-offset-2"
+          >
             Want this on your website?
           </Link>
         </p>

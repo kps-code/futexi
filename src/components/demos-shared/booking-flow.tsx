@@ -537,6 +537,7 @@ function Confirmation({
         </Link>
         <Link
           href={requestHref}
+          prefetch={false}
           data-track="cta_click"
           data-track-props={`{"cta":"demo_success","demo":"${business.id}"}`}
           className="bg-dm-ink text-dm-bg inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-medium hover:brightness-110"
