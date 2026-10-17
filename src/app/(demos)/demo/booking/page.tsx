@@ -55,7 +55,7 @@ export default async function NovaHomePage() {
             <FadeUp index={0} className="dm-label text-white/80">
               Wellness studio · Anna Nagar, Chennai · ★ {nova.rating}
             </FadeUp>
-            <h1 className="mt-5 max-w-3xl font-display text-5xl leading-[1.02] text-balance sm:text-6xl lg:text-7xl">
+            <h1 className="mt-5 max-w-3xl font-display text-4xl leading-[1.02] text-balance sm:text-6xl lg:text-7xl">
               <Words text="Your hour of calm," />
               <br />
               <Words text="booked in a minute." accent={['booked', 'minute']} startIndex={4} />

@@ -57,7 +57,7 @@ export const demos: readonly Demo[] = [
     contactType: 'booking',
     status: 'live',
     liveHref: '/demo/booking',
-    screensVersion: 4,
+    screensVersion: 5,
     screens: {
       desktop: [
         {
@@ -120,7 +120,7 @@ export const demos: readonly Demo[] = [
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/salon',
-    screensVersion: 4,
+    screensVersion: 5,
     screens: {
       desktop: [
         {
@@ -285,7 +285,7 @@ export const demos: readonly Demo[] = [
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/tuition',
-    screensVersion: 3,
+    screensVersion: 4,
     screens: {
       desktop: [
         { src: '/demos/tuition/desktop-home.webp', alt: 'Vidya Academy home with results strip' },
@@ -357,7 +357,7 @@ export const demos: readonly Demo[] = [
     contactType: 'ai',
     status: 'live',
     liveHref: '/demo/ai-business',
-    screensVersion: 3,
+    screensVersion: 4,
     screens: {
       desktop: [
         { src: '/demos/ai-business/desktop-home.webp', alt: 'Pulse Fitness home with the AI assistant' },

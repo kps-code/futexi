@@ -52,7 +52,7 @@ export default async function VidyaHomePage() {
                 Admissions open · 2026-27
               </span>
             </FadeUp>
-            <h1 className="mt-6 font-display text-5xl text-balance sm:text-6xl lg:text-7xl">
+            <h1 className="mt-6 font-display text-4xl text-balance sm:text-6xl lg:text-7xl">
               <Words text="Small batches." />
               <br />
               <Words text="Big results." accent={['big', 'results.']} startIndex={2} />

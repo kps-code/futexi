@@ -35,7 +35,7 @@ export default async function VelvetHomePage() {
             <FadeUp index={0} className="dm-label text-dm-brand">
               T. Nagar · Est. 2014 · ★ {velvet.rating}
             </FadeUp>
-            <h1 className="mt-6 font-display text-[3.2rem] leading-[0.98] text-balance sm:text-7xl lg:text-[6.5rem]">
+            <h1 className="mt-6 font-display text-[2.75rem] leading-[0.98] text-balance sm:text-7xl lg:text-[6.5rem]">
               <Words text="Beauty," />
               <br />
               <Words text="redefined." accent={['redefined']} startIndex={1} />

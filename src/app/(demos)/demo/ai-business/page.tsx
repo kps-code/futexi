@@ -67,7 +67,7 @@ export default async function PulseHomePage() {
             <FadeUp index={0} className="dm-label text-dm-brand">
               Velachery · 5:30 AM to 10:30 PM · ★ {pulse.rating}
             </FadeUp>
-            <h1 className="mt-5 font-display text-[4.2rem] text-balance sm:text-8xl lg:text-[8.5rem]">
+            <h1 className="mt-5 font-display text-[3.6rem] text-balance sm:text-8xl lg:text-[8.5rem]">
               <Words text="Train smarter." />
               <br />
               <Words text="Ask anything." accent={['anything.']} startIndex={2} />
