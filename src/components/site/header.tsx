@@ -1,27 +1,36 @@
 'use client'
 
-import { Menu, X } from 'lucide-react'
+import { ArrowRight, ChevronDown, Menu, MessageCircle, X } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { nav, primaryCta } from '@/content/site'
+import { Icon } from '@/components/home/icons'
+import type { IconName } from '@/content/icon-names'
+import { nav, primaryCta, servicesMenu } from '@/content/site'
 import type { BrandLogo } from '@/lib/branding'
 import { cn } from '@/lib/utils'
 import { ButtonLink } from '@/components/ui/button'
 import { ThemeToggle } from './theme-toggle'
 import { Wordmark } from './wordmark'
 
+export type HeaderService = { slug: string; title: string; outcome: string; icon: IconName }
+
 export type HeaderProps = {
   logo?: BrandLogo | null
   logoDark?: BrandLogo | null
   /** Theme first-time visitors get; keeps the toggle icon right before hydration. */
   defaultDark?: boolean
+  /** Visible services for the Services menu (Content > Services). */
+  services?: HeaderService[]
+  /** wa.me link with the admin's default message. */
+  whatsappHref: string
 }
 
-export function Header({ logo, logoDark, defaultDark = false }: HeaderProps) {
+export function Header({ logo, logoDark, defaultDark = false, services = [], whatsappHref }: HeaderProps) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [menu, setMenu] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -38,15 +47,38 @@ export function Header({ logo, logoDark, defaultDark = false }: HeaderProps) {
     }
   }, [open])
 
-  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
+  // A tap-opened services menu closes on Escape or a click anywhere outside it.
+  useEffect(() => {
+    if (!menu) return
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMenu(false)
+    const onClick = (e: MouseEvent) => {
+      if (!(e.target as Element | null)?.closest('.sr-dd')) setMenu(false)
+    }
+    window.addEventListener('keydown', onKey)
+    document.addEventListener('click', onClick)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.removeEventListener('click', onClick)
+    }
+  }, [menu])
+
+  const isActive = (href: string) => {
+    if (href.includes('#')) return false
+    return href === '/' ? pathname === '/' : pathname.startsWith(href)
+  }
   const closeMenu = () => setOpen(false)
+  const linkClass = (active: boolean) =>
+    cn(
+      'inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-colors',
+      active ? 'bg-surface text-foreground' : 'text-muted hover:bg-surface/60 hover:text-foreground',
+    )
 
   return (
     <>
       <header
         className={cn(
           'sticky top-0 z-50 w-full transition-[background-color,border-color,backdrop-filter] duration-300',
-          scrolled || open
+          scrolled || open || menu
             ? 'border-b border-border bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70'
             : 'border-b border-transparent bg-transparent',
         )}
@@ -55,34 +87,87 @@ export function Header({ logo, logoDark, defaultDark = false }: HeaderProps) {
           <Wordmark logo={logo} logoDark={logoDark} />
 
           <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={isActive(item.href) ? 'page' : undefined}
-                className={cn(
-                  'rounded-full px-4 py-2 text-sm font-medium transition-colors',
-                  isActive(item.href)
-                    ? 'bg-surface text-foreground'
-                    : 'text-muted hover:bg-surface/60 hover:text-foreground',
-                )}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {nav.map((item) =>
+              'menu' in item && services.length > 0 ? (
+                <div key={item.href} className={cn('sr-dd relative', menu && 'is-open')}>
+                  <Link
+                    href={item.href}
+                    aria-current={isActive(item.href) ? 'page' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={menu}
+                    className={linkClass(isActive(item.href))}
+                    onClick={(e) => {
+                      // Touch screens have no hover: the first tap opens the menu.
+                      if (window.matchMedia('(hover: none)').matches && !menu) {
+                        e.preventDefault()
+                        setMenu(true)
+                      }
+                    }}
+                  >
+                    {item.label}
+                    <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', menu && 'rotate-180')} />
+                  </Link>
+                  <div className="sr-menu" role="group" aria-label="Services">
+                    <ul className="grid gap-1 sm:grid-cols-2">
+                      {services.map((s) => (
+                        <li key={s.slug}>
+                          <Link
+                            href={`/services#${s.slug}`}
+                            className="sr-menu-item"
+                            onClick={() => setMenu(false)}
+                          >
+                            <span className="sr-ico h-10 w-10 rounded-xl">
+                              <Icon name={s.icon} className="h-5 w-5" />
+                            </span>
+                            <span className="min-w-0">
+                              <span className="block text-[15px] font-medium">{s.title}</span>
+                              <span className="mt-0.5 block text-[13px] leading-snug text-muted">
+                                {s.outcome}
+                              </span>
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      href={servicesMenu.all.href}
+                      className="mt-2 flex items-center justify-between gap-4 border-t border-border px-4 py-3 text-sm text-muted hover:text-foreground"
+                      onClick={() => setMenu(false)}
+                    >
+                      <span>
+                        {servicesMenu.all.lead}{' '}
+                        <strong className="font-medium text-foreground">{servicesMenu.all.label}</strong>
+                      </span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                  className={linkClass(isActive(item.href))}
+                >
+                  {item.label}
+                </Link>
+              ),
+            )}
           </nav>
 
           <div className="flex items-center gap-2">
             <ThemeToggle initialDark={defaultDark} />
-            <ButtonLink
-              href={primaryCta.href}
-              size="sm"
-              className="hidden sm:inline-flex"
-              data-track="cta_click"
-              data-track-props='{"cta":"header"}'
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden h-9 items-center gap-2 rounded-full bg-[#25d366] px-4 text-sm font-semibold text-[#06281a] transition-[transform,filter] hover:-translate-y-0.5 hover:brightness-105 sm:inline-flex"
+              data-track="whatsapp_click"
+              data-track-props='{"where":"header"}'
             >
-              {primaryCta.label}
-            </ButtonLink>
+              <MessageCircle className="h-4 w-4" />
+              WhatsApp us
+            </a>
             <button
               type="button"
               aria-label={open ? 'Close menu' : 'Open menu'}
@@ -106,23 +191,59 @@ export function Header({ logo, logoDark, defaultDark = false }: HeaderProps) {
       >
         <nav aria-label="Mobile" className="container-site flex flex-col gap-1 py-6">
           {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={closeMenu}
-              aria-current={isActive(item.href) ? 'page' : undefined}
-              className={cn(
-                'rounded-xl px-4 py-3 font-display text-2xl font-semibold transition-colors',
-                isActive(item.href) ? 'text-foreground' : 'text-muted hover:text-foreground',
+            <div key={item.href}>
+              <Link
+                href={item.href}
+                onClick={closeMenu}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                className={cn(
+                  'block rounded-xl px-4 py-3 font-display text-2xl font-semibold transition-colors',
+                  isActive(item.href) ? 'text-foreground' : 'text-muted hover:text-foreground',
+                )}
+              >
+                {item.label}
+              </Link>
+              {'menu' in item && services.length > 0 && (
+                <ul className="mb-2 ml-4 grid gap-0.5 border-l border-border pl-4">
+                  {services.map((s) => (
+                    <li key={s.slug}>
+                      <Link
+                        href={`/services#${s.slug}`}
+                        onClick={closeMenu}
+                        className="block px-2 py-1.5 text-sm text-muted hover:text-foreground"
+                      >
+                        {s.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               )}
-            >
-              {item.label}
-            </Link>
+            </div>
           ))}
+          <Link
+            href="/about"
+            onClick={closeMenu}
+            className="block rounded-xl px-4 py-3 font-display text-2xl font-semibold text-muted transition-colors hover:text-foreground"
+          >
+            About
+          </Link>
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={closeMenu}
+            className="mt-6 inline-flex h-13 items-center justify-center gap-2 rounded-full bg-[#25d366] px-8 text-base font-semibold text-[#06281a]"
+            data-track="whatsapp_click"
+            data-track-props='{"where":"mobile_menu"}'
+          >
+            <MessageCircle className="h-4 w-4" />
+            WhatsApp us
+          </a>
           <ButtonLink
             href={primaryCta.href}
+            variant="secondary"
             size="lg"
-            className="mt-6"
+            className="mt-2"
             onClick={closeMenu}
             data-track="cta_click"
             data-track-props='{"cta":"mobile_menu"}'

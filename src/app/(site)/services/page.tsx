@@ -3,11 +3,12 @@ import { Check } from 'lucide-react'
 import { Icon } from '@/components/home/icons'
 import { FinalCta } from '@/components/home/final-cta'
 import { cardClasses, IconBadge } from '@/components/home/section'
-import { Investment } from '@/components/home/investment'
+import { Pricing } from '@/components/home/pricing'
 import { PageIntro } from '@/components/site/page-intro'
 import { ButtonLink } from '@/components/ui/button'
 import { Reveal } from '@/components/reveal'
 import { cn } from '@/lib/utils'
+import { whatsappLink } from '@/lib/whatsapp'
 import { getHomePage, getServices, getServicesPage, getSiteSettings } from '@/server/site-data'
 
 export const metadata: Metadata = {
@@ -49,7 +50,7 @@ export default async function ServicesPage() {
                     <ul className="mt-3 grid gap-2 sm:grid-cols-2">
                       {s.included.map((item) => (
                         <li key={item} className="flex items-start gap-2 text-sm">
-                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
                           {item}
                         </li>
                       ))}
@@ -77,7 +78,11 @@ export default async function ServicesPage() {
         </ul>
       </section>
 
-      <Investment startingPriceText={settings.startingPriceText} />
+      <Pricing
+        content={home.pricing}
+        startingPriceText={settings.startingPriceText}
+        whatsappHref={whatsappLink(settings.whatsappNumber, settings.whatsappMessage)}
+      />
       <FinalCta
         content={home.finalCta}
         whatsappNumber={settings.whatsappNumber}

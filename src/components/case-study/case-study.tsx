@@ -98,7 +98,7 @@ export function CaseStudy({ demo, whatsappNumber }: { demo: Demo; whatsappNumber
               index={i}
               className="flex items-start gap-3 rounded-xl border border-border bg-surface px-4 py-3"
             >
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
               <span className="text-sm">{s}</span>
             </Reveal>
           ))}
@@ -107,7 +107,7 @@ export function CaseStudy({ demo, whatsappNumber }: { demo: Demo; whatsappNumber
           <ol className="mt-10 flex flex-wrap items-center gap-2">
             {demo.flow.map((f, i) => (
               <li key={f} className="flex items-center gap-2">
-                <span className="rounded-full bg-accent-gradient px-4 py-2 text-sm font-medium text-white">
+                <span className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background">
                   {f}
                 </span>
                 {i < demo.flow!.length - 1 && <ArrowRight className="h-4 w-4 text-muted" />}
@@ -195,7 +195,7 @@ export function CaseStudy({ demo, whatsappNumber }: { demo: Demo; whatsappNumber
                   <div className="mt-2 space-y-1.5 px-1 pb-2">
                     <span className="block h-2 w-5/6 rounded bg-foreground/60" />
                     <span className="block h-2 w-2/3 rounded bg-muted/50" />
-                    <span className="mt-2 block h-6 w-full rounded-full bg-accent-gradient" />
+                    <span className="mt-2 block h-6 w-full rounded-full bg-foreground" />
                   </div>
                 </Reveal>
               ))}
@@ -230,7 +230,7 @@ export function CaseStudy({ demo, whatsappNumber }: { demo: Demo; whatsappNumber
         <ul className="grid gap-4 sm:grid-cols-3">
           {demo.outcomes.map((o, i) => (
             <Reveal key={o} as="li" index={i} className="rounded-2xl border border-border bg-surface p-6">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-500">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background text-foreground">
                 <Check className="h-4 w-4" />
               </span>
               <p className="mt-4 font-medium">{o}</p>

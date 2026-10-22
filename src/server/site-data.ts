@@ -6,7 +6,17 @@ import { aiScript, type AiScriptItem } from '@/content/ai-script'
 import type { ContactType } from '@/content/contact'
 import { demoBySlug, demos, type Demo } from '@/content/demos'
 import { faq, homeFaqCount } from '@/content/faq'
-import { finalCta, howWeWork, technology, whatWeBuild, whyUs } from '@/content/home'
+import {
+  finalCta,
+  howWeWork,
+  journey,
+  journeyScreens,
+  pricing,
+  technology,
+  whatWeBuild,
+  whyUs,
+  type JourneyScreen,
+} from '@/content/home'
 import { isIconName, type IconName } from '@/content/icon-names'
 import { brandLogoFrom, themeName, type BrandLogo, type ThemeName } from '@/lib/branding'
 import { privacyDefaults, termsDefaults, type LegalPageContent } from '@/content/legal'
@@ -73,6 +83,9 @@ function siteIconFrom(v: unknown): { url: string; mimeType?: string } | undefine
 }
 function iconName(v: unknown, fallback: IconName): IconName {
   return isIconName(v) ? v : fallback
+}
+function journeyScreen(v: unknown, fallback: JourneyScreen): JourneyScreen {
+  return journeyScreens.some((s) => s.value === v) ? (v as JourneyScreen) : fallback
 }
 
 export const getSiteSettings = unstable_cache(
@@ -234,8 +247,30 @@ export type FinalCtaContent = {
 export type TechnologyContent = { heading: string; line: string; items: string[] }
 export type WhyUsContent = { heading: string; cards: { title: string; line: string }[] }
 export type HowWeWorkContent = { heading: string; steps: { title: string; line: string; icon: IconName }[] }
+export type JourneyChapter = {
+  label: string
+  eyebrow: string
+  headingLine1: string
+  headingLine2: string
+  line: string
+  tagline: string
+  screen: JourneyScreen
+}
+export type JourneyContent = { heroLabel: string; chapters: JourneyChapter[] }
+export type PricingSetup = { tag: string; title: string; bestFor: string; items: string[] }
+export type PricingContent = {
+  heading: string
+  /** Contains {price}, replaced with the starting price text when rendered. */
+  line: string
+  note: { tag: string; title: string; body: string }
+  setups: PricingSetup[]
+  whatsappLabel: string
+  secondaryLabel: string
+}
 export type HomePageContent = {
   hero: HeroContent
+  journey: JourneyContent
+  pricing: PricingContent
   finalCta: FinalCtaContent
   technology: TechnologyContent
   whyUs: WhyUsContent
@@ -252,6 +287,25 @@ export const getHomePage = unstable_cache(
     const steps = (h?.howWeWork?.steps ?? [])
       .map((s) => ({ title: text(s.title, ''), line: text(s.line, ''), icon: iconName(s.icon, 'check') }))
       .filter((s) => s.title)
+    const setups: PricingSetup[] = (h?.pricing?.setups ?? [])
+      .map((s) => ({
+        tag: text(s.tag, ''),
+        title: text(s.title, ''),
+        bestFor: text(s.bestFor, ''),
+        items: textList(s.items, []),
+      }))
+      .filter((s) => s.title)
+    const chapters: JourneyChapter[] = (h?.journey?.chapters ?? [])
+      .map((c) => ({
+        label: text(c.label, ''),
+        eyebrow: text(c.eyebrow, ''),
+        headingLine1: text(c.headingLine1, ''),
+        headingLine2: text(c.headingLine2, ''),
+        line: text(c.line, ''),
+        tagline: text(c.tagline, ''),
+        screen: journeyScreen(c.screen, 'chat'),
+      }))
+      .filter((c) => c.label && c.headingLine1 && c.line)
     return {
       hero: {
         eyebrow: hero.eyebrow,
@@ -261,6 +315,29 @@ export const getHomePage = unstable_cache(
         primaryLabel: text(h?.hero?.primaryLabel, hero.primary.label),
         secondaryLabel: text(h?.hero?.secondaryLabel, hero.secondary.label),
         trustLine: textList(h?.hero?.trustLine, hero.trustLine),
+      },
+      journey: {
+        heroLabel: text(h?.journey?.heroLabel, journey.heroLabel),
+        chapters: chapters.length ? chapters : journey.chapters.map((c) => ({ ...c })),
+      },
+      pricing: {
+        heading: text(h?.pricing?.heading, pricing.heading),
+        line: text(h?.pricing?.line, pricing.line),
+        note: {
+          tag: text(h?.pricing?.note?.tag, pricing.note.tag),
+          title: text(h?.pricing?.note?.title, pricing.note.title),
+          body: text(h?.pricing?.note?.body, pricing.note.body),
+        },
+        setups: setups.length
+          ? setups
+          : pricing.setups.map((s) => ({
+              tag: s.tag,
+              title: s.title,
+              bestFor: s.bestFor,
+              items: [...s.items],
+            })),
+        whatsappLabel: text(h?.pricing?.whatsappLabel, pricing.cta.label),
+        secondaryLabel: text(h?.pricing?.secondaryLabel, pricing.secondary.label),
       },
       finalCta: {
         heading: text(h?.finalCta?.heading, finalCta.heading),

@@ -2,14 +2,16 @@ import Image from 'next/image'
 import { screenSizes, screenSrc, type Demo } from '@/content/demos'
 import { cn } from '@/lib/utils'
 
+/* Coming-soon previews draw a neutral mock page; the demo's own colours belong to the live site. */
+const neutral = { bar: 'bg-foreground/70', soft: 'bg-foreground/10', text: 'text-muted' }
 const accents: Record<Demo['accent'], { bar: string; soft: string; text: string }> = {
-  violet: { bar: 'bg-violet-500', soft: 'bg-violet-500/15', text: 'text-violet-400' },
-  cyan: { bar: 'bg-cyan-500', soft: 'bg-cyan-500/15', text: 'text-cyan-400' },
-  amber: { bar: 'bg-amber-500', soft: 'bg-amber-500/15', text: 'text-amber-400' },
-  rose: { bar: 'bg-rose-500', soft: 'bg-rose-500/15', text: 'text-rose-400' },
-  emerald: { bar: 'bg-emerald-500', soft: 'bg-emerald-500/15', text: 'text-emerald-400' },
-  sky: { bar: 'bg-sky-500', soft: 'bg-sky-500/15', text: 'text-sky-400' },
-  indigo: { bar: 'bg-indigo-500', soft: 'bg-indigo-500/15', text: 'text-indigo-400' },
+  violet: neutral,
+  cyan: neutral,
+  amber: neutral,
+  rose: neutral,
+  emerald: neutral,
+  sky: neutral,
+  indigo: neutral,
 }
 
 type Props = {

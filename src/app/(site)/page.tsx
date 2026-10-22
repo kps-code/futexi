@@ -1,57 +1,62 @@
-import { AboutTeaser } from '@/components/home/about-teaser'
 import { AiSection } from '@/components/home/ai-section'
-import { BeforeAfter } from '@/components/home/before-after'
-import { EveryScreen } from '@/components/home/every-screen'
-import { FeaturedDemos } from '@/components/home/featured-demos'
+import { DemoShowcase } from '@/components/home/demo-showcase'
 import { FinalCta } from '@/components/home/final-cta'
-import { Hero } from '@/components/home/hero'
 import { HomeFaq } from '@/components/home/home-faq'
 import { HowWeWork } from '@/components/home/how-we-work'
-import { Investment } from '@/components/home/investment'
-import { Technology } from '@/components/home/technology'
-import { Testimonials } from '@/components/home/testimonials'
-import { TrustStrip } from '@/components/home/trust-strip'
-import { WhatWeBuild } from '@/components/home/what-we-build'
-import { WhyUs } from '@/components/home/why-us'
+import { Pricing } from '@/components/home/pricing'
+import { ServicesCards } from '@/components/home/services-cards'
+import { Showroom } from '@/components/home/showroom/showroom'
+import { Trust } from '@/components/home/trust'
+import { hero } from '@/content/site'
+import { whatsappLink } from '@/lib/whatsapp'
 import {
-  getAboutPage,
   getFaqs,
-  getFeaturedDemos,
   getHomePage,
   getServices,
   getSiteSettings,
   getTeamMembers,
   getTestimonials,
+  getVisibleDemos,
 } from '@/server/site-data'
 
-/** Home. Section order: docs/content-lock.md §2, plus Testimonials after Why Us. */
+/** Home. Section order: docs/content-lock.md §2 (showroom edition). */
 export default async function HomePage() {
-  const [settings, team, about, featured, home, faqs, testimonials, services] = await Promise.all([
+  const [settings, team, demos, home, faqs, testimonials, services] = await Promise.all([
     getSiteSettings(),
     getTeamMembers(),
-    getAboutPage(),
-    getFeaturedDemos(),
+    getVisibleDemos(),
     getHomePage(),
     getFaqs(),
     getTestimonials(),
     getServices(),
   ])
+  const whatsappHref = whatsappLink(settings.whatsappNumber, settings.whatsappMessage)
+  const liveDemos = demos.filter((d) => d.status === 'live')
 
   return (
     <>
-      <Hero content={home.hero} />
-      <TrustStrip />
-      <WhatWeBuild services={services} />
-      <FeaturedDemos demos={featured} />
+      <Showroom
+        hero={home.hero}
+        journey={home.journey}
+        whatsappHref={whatsappHref}
+        primaryHref={hero.primary.href}
+        secondaryHref={hero.secondary.href}
+      />
+      <ServicesCards services={services} whatsappNumber={settings.whatsappNumber} />
+      <DemoShowcase demos={liveDemos} />
       <AiSection />
-      <BeforeAfter />
-      <EveryScreen />
-      <HowWeWork content={home.howWeWork} />
-      <WhyUs content={home.whyUs} />
-      <Testimonials items={testimonials} />
-      <Investment startingPriceText={settings.startingPriceText} />
-      <AboutTeaser team={team} intro={about.intro} />
-      <Technology content={home.technology} />
+      <HowWeWork content={home.howWeWork} technology={home.technology} />
+      <Trust
+        whyUs={home.whyUs}
+        testimonials={testimonials}
+        team={team}
+        stats={{ demos: liveDemos.length, city: settings.city, replyTime: settings.replyTimeText }}
+      />
+      <Pricing
+        content={home.pricing}
+        startingPriceText={settings.startingPriceText}
+        whatsappHref={whatsappHref}
+      />
       <HomeFaq faqs={faqs} startingPriceText={settings.startingPriceText} />
       <FinalCta
         content={home.finalCta}

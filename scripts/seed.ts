@@ -13,6 +13,7 @@ import { finalCta, technology, whatWeBuild } from '../src/content/home'
 import { services } from '../src/content/services'
 import { contactDefaults, brand, hero, whatsappDefaultMessage } from '../src/content/site'
 import { ensureDefaultRoles } from '../src/payload/roles-default'
+import { seedHomeDefaults } from '../src/payload/seed-home-defaults'
 
 const team = [
   {
@@ -177,6 +178,13 @@ export async function seed(payload: Payload) {
   } else {
     payload.logger.info('home page texts: already filled, skipped')
   }
+
+  const homeDefaults = await seedHomeDefaults(payload)
+  payload.logger.info(
+    homeDefaults.length
+      ? `home page defaults: seeded ${homeDefaults.join(', ')}`
+      : 'home page defaults: already filled, skipped',
+  )
 
   const ai = await payload.findGlobal({ slug: 'ai-demo', overrideAccess: true })
   if (!ai?.conversations?.length) {

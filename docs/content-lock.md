@@ -33,14 +33,15 @@ Date: 2026-10-07
 
 ## 1. Global
 
-### Header
+### Header (showroom edition, phase 8)
 - Left: **KAPOSA FUTEXI** wordmark. Under it in small text: AI • Web • Future Tech
-- Nav: Home · Services · Demos · About · Contact
-- Right: theme toggle (sun/moon) + button **Start a Project** → /contact
+- Nav: Home · Services ▾ · Demos · How it works (/#process) · Pricing (/#pricing) · Contact
+- Services opens a menu on hover (tap on touch, focus on keyboard): one row per visible service (icon, title, outcome line) and a footer link "Not sure which one? See all services" → /services.
+- Right: theme toggle (sun/moon) + green pill **WhatsApp us** → wa.me link with the admin's default message.
 - Sticky on scroll with blur background.
-- Mobile: wordmark + theme toggle + menu icon. Menu opens full-screen with the 5 links and the CTA.
+- Mobile: wordmark + theme toggle + menu icon. Menu opens full-screen with the 6 links (Services shows its sub-links), About, the WhatsApp pill and **Start a Project** → /contact.
 
-Note: "Work" and "Pricing" are removed from the nav. Work = Demos until real clients exist. Pricing is a homepage section only.
+Note: "Work" stays out of the nav (Work = Demos until real clients exist). About lives in the mobile menu, the footer and the home trust section.
 
 ### Footer
 ```text
@@ -73,15 +74,56 @@ kpsankar1398kp@gmail.com
 - Primary button: **Explore Our Work** → /demos
 - Secondary button: **Start Your Project** → /contact
 - Trust line under buttons: AI Integration • Responsive Design • Fast Performance • Custom Development
-- Right side: animated mockup. One browser frame that cycles through the flow, each step highlighting:
+- Showroom (phase 8): the hero is chapter 01 of a scroll story. A giant **KAPOSA / FUTEXI** wordmark sits behind a 3D phone (desktop, lazy-loaded Three.js; flat phone elsewhere). The phone shows one screen per chapter (pre-rendered WebP in public/home/screens, made by scripts/render-phone-screens.mjs from the canvas drawings in phone-screens.ts; the desktop 3D phone draws the same screens as textures) and turns as the visitor scrolls. A side rail shows 01/04 with the chapter labels; the bottom bar shows "Scroll to explore" and the progress line.
+- Chapter 01 = the hero texts above (headline line 2 in the italic serif accent). Chapters 02 to 04 come from Content > Home Page > Journey (defaults in src/content/home.ts):
 
-```text
-Website  →  AI Assistant  →  Enquiry Collected  →  WhatsApp  →  Automation
-```
+| # | Rail label | Heading | Text | Tagline | Screen |
+|---|---|---|---|---|---|
+| 02 | AI assistant | It answers at 2 a.m. | Trained on your services and prices, it replies instantly, qualifies the visitor and offers the slot. | Never miss a question. | AI chat |
+| 03 | WhatsApp | Leads land in your pocket. | Every enquiry arrives on WhatsApp with name, service and time. One tap to call back. | Zero missed enquiries. | WhatsApp lead |
+| 04 | Start | Let's build yours. | Tell us about your business on WhatsApp. First concept in 7 days, a fixed price, no surprises. | Pure possibility. | Start (WhatsApp us) |
 
-Caption under mockup: Visitor opens your website. The AI assistant answers. The enquiry reaches you on WhatsApp.
+The last chapter shows **WhatsApp us** (wa.me) and **Explore live demos** → /demos. Phones, tablets and reduced motion get the stacked layout: wordmark, hero texts, the flat phone cycling through the screens, then the chapters as short cards.
 
-### 2.2 Trust strip
+### 2.2 Services (#services)
+- Eyebrow: What we do · H2: **Six services. Pick what your business needs.**
+- Sub: Every service in plain words: what you get and who it is for. Not sure? Message us and we will suggest the right mix.
+- One card per visible service (Content > Services): icon tile, title (→ /services#slug), outcome line, first three "What is included" items, "Good for" line, pill **Ask on WhatsApp** (wa.me with "I'm interested in <service>").
+
+### 2.3 Live demos (#demos)
+- Eyebrow: See it working · H2: **Live demos for businesses like yours.**
+- Sub: Real, working websites we built as examples. Open one, book a slot, chat with the AI assistant.
+- Up to six browser-frame cards (live demos with captured screens, in catalogue order, hidden ones skipped): home screenshot, "Open demo" on hover, title, category chip → /demos/<slug>. Button **View All Demos** → /demos.
+
+### 2.4 AI section (#ai)
+Unchanged from the previous edition (features table + scripted demo box). See below.
+
+### 2.5 How it works (#process)
+- Eyebrow: How it works · H2: **From Idea to Launch** (Content > Home Page) · Sub: You talk directly to the people building your project. No account managers, no surprises.
+- Six step cards, then the Technology line and pills (Content > Home Page > Technology).
+
+### 2.6 Trust (#trust)
+- Eyebrow: Why us · H2 from Content > Home Page > Why us heading (default **Why Build With Us?**) · Sub: Small team, direct contact, work you can try before you buy.
+- Three facts: "<n> live demos you can try", "<City> based, working across India", "Direct · <reply time text>".
+- The six "Why Build With Us?" reasons (Content > Home Page) as a check list.
+- "What clients say": up to three testimonials (Content > Testimonials), hidden while empty.
+- "The people you will talk to": every visible team member (Content > Team Members) + **Meet the Team** → /about.
+
+### 2.7 Pricing (#pricing)
+All texts below are editable in Content > Home Page > Pricing (defaults in src/content/home.ts); the starting price text comes from Site Settings > Texts and replaces {price}.
+- Eyebrow: Pricing · H2: **Simple, honest pricing.**
+- Line: **{starting price text}**. The final price depends on pages, features and integrations. Tell us what you need and we send a clear quote, usually the same day.
+- Card "How quotes work": One clear number, before we start. (fixed price for the agreed scope, timeline, what is included; no hourly billing; hosting and domain explained separately)
+- Three typical setups, no amounts: Website only · Website + AI + WhatsApp · Full system with bookings.
+- Buttons: **Get a Quote on WhatsApp** → wa.me · **Discuss Your Project** → /contact
+
+Then FAQ (#faq) and Final CTA (#start) as before. Home order: Showroom → Services → Live demos → AI → How it works → Trust → Pricing → FAQ → Final CTA → Footer.
+
+---
+
+The sections below are the previous (phase 3) edition, kept for reference; the AI section, How We Work, Why Us, Technology, FAQ and Final CTA texts still apply.
+
+### 2.2 Trust strip (retired in phase 8)
 Horizontal scrolling strip, icon + label, slow auto-scroll, pauses on hover:
 
 AI Integration · Responsive Websites · Fast Performance · Modern UI/UX · WhatsApp Integration · Automation · SEO-Ready · Custom Development
@@ -311,7 +353,7 @@ Choose Service → Choose Date → Choose Time → Enter Details → Confirm Boo
 | Restaurant | The menu lives in blurry photos. Reservations happen over calls. | Hero, Menu with categories, Food gallery, About, Offers, Reservation, Location, Contact | Digital Menu · Reservation · WhatsApp · Google Maps · Responsive UI |
 | Interior Designer | Great work, but no place to show it professionally. | Editorial hero with photography, Projects gallery with filters, Project pages with gallery and palette, Services with indicative pricing, Five-stage process and FAQ, About studio, Testimonials, Contact | Project Portfolio · Filters · Project Pages · Pricing · Enquiry Form · WhatsApp · Responsive |
 
-Interior demo update (2026-10-16): palette changed from sage green to warm neutral (ivory #f5f0e8, oat #c9a97d, espresso #3b2a1e) with a Playfair Display heading face; abstract colour tiles replaced by real photos (Unsplash licence, credits in `public/demos/interior/photos/CREDITS.md`); six projects; two new pages, `/demo/interior/projects` (filters: homes, offices, cafes) and `/demo/interior/services` (three packages with indicative prices, five stages, FAQ). Demo redesign (2026-10-17): every demo now reads as a different brand, with its own two Google Fonts (self-hosted, swap, used weights only, loaded per demo through `src/app/(demos)/fonts.ts`), its own radii and spacing, real photos (Unsplash licence, `public/demos/<slug>/photos/CREDITS.md`) and two new pages each. Shared motion layer (`src/components/demos-shared/motion.tsx` + the `.dm-*` rules in `demo.css`, no animation library): word-by-word hero headline, hero photo settle and parallax, scroll progress bar, two-way scroll reveals, counters, one pinned horizontal "story" per site (desktop; swipe row on phones), card scale-in, custom cursor with labels, magnetic buttons, 3D tilt with glare, link underlines. Everything animates transform and opacity only, is off under reduced motion, and cursor/tilt are desktop-only. Phones (below 1024 px) get the light version: no frosted-glass blur on the booking bar or header, no hero settle animation or scroll parallax, and the headline slides in without a fade, because those effects delayed first paint by over a second on software renderers (and in Lighthouse). The top demo ribbon is a fixed two-row layout on phones so font loading cannot shift the page. Demo font budget in Lighthouse CI raised to 130 KB.
+Interior demo update (2026-10-16): palette changed from sage green to warm neutral (ivory #f5f0e8, oat #c9a97d, espresso #3b2a1e) with a Playfair Display heading face; abstract colour tiles replaced by real photos (Unsplash licence, credits in `public/demos/interior/photos/CREDITS.md`); six projects; two new pages, `/demo/interior/projects` (filters: homes, offices, cafes) and `/demo/interior/services` (three packages with indicative prices, five stages, FAQ). Demo redesign (2026-10-17): every demo now reads as a different brand, with its own two Google Fonts (self-hosted, swap, used weights only, loaded per demo through `src/app/(demos)/fonts.ts`), its own radii and spacing, real photos (Unsplash licence, `public/demos/<slug>/photos/CREDITS.md`) and two new pages each. Shared motion layer (`src/components/demos-shared/motion.tsx` + the `.dm-*` rules in `demo.css`, no animation library): word-by-word hero headline, hero photo settle and parallax, scroll progress bar, two-way scroll reveals, counters, one pinned horizontal "story" per site (desktop; swipe row on phones), card scale-in, magnetic buttons, 3D tilt with glare, link underlines (the custom cursor was removed on 2026-10-22: it hid the native pointer and customers lost the cursor). Everything animates transform and opacity only, is off under reduced motion, and magnetic/tilt are desktop-only. Phones (below 1024 px) get the light version: no frosted-glass blur on the booking bar or header, no hero settle animation or scroll parallax, and the headline slides in without a fade, because those effects delayed first paint by over a second on software renderers (and in Lighthouse). The top demo ribbon is a fixed two-row layout on phones so font loading cannot shift the page. Demo font budget in Lighthouse CI raised to 130 KB.
 
 | Demo | Look | Fonts | New pages |
 |---|---|---|---|
@@ -400,12 +442,14 @@ Below form: full FAQ (8).
 | Surface / card | #111827 | #F6F7FB |
 | Text | #F5F7FA | #0B0F1A |
 | Muted text | #9CA3AF | #4B5563 |
-| Accent gradient | #22D3EE → #8B5CF6 (cyan to violet) | same |
-| Primary button | gradient fill, white text | gradient fill, white text |
+| Accent | ink (#F5F7FA) for buttons, links, rings and glows | ink (#0B0F1A) |
+| Brand gradient | none (retired 2026-10-22; the old cyan→violet pair now resolves to ink). Wordmark "FUTEXI" is muted ink; italic accent lines are ink | same |
+| WhatsApp | #25D366 pill, dark green text | same |
+| Primary button | ink fill, inverse text | ink fill, inverse text |
 | Secondary button | 1px border, text, hover surface | 1px border, hover surface |
 | Border | rgba(255,255,255,0.08) | rgba(11,15,26,0.08) |
 
-Fonts: Sora for headings, Inter for body. Toggle stored in localStorage, respects system setting on first visit.
+Fonts: Sora for headings, Inter for body, Instrument Serif Italic (self-hosted ASCII subset in src/app/(site)/fonts, SIL OFL) for the italic accent lines. Toggle stored in localStorage, respects system setting on first visit.
 
 ---
 

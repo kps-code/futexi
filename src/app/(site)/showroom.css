@@ -1,0 +1,947 @@
+/* ---------------------------------------------------------------------------
+   Showroom home (components/home/showroom). Prefix: sr-. One DOM, two layouts
+   chosen by media queries so the server HTML never flips after hydration:
+   the stage pins on desktops with a fine pointer and room for the story, and
+   stacks on phones, tablets, short windows and for reduced motion. Imported
+   by globals.css after the design tokens.
+   --------------------------------------------------------------------------- */
+
+@layer components {
+  .sr {
+    --sr-header: 4.5rem;
+    --sr-word: clamp(56px, min(8.4vw, 17vh), 122px);
+    --sr-anchor: calc(1rem + var(--sr-word) + max(28px, 6vh));
+    --sr-word-color: #6f6a60;
+    --sr-wa: #25d366;
+    position: relative;
+  }
+  .dark .sr {
+    --sr-word-color: #3a4250;
+  }
+
+  .sr-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .sr-beam {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 2px;
+    height: 60%;
+    transform: translateX(-50%);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.6) 40%,
+      rgba(255, 255, 255, 0)
+    );
+    box-shadow: 0 0 50px 8px rgba(255, 255, 255, 0.1);
+    opacity: 0;
+  }
+  .dark .sr-beam {
+    opacity: 0.5;
+  }
+  .sr-floor {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 30%;
+    background: linear-gradient(180deg, transparent, var(--background) 78%);
+  }
+
+  .sr-word {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--sr-word);
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+    color: var(--sr-word-color);
+    overflow: hidden;
+    padding-bottom: 0.06em;
+    pointer-events: none;
+    user-select: none;
+    transition:
+      opacity 0.7s ease,
+      color 0.5s ease;
+  }
+
+  /* Flat phone */
+  .sr-p2d {
+    aspect-ratio: 720 / 1480;
+    border-radius: 14% / 6.8%;
+    background: #0d1118;
+    border: 5px solid #2b303a;
+    box-shadow:
+      0 0 0 1px #0b0f1a,
+      0 40px 80px -30px rgba(0, 0, 0, 0.7),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+  .sr-p2d-screen {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 12% / 5.8%;
+    background: #0d1118;
+  }
+
+  /* Chapter copy */
+  .sr-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.4rem;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sr-h {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(2.5rem, 6.1vw, 6rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.6rem;
+    text-wrap: balance;
+  }
+  .sr-ln {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  .sr-ln > span {
+    display: block;
+  }
+  .sr-accent {
+    font-family: var(--font-serif-accent, Georgia, serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--foreground);
+  }
+  .sr-p {
+    max-width: 430px;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  .sr-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+  .sr-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    margin-top: 2rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .sr-tag {
+    display: block;
+    font-family: var(--font-serif-accent, Georgia, serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(2.6rem, 4.4vw, 4.4rem);
+    line-height: 1;
+    margin-bottom: 1.25rem;
+    text-wrap: balance;
+  }
+  .sr-ch-r small {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 2;
+  }
+
+  /* Rail (desktop only, hidden in the stacked layout) */
+  .sr-rail {
+    position: absolute;
+    left: 3rem;
+    top: var(--sr-anchor);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .sr-rail-num {
+    font-size: 13px;
+    color: var(--foreground);
+    line-height: 1.5;
+  }
+  .sr-rail-num small {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .sr-ticks {
+    position: relative;
+    height: 168px;
+    width: 1px;
+    margin-left: 3px;
+    background: var(--border-strong);
+  }
+  .sr-ticks button {
+    position: absolute;
+    left: -9px;
+    width: 19px;
+    height: 12px;
+    transform: translateY(-6px);
+    pointer-events: auto;
+    cursor: pointer;
+    background: none;
+    border: 0;
+  }
+  .sr-ticks button::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 5px;
+    width: 7px;
+    height: 1px;
+    background: var(--muted);
+  }
+  .sr-ticks b {
+    position: absolute;
+    left: -1px;
+    width: 3px;
+    height: 22px;
+    background: var(--foreground);
+    transition: top 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .sr-chip {
+    position: absolute;
+    left: 20px;
+    transform: translateY(-5px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    color: var(--foreground);
+    white-space: nowrap;
+    transition: top 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  /* Bottom bar (desktop only) */
+  .sr-bar {
+    position: absolute;
+    left: 3rem;
+    right: 3rem;
+    bottom: 2rem;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .sr-bar-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .sr-bar-hint svg {
+    animation: kf-bob 1.4s ease-in-out infinite;
+  }
+  .sr-bar-idx {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+  .sr-bar-idx i {
+    position: relative;
+    width: 130px;
+    height: 1px;
+    background: var(--border-strong);
+  }
+  .sr-bar-idx i::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: calc(var(--sr-progress, 0) * 100%);
+    background: var(--foreground);
+  }
+
+  /* Chapter cards of the stacked layout (hidden on desktop) */
+  .sr-mini {
+    display: grid;
+    gap: 0.75rem;
+    padding-bottom: 2.5rem;
+  }
+  @media (min-width: 40rem) {
+    .sr-mini {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .sr-mini-item > button,
+  .sr-mini-wa {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    background: var(--surface);
+    padding: 1rem 1.1rem;
+    transition:
+      border-color 0.3s,
+      background-color 0.3s;
+  }
+  .sr-mini-on > button {
+    border-color: color-mix(in oklab, var(--accent) 50%, var(--border));
+    background: var(--surface-strong);
+  }
+  .sr-mini-n {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+  .sr-mini-t {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .sr-mini-l {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .sr-mini-wa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 100%;
+    min-height: 4rem;
+    font-weight: 600;
+    background: var(--sr-wa);
+    border-color: transparent;
+    color: #06281a;
+  }
+
+  /* =======================================================================
+     Pinned story: desktops with room and no reduced-motion preference.
+     Keep this query in sync with PINNED_QUERY in showroom.tsx.
+     ======================================================================= */
+  @media (min-width: 64rem) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+    .sr {
+      height: calc(100dvh - var(--sr-header) + (var(--sr-n) - 1) * 80vh);
+    }
+    .sr-stage {
+      position: sticky;
+      top: var(--sr-header);
+      height: calc(100dvh - var(--sr-header));
+      overflow: hidden;
+    }
+    .sr-words {
+      display: contents;
+    }
+    .sr-word {
+      position: absolute;
+      top: 1rem;
+      z-index: 1;
+    }
+    .sr-word-l {
+      left: 2.5rem;
+    }
+    .sr-word-r {
+      right: 2.5rem;
+    }
+    .sr-word-dim {
+      opacity: 0.38;
+    }
+    .sr-phone {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      cursor: grab;
+    }
+    .sr-phone:active {
+      cursor: grabbing;
+    }
+    .sr-p2d-pos {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: clamp(190px, 34vh, 290px);
+      transform: translate(-50%, -52%);
+    }
+    .sr[data-chapter='0'] .sr-p2d-pos {
+      left: 55%;
+    }
+    .sr-p2d-float {
+      animation: kf-float 7s ease-in-out infinite;
+    }
+    .sr-mini {
+      display: none;
+    }
+
+    .sr-chapters {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+    }
+    .sr-ch {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .sr-ch-on {
+      opacity: 1;
+      transition: opacity 0.6s ease 0.15s;
+    }
+    .sr-ch-l {
+      position: absolute;
+      left: 12%;
+      top: var(--sr-anchor);
+      max-width: 520px;
+    }
+    .sr-ch-l a,
+    .sr-ch-l button {
+      pointer-events: auto;
+    }
+    /* The hero headline is longer than the chapter ones: smaller type, phone to the right. */
+    .sr-ch-hero .sr-ch-l {
+      max-width: 470px;
+    }
+    .sr-ch-hero .sr-h {
+      font-size: clamp(2rem, 3.7vw, 3.5rem);
+      line-height: 1.02;
+    }
+    .sr-ch-r {
+      position: absolute;
+      right: 9%;
+      top: calc(var(--sr-anchor) + 14vh);
+      max-width: 460px;
+      text-align: right;
+    }
+
+    /* Chapter entrance: lines rise out of a mask, copy fades, tagline slides. */
+    .sr-ln > span {
+      transform: translateY(110%);
+      transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .sr-ch-on .sr-ln > span {
+      transform: translateY(0);
+    }
+    .sr-ch-on .sr-ln:nth-child(2) > span {
+      transition-delay: 0.09s;
+    }
+    .sr-eyebrow,
+    .sr-p,
+    .sr-ctas,
+    .sr-trust {
+      opacity: 0;
+      transform: translateY(16px);
+      transition:
+        opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .sr-ch-on .sr-eyebrow,
+    .sr-ch-on .sr-p,
+    .sr-ch-on .sr-ctas,
+    .sr-ch-on .sr-trust {
+      opacity: 1;
+      transform: none;
+    }
+    .sr-ch-on .sr-p {
+      transition-delay: 0.25s;
+    }
+    .sr-ch-on .sr-ctas {
+      transition-delay: 0.33s;
+    }
+    .sr-ch-on .sr-trust {
+      transition-delay: 0.41s;
+    }
+    .sr-ch-r > * {
+      opacity: 0;
+      transform: translateX(24px);
+      transition:
+        opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .sr-ch-on .sr-ch-r > * {
+      opacity: 1;
+      transform: none;
+    }
+    .sr-ch-on .sr-ch-r > :nth-child(2) {
+      transition-delay: 0.1s;
+    }
+    .sr-ch-on .sr-ch-r > :nth-child(3) {
+      transition-delay: 0.18s;
+    }
+    /* The hero is the LCP: its lines are painted at once and only slide (no fade). */
+    .sr-ch-hero .sr-ln > span {
+      transform: none;
+      transition: none;
+      animation: kf-rise-soft 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .sr-ch-hero .sr-ln:nth-child(2) > span {
+      animation-delay: 0.08s;
+    }
+    .sr-ch-hero .sr-eyebrow,
+    .sr-ch-hero .sr-p,
+    .sr-ch-hero .sr-ctas,
+    .sr-ch-hero .sr-trust {
+      opacity: 1;
+      transform: none;
+      transition: none;
+      animation: kf-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .sr-ch-hero .sr-p {
+      animation-delay: 0.12s;
+    }
+    .sr-ch-hero .sr-ctas {
+      animation-delay: 0.2s;
+    }
+    .sr-ch-hero .sr-trust {
+      animation-delay: 0.28s;
+    }
+    /* Once the visitor has scrolled past, the hero returns like any other chapter. */
+    .sr-ch-hero:not(.sr-ch-on) .sr-ln > span,
+    .sr-ch-hero:not(.sr-ch-on) .sr-eyebrow,
+    .sr-ch-hero:not(.sr-ch-on) .sr-p,
+    .sr-ch-hero:not(.sr-ch-on) .sr-ctas,
+    .sr-ch-hero:not(.sr-ch-on) .sr-trust {
+      animation: none;
+    }
+
+    /* Narrow desktops: the phone moves right (scene-state), the tagline goes. */
+    @media (max-width: 75rem) {
+      .sr-ch-r {
+        display: none;
+      }
+      .sr-ch-l {
+        left: 15%;
+        max-width: 46%;
+      }
+      .sr-h {
+        font-size: clamp(2.25rem, 4.6vw, 4rem);
+        margin-bottom: 1rem;
+      }
+      .sr-p {
+        font-size: 0.95rem;
+      }
+      .sr-ctas {
+        margin-top: 1.25rem;
+      }
+      .sr-rail {
+        left: 1.75rem;
+      }
+      .sr-bar {
+        left: 1.75rem;
+        right: 1.75rem;
+      }
+      .sr-p2d-pos,
+      .sr[data-chapter='0'] .sr-p2d-pos {
+        left: 68%;
+        width: clamp(170px, 30vh, 250px);
+      }
+    }
+    /* Short desktops: tighter rail and type. */
+    @media (max-height: 800px) {
+      .sr-ticks {
+        height: 110px;
+      }
+      .sr-rail {
+        gap: 0.6rem;
+      }
+      .sr-h {
+        font-size: clamp(2.5rem, 4.9vw, 4.4rem);
+        margin-bottom: 1.1rem;
+      }
+      .sr-p {
+        font-size: 1rem;
+      }
+      .sr-eyebrow {
+        margin-bottom: 0.9rem;
+      }
+      .sr-tag {
+        font-size: clamp(2.1rem, 3.6vw, 3.25rem);
+      }
+      .sr-ctas {
+        margin-top: 1.1rem;
+      }
+      .sr-trust {
+        margin-top: 1rem;
+      }
+      .sr-ch-hero .sr-h {
+        font-size: clamp(1.75rem, 3vw, 2.9rem);
+        margin-bottom: 0.9rem;
+      }
+      .sr-ch-hero .sr-p {
+        font-size: 0.95rem;
+        max-width: 400px;
+      }
+      .sr-bar {
+        bottom: 1.4rem;
+      }
+    }
+    @media (max-height: 720px) {
+      .sr-trust {
+        display: none;
+      }
+    }
+  }
+
+  /* =======================================================================
+     Stacked layout: phones, tablets, short windows, reduced motion.
+     ======================================================================= */
+  @media (max-width: 63.999rem), (max-height: 559px), (prefers-reduced-motion: reduce) {
+    .sr-stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 0 2.5rem;
+    }
+    .sr-beam,
+    .sr-floor,
+    .sr-rail,
+    .sr-bar {
+      display: none;
+    }
+    .sr-words {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 0.3em;
+      padding-inline: 1.25rem;
+      font-size: clamp(2.2rem, 9.6vw, 5rem);
+    }
+    .sr-word {
+      font-size: inherit;
+      padding: 0 0 0.06em;
+      overflow: visible;
+    }
+    .sr-chapters {
+      order: 1;
+      margin-top: 1.5rem;
+      padding-inline: 1.25rem;
+    }
+    .sr-ch:not(.sr-ch-hero) {
+      display: none;
+    }
+    .sr-ch-l {
+      text-align: center;
+      margin-inline: auto;
+      max-width: 36rem;
+    }
+    .sr-eyebrow {
+      justify-content: center;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+    }
+    .sr-h {
+      font-size: clamp(2.5rem, 10vw, 3.75rem);
+    }
+    .sr-p {
+      margin-inline: auto;
+    }
+    .sr-ctas,
+    .sr-trust {
+      justify-content: center;
+    }
+    .sr-phone {
+      order: 2;
+      position: relative;
+      margin: 2.5rem auto 0;
+      width: clamp(200px, 56vw, 250px);
+    }
+    .sr-p2d-pos {
+      position: relative;
+      width: 100%;
+    }
+  }
+}
+
+@keyframes kf-bob {
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Section cards: cursor spotlight + 3D tilt (components/home/tilt.tsx), demo
+   frames and the header's services dropdown.
+   --------------------------------------------------------------------------- */
+@layer components {
+  .sr-card {
+    --mx: 50%;
+    --my: 50%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    transition:
+      border-color 0.4s,
+      box-shadow 0.4s,
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transform-style: preserve-3d;
+    overflow: hidden;
+  }
+  .sr-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      420px circle at var(--mx) var(--my),
+      color-mix(in oklab, var(--accent) 16%, transparent),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.45s;
+    pointer-events: none;
+  }
+  .sr-card::after {
+    content: '';
+    position: absolute;
+    left: 12%;
+    right: 12%;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--foreground) 40%, transparent),
+      transparent
+    );
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .sr-card.is-on {
+    border-color: color-mix(in oklab, var(--accent) 45%, var(--border));
+    box-shadow: 0 44px 80px -40px color-mix(in oklab, var(--accent) 40%, transparent);
+  }
+  .sr-card.is-on::before {
+    opacity: 1;
+  }
+  .sr-ico {
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    background: var(--background);
+    color: var(--foreground);
+    transition:
+      background-color 0.4s,
+      color 0.4s,
+      box-shadow 0.4s,
+      transform 0.4s;
+    flex: none;
+  }
+  .sr-card.is-on .sr-ico,
+  .sr-menu-item:hover .sr-ico {
+    background: var(--foreground);
+    color: var(--background);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px -12px color-mix(in oklab, var(--accent) 60%, transparent);
+  }
+  .sr-check::before {
+    content: '✓';
+    display: grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    background: var(--background);
+    font-size: 10px;
+    flex: none;
+    color: var(--foreground);
+  }
+  .sr-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    background: var(--background);
+    color: var(--foreground);
+    white-space: nowrap;
+    transition:
+      background-color 0.3s,
+      color 0.3s,
+      border-color 0.3s;
+  }
+  .sr-pill svg {
+    transition: transform 0.3s;
+  }
+  .sr-card.is-on .sr-pill,
+  .sr-pill:hover {
+    background: var(--foreground);
+    color: var(--background);
+    border-color: transparent;
+  }
+  .sr-card.is-on .sr-pill svg {
+    transform: translateX(3px);
+  }
+
+  /* Demo card */
+  .sr-demo-top {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .sr-demo-top i {
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--border-strong);
+  }
+  .sr-demo-top em {
+    margin: 0 auto;
+    font-style: normal;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 10px;
+    letter-spacing: 0.04em;
+  }
+  .sr-demo-top span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sr-demo-top span::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: #25d366;
+    box-shadow: 0 0 8px #25d366;
+  }
+  .sr-demo-pic {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #0b0f1a;
+  }
+  .sr-demo-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .sr-card.is-on .sr-demo-pic img {
+    transform: scale(1.06) translateY(-2%);
+  }
+  .sr-demo-pic::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 55%,
+      color-mix(in oklab, var(--surface) 90%, transparent)
+    );
+    pointer-events: none;
+  }
+  .sr-demo-open {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    transform: translate(-50%, -50%) scale(0.85);
+    opacity: 0;
+    background: var(--foreground);
+    color: var(--background);
+    border-radius: 9999px;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition:
+      opacity 0.4s,
+      transform 0.4s;
+  }
+  .sr-card.is-on .sr-demo-open {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  /* Services dropdown in the header */
+  .sr-menu {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 0.6rem);
+    width: min(44rem, calc(100vw - 2rem));
+    transform: translate(-50%, 8px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+    padding: 0.875rem;
+    box-shadow: var(--shadow-card);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.25s,
+      transform 0.25s;
+  }
+  .sr-menu::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -0.8rem;
+    height: 0.8rem;
+  }
+  .sr-dd:hover .sr-menu,
+  .sr-dd:focus-within .sr-menu,
+  .sr-dd.is-open .sr-menu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+  }
+  .sr-menu-item {
+    display: flex;
+    gap: 0.875rem;
+    padding: 0.75rem 0.875rem;
+    border-radius: 0.875rem;
+    transition: background-color 0.25s;
+  }
+  .sr-menu-item:hover,
+  .sr-menu-item:focus-visible {
+    background: var(--background);
+  }
+}

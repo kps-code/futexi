@@ -181,6 +181,121 @@ export const technology = {
   ],
 } as const
 
+/* ------------------------------------------------------------------------ */
+/* Showroom home (phase 8). The hero is chapter 1; these follow it.          */
+/* ------------------------------------------------------------------------ */
+
+/** Phone screens the showroom can draw. Rendered by components/home/showroom/phone-screens.ts. */
+export const journeyScreens = [
+  { value: 'site', label: 'Customer website' },
+  { value: 'salon', label: 'Salon website' },
+  { value: 'chat', label: 'AI chat' },
+  { value: 'whatsapp', label: 'WhatsApp lead' },
+  { value: 'booking', label: 'Booking calendar' },
+  { value: 'stats', label: 'Growth dashboard' },
+  { value: 'start', label: 'Start (WhatsApp us)' },
+] as const
+export type JourneyScreen = (typeof journeyScreens)[number]['value']
+
+export const journey = {
+  /** Rail label of the hero, which is always chapter 01. */
+  heroLabel: 'Your website',
+  chapters: [
+    {
+      label: 'AI assistant',
+      eyebrow: '02 · The AI assistant',
+      headingLine1: 'It answers',
+      headingLine2: 'at 2 a.m.',
+      line: 'Trained on your services and prices, it replies instantly, qualifies the visitor and offers the slot.',
+      tagline: 'Never miss a question.',
+      screen: 'chat',
+    },
+    {
+      label: 'WhatsApp',
+      eyebrow: '03 · WhatsApp',
+      headingLine1: 'Leads land',
+      headingLine2: 'in your pocket.',
+      line: 'Every enquiry arrives on WhatsApp with name, service and time. One tap to call back.',
+      tagline: 'Zero missed enquiries.',
+      screen: 'whatsapp',
+    },
+    {
+      label: 'Start',
+      eyebrow: '04 · Start',
+      headingLine1: "Let's build",
+      headingLine2: 'yours.',
+      line: 'Tell us about your business on WhatsApp. First concept in 7 days, a fixed price, no surprises.',
+      tagline: 'Pure possibility.',
+      screen: 'start',
+    },
+  ],
+} as const
+
+export const servicesSection = {
+  eyebrow: 'What we do',
+  heading: 'Six services. Pick what your business needs.',
+  sub: 'Every service in plain words: what you get and who it is for. Not sure? Message us and we will suggest the right mix.',
+  ask: 'Ask on WhatsApp',
+} as const
+
+export const demoShowcase = {
+  eyebrow: 'See it working',
+  heading: 'Live demos for businesses like yours.',
+  sub: 'Real, working websites we built as examples. Open one, book a slot, chat with the AI assistant.',
+  open: 'Open demo',
+  cta: { label: 'View All Demos', href: '/demos' },
+} as const
+
+export const trust = {
+  eyebrow: 'Why us',
+  heading: 'Why businesses choose us.',
+  sub: 'Small team, direct contact, work you can try before you buy.',
+  team: { heading: 'The people you will talk to', cta: { label: 'Meet the Team', href: '/about' } },
+  testimonials: { heading: 'What clients say' },
+} as const
+
+export const pricing = {
+  eyebrow: 'Pricing',
+  heading: 'Simple, honest pricing.',
+  // {price} is replaced with the admin-editable starting price text.
+  line: '{price}. The final price depends on pages, features and integrations. Tell us what you need and we send a clear quote, usually the same day.',
+  note: {
+    tag: 'How quotes work',
+    title: 'One clear number, before we start.',
+    body: 'You get a fixed price for the agreed scope, a timeline and a list of what is included. No hourly billing, no hidden costs. Hosting and domain are explained separately in plain words.',
+  },
+  setups: [
+    {
+      tag: 'Typical setup 1',
+      title: 'Website only',
+      bestFor: 'Getting found on Google',
+      items: ['5-page business website', 'WhatsApp button + Google Maps', 'Mobile-first, SEO-ready'],
+    },
+    {
+      tag: 'Typical setup 2',
+      title: 'Website + AI + WhatsApp',
+      bestFor: 'Businesses with daily enquiries',
+      items: [
+        'Everything in setup 1',
+        'AI assistant trained on your services',
+        'Enquiries routed to WhatsApp',
+      ],
+    },
+    {
+      tag: 'Typical setup 3',
+      title: 'Full system with bookings',
+      bestFor: 'Salons, clinics, tutors, studios',
+      items: [
+        'Everything in setup 2',
+        'Online booking with confirmations',
+        'Admin dashboard + monthly report',
+      ],
+    },
+  ],
+  cta: { label: 'Get a Quote on WhatsApp' },
+  secondary: { label: 'Discuss Your Project', href: '/contact' },
+} as const
+
 export const finalCta = {
   heading: 'Have an Idea?',
   headingAccent: "Let's Build It.",

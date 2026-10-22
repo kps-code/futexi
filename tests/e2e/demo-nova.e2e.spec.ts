@@ -41,7 +41,7 @@ test.describe('Nova Studio pages', () => {
     expect(decodeURIComponent((await links.first().getAttribute('href')) ?? '')).toContain('Monthly plan')
   })
 
-  test('uses its own fonts and nav, and keeps the cursor off touch devices', async ({ page, browser }) => {
+  test('uses its own fonts and nav, and never adds a custom cursor', async ({ page, browser }) => {
     await page.goto('/demo/booking')
     const nav = page.getByRole('navigation', { name: 'Nova Studio' })
     await expect(nav.getByRole('link', { name: 'Treatments' })).toHaveAttribute(
@@ -61,6 +61,8 @@ test.describe('Nova Studio pages', () => {
     await m.goto('/demo/booking')
     await m.waitForTimeout(1000)
     expect(await m.locator('.dm-cursor-ring').count()).toBe(0)
+    expect(await page.locator('.dm-cursor-ring').count()).toBe(0)
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).cursor)).toBe('auto')
     await mobile.close()
   })
 })

@@ -55,7 +55,7 @@ export function AiDemoBox({ script }: { script: AiScriptItem[] }) {
     <div className="glow-ring glow-ring-on rounded-2xl p-5 frame-glass sm:p-6">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-accent-gradient text-white">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-foreground text-background">
             <Bot className="h-4 w-4" />
           </span>
           <div>
@@ -69,7 +69,7 @@ export function AiDemoBox({ script }: { script: AiScriptItem[] }) {
             <p className="text-[11px] text-muted">{aiSection.demoLabel}</p>
           </div>
         </div>
-        <Sparkles className="h-4 w-4 text-accent" />
+        <Sparkles className="h-4 w-4 text-foreground" />
       </div>
 
       <p className="mt-5 text-xs font-medium text-muted">Pick a business to see a sample answer:</p>
@@ -85,7 +85,7 @@ export function AiDemoBox({ script }: { script: AiScriptItem[] }) {
             className={cn(
               'rounded-full border px-3 py-1.5 text-xs font-medium transition-colors',
               item?.chip === s.chip
-                ? 'border-transparent bg-accent-gradient text-white'
+                ? 'border-transparent bg-foreground text-background'
                 : 'border-border bg-background text-foreground/85 hover:border-border-strong',
             )}
           >
@@ -111,7 +111,7 @@ export function AiDemoBox({ script }: { script: AiScriptItem[] }) {
         )}
         {item && (phase === 'answering' || phase === 'done') && (
           <div className="flex gap-2.5">
-            <span className="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-gradient text-white">
+            <span className="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-foreground text-background">
               <Bot className="h-3 w-3" />
             </span>
             <p className="max-w-[90%] rounded-2xl rounded-bl-sm border border-border bg-background px-4 py-2.5 text-sm leading-relaxed">

@@ -30,13 +30,19 @@ export const contactDefaults = {
 export const whatsappDefaultMessage =
   "Hi KAPOSA FUTEXI, I'm interested in building a website for my business."
 
+/** Header links. "How it works" and "Pricing" are home sections; About lives in the mobile menu and footer. */
 export const nav = [
   { label: 'Home', href: '/' },
-  { label: 'Services', href: '/services' },
+  { label: 'Services', href: '/services', menu: true },
   { label: 'Demos', href: '/demos' },
-  { label: 'About', href: '/about' },
+  { label: 'How it works', href: '/#process' },
+  { label: 'Pricing', href: '/#pricing' },
   { label: 'Contact', href: '/contact' },
 ] as const
+
+export const servicesMenu = {
+  all: { lead: 'Not sure which one?', label: 'See all services', href: '/services' },
+} as const
 
 export const primaryCta = { label: 'Start a Project', href: '/contact' } as const
 

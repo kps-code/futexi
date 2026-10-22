@@ -12,8 +12,8 @@ const html = `<!doctype html>
   body { width: 1200px; height: 630px; overflow: hidden; background: #0b0f1a; color: #f5f7fa;
          font-family: 'Segoe UI', Inter, system-ui, sans-serif; position: relative; }
   .glow { position: absolute; border-radius: 9999px; filter: blur(70px); }
-  .g1 { width: 620px; height: 620px; left: -160px; top: -220px; background: rgba(34,211,238,.28); }
-  .g2 { width: 560px; height: 560px; right: -140px; bottom: -220px; background: rgba(139,92,246,.34); }
+  .g1 { width: 620px; height: 620px; left: -160px; top: -220px; background: rgba(255,255,255,.10); }
+  .g2 { width: 560px; height: 560px; right: -140px; bottom: -220px; background: rgba(255,255,255,.08); }
   .grid { position: absolute; inset: 0; opacity: .5;
           background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
                             linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
@@ -23,13 +23,13 @@ const html = `<!doctype html>
   .pill { display: inline-flex; align-items: center; gap: 12px; padding: 10px 18px; border-radius: 999px;
           border: 1px solid rgba(255,255,255,.14); background: rgba(17,24,39,.7); font-size: 18px; letter-spacing: .22em;
           text-transform: uppercase; color: #9ca3af; font-weight: 600; width: max-content; }
-  .pill i { width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(90deg,#22d3ee,#8b5cf6); }
+  .pill i { width: 10px; height: 10px; border-radius: 50%; background: #ffffff; }
   h1 { font-size: 84px; line-height: 1.02; font-weight: 800; letter-spacing: -0.03em; margin-top: 36px; }
-  h1 span { background: linear-gradient(90deg,#22d3ee,#8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  h1 span { color: #9ca3af; }
   p { font-size: 28px; color: #c7cbd4; max-width: 820px; margin-top: 26px; line-height: 1.4; }
   .foot { display: flex; align-items: center; justify-content: space-between; font-size: 22px; color: #9ca3af; }
   .brand { font-weight: 800; letter-spacing: .18em; color: #f5f7fa; font-size: 26px; }
-  .brand span { background: linear-gradient(90deg,#22d3ee,#8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .brand span { color: #9ca3af; }
 </style></head><body>
   <div class="glow g1"></div><div class="glow g2"></div><div class="grid"></div>
   <div class="wrap">

@@ -26,7 +26,7 @@ export function FinalCta({ content, whatsappNumber, whatsappMessage }: Props) {
           {content.headingAccent && (
             <>
               {' '}
-              <span className="text-gradient sm:block">{content.headingAccent}</span>
+              <span className="sr-accent sm:block">{content.headingAccent}</span>
             </>
           )}
         </h2>
