@@ -3,25 +3,15 @@ import { expect, test } from '@playwright/test'
 test.describe('Home and demos', () => {
   test('home renders every section in the locked order', async ({ page }) => {
     await page.goto('/')
-    const ids = [
-      'what-we-build',
-      'demos',
-      'ai',
-      'before-after',
-      'every-screen',
-      'process',
-      'why-us',
-      'pricing',
-      'team',
-      'technology',
-      'faq',
-      'start',
-    ]
-    for (const id of ids) await expect(page.locator(`#${id}`)).toBeAttached()
+    const ids = ['hero', 'services', 'demos', 'ai', 'process', 'trust', 'pricing', 'faq', 'start']
+    const found = await page.locator('main section[id]').evaluateAll((els) => els.map((e) => e.id))
+    expect(found).toEqual(ids)
     await expect(
-      page.getByRole('heading', { name: 'More Than Just Websites. We Build Digital Solutions.' }),
+      page.getByRole('heading', { name: 'Six services. Pick what your business needs.' }),
     ).toBeAttached()
+    await expect(page.getByRole('heading', { name: 'Live demos for businesses like yours.' })).toBeAttached()
     await expect(page.getByRole('heading', { name: 'Make Your Website Smarter With AI' })).toBeAttached()
+    await expect(page.getByRole('heading', { name: 'Simple, honest pricing.' })).toBeAttached()
     await expect(page.getByRole('heading', { name: "Have an Idea? Let's Build It." })).toBeAttached()
   })
 

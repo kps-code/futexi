@@ -1332,7 +1332,7 @@ export interface DemoSetting {
   createdAt?: string | null;
 }
 /**
- * Home page texts: hero, closing call to action, technology list, "Why Build With Us?" cards and "How We Work" steps. Changes go live within seconds.
+ * Home page texts: hero, the scroll journey after it, closing call to action, technology list, "Why Build With Us?" cards and "How We Work" steps. Changes go live within seconds.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home-page".
@@ -1342,7 +1342,7 @@ export interface HomePage {
   hero: {
     headingLine1: string;
     /**
-     * Shown on its own line in the accent gradient.
+     * Shown on its own line in the italic accent style.
      */
     headingLine2: string;
     sub: string;
@@ -1358,6 +1358,27 @@ export interface HomePage {
      * Short labels under the buttons. Press Enter after each.
      */
     trustLine?: string[] | null;
+  };
+  journey?: {
+    /**
+     * Shown on the side rail for the hero chapter.
+     */
+    heroLabel?: string | null;
+    /**
+     * Numbered from 02 in this order.
+     */
+    chapters?:
+      | {
+          label: string;
+          screen: 'site' | 'salon' | 'chat' | 'whatsapp' | 'booking' | 'stats' | 'start';
+          eyebrow?: string | null;
+          headingLine1: string;
+          headingLine2?: string | null;
+          line: string;
+          tagline?: string | null;
+          id?: string | null;
+        }[]
+      | null;
   };
   finalCta: {
     heading: string;
@@ -1416,6 +1437,35 @@ export interface HomePage {
           id?: string | null;
         }[]
       | null;
+  };
+  pricing: {
+    heading: string;
+    /**
+     * Keep {price} where the starting price should appear.
+     */
+    line: string;
+    note: {
+      tag: string;
+      title: string;
+      body: string;
+    };
+    /**
+     * Cards next to the quote card, in this order. No amounts: the quote comes on WhatsApp. Leave the list empty to show the three built-in setups.
+     */
+    setups?:
+      | {
+          tag: string;
+          title: string;
+          bestFor?: string | null;
+          /**
+           * Press Enter after each item. Three reads best.
+           */
+          items?: string[] | null;
+          id?: string | null;
+        }[]
+      | null;
+    whatsappLabel: string;
+    secondaryLabel: string;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1568,6 +1618,23 @@ export interface HomePageSelect<T extends boolean = true> {
         secondaryLabel?: T;
         trustLine?: T;
       };
+  journey?:
+    | T
+    | {
+        heroLabel?: T;
+        chapters?:
+          | T
+          | {
+              label?: T;
+              screen?: T;
+              eyebrow?: T;
+              headingLine1?: T;
+              headingLine2?: T;
+              line?: T;
+              tagline?: T;
+              id?: T;
+            };
+      };
   finalCta?:
     | T
     | {
@@ -1608,6 +1675,30 @@ export interface HomePageSelect<T extends boolean = true> {
               line?: T;
               id?: T;
             };
+      };
+  pricing?:
+    | T
+    | {
+        heading?: T;
+        line?: T;
+        note?:
+          | T
+          | {
+              tag?: T;
+              title?: T;
+              body?: T;
+            };
+        setups?:
+          | T
+          | {
+              tag?: T;
+              title?: T;
+              bestFor?: T;
+              items?: T;
+              id?: T;
+            };
+        whatsappLabel?: T;
+        secondaryLabel?: T;
       };
   updatedAt?: T;
   createdAt?: T;

@@ -17,9 +17,9 @@ function hash(s: string): number {
 const skins = ['#d9a066', '#c68642', '#b5773f']
 const shirts = ['#111c33', '#1a2338', '#15203a']
 const hues = [
-  ['#22d3ee', '#8b5cf6'],
-  ['#38bdf8', '#6366f1'],
-  ['#2dd4bf', '#a855f7'],
+  ['#9aa3b2', '#5b6472'],
+  ['#a7b0bf', '#6b7483'],
+  ['#8f99a8', '#4f5a69'],
 ]
 
 export function Avatar({

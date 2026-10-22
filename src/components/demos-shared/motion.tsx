@@ -11,8 +11,7 @@ import { useEffect } from 'react'
  *   `[data-reveal-once]` keeps the first state.
  * - Counters: `[data-count="1234"]` counts up from 0 when it enters the view.
  *   `data-count-prefix` / `data-count-suffix` wrap the number (₹, %, +).
- * - Pointer effects (fine pointers only): a custom cursor (dot + ring, label
- *   from `data-cursor`), magnetic `[data-magnetic]` buttons and `[data-tilt]`
+ * - Pointer effects (fine pointers only): magnetic `[data-magnetic]` buttons and `[data-tilt]`
  *   cards that lean toward the pointer with a glare.
  *
  * Everything animates transform and opacity only, and all of it is skipped
@@ -105,66 +104,6 @@ export function DemoMotion() {
 
     // --- Pointer effects (desktop only) ---------------------------------------
     if (!reduce && fine) {
-      // Custom cursor: a dot that tracks the pointer and a ring that lags behind.
-      const dot = document.createElement('div')
-      dot.className = 'dm-cursor-dot'
-      const ring = document.createElement('div')
-      ring.className = 'dm-cursor-ring'
-      const label = document.createElement('span')
-      ring.appendChild(label)
-      document.body.append(dot, ring)
-      root.classList.add('dm-has-cursor')
-      let px = window.innerWidth / 2
-      let py = window.innerHeight / 2
-      let rx = px
-      let ry = py
-      let visible = false
-      let frame = 0
-      const loop = () => {
-        rx += (px - rx) * 0.18
-        ry += (py - ry) * 0.18
-        ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%)`
-        frame = window.requestAnimationFrame(loop)
-      }
-      const onMove = (e: PointerEvent) => {
-        px = e.clientX
-        py = e.clientY
-        dot.style.transform = `translate3d(${px}px, ${py}px, 0) translate(-50%, -50%)`
-        if (!visible) {
-          visible = true
-          root.classList.add('dm-cursor-visible')
-          frame = window.requestAnimationFrame(loop)
-        }
-        const target = (e.target as Element | null)?.closest<HTMLElement>(
-          'a, button, [data-cursor], input, select, textarea, summary',
-        )
-        const text = target?.dataset.cursor ?? ''
-        label.textContent = text
-        ring.classList.toggle('is-hover', Boolean(target))
-        ring.classList.toggle('has-label', Boolean(text))
-      }
-      const onLeave = () => {
-        visible = false
-        root.classList.remove('dm-cursor-visible')
-        window.cancelAnimationFrame(frame)
-      }
-      const onDown = () => ring.classList.add('is-down')
-      const onUp = () => ring.classList.remove('is-down')
-      window.addEventListener('pointermove', onMove, { passive: true })
-      document.documentElement.addEventListener('mouseleave', onLeave)
-      window.addEventListener('pointerdown', onDown)
-      window.addEventListener('pointerup', onUp)
-      cleanups.push(() => {
-        window.removeEventListener('pointermove', onMove)
-        document.documentElement.removeEventListener('mouseleave', onLeave)
-        window.removeEventListener('pointerdown', onDown)
-        window.removeEventListener('pointerup', onUp)
-        window.cancelAnimationFrame(frame)
-        dot.remove()
-        ring.remove()
-        root.classList.remove('dm-has-cursor', 'dm-cursor-visible')
-      })
-
       // Magnetic buttons: drift a few pixels toward the pointer while it hovers.
       const magnetic = Array.from(document.querySelectorAll<HTMLElement>('[data-magnetic]'))
       for (const el of magnetic) {

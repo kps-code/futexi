@@ -9,7 +9,7 @@ import { IconBadge, Section, SectionHeading } from './section'
 export async function AiSection() {
   const script = await getAiScript()
   return (
-    <Section id="ai" className="cv-auto">
+    <Section id="ai">
       <SectionHeading eyebrow="AI" title={aiSection.heading} sub={aiSection.sub} />
       <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_1fr]">
         <ul className="grid gap-5 sm:grid-cols-2">

@@ -42,7 +42,7 @@ export function Wordmark({ className, withSubline = true, logo, logoDark }: Word
   return (
     <Link href="/" className={cn('group inline-flex flex-col leading-none', className)}>
       <span className="font-display text-[1.05rem] font-bold tracking-[0.18em] text-foreground sm:text-lg">
-        KAPOSA <span className="text-gradient">FUTEXI</span>
+        KAPOSA <span className="text-muted">FUTEXI</span>
       </span>
       {withSubline && (
         <span className="mt-1 text-[0.62rem] font-medium tracking-[0.22em] text-muted uppercase">

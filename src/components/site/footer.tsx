@@ -45,7 +45,7 @@ export function Footer({
     <footer className="relative border-t border-border bg-surface/60">
       <div
         aria-hidden
-        className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent"
+        className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-border-strong to-transparent"
       />
       <div className="container-site grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div className="space-y-4">

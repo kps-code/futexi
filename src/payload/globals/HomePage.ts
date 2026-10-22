@@ -1,5 +1,5 @@
 import type { GlobalConfig } from 'payload'
-import { finalCta, howWeWork, technology, whyUs } from '@/content/home'
+import { finalCta, howWeWork, journey, journeyScreens, pricing, technology, whyUs } from '@/content/home'
 import { iconNames } from '@/content/icon-names'
 import { hero } from '@/content/site'
 import { anyone, edit, hiddenUnless } from '../access'
@@ -13,7 +13,7 @@ export const HomePage: GlobalConfig = {
     group: 'Content',
     hidden: hiddenUnless('homePage'),
     description:
-      'Home page texts: hero, closing call to action, technology list, "Why Build With Us?" cards and "How We Work" steps. Changes go live within seconds.',
+      'Home page texts: hero, the scroll journey after it, closing call to action, technology list, "Why Build With Us?" cards and "How We Work" steps. Changes go live within seconds.',
   },
   access: {
     read: anyone,
@@ -38,12 +38,12 @@ export const HomePage: GlobalConfig = {
             },
             {
               name: 'headingLine2',
-              label: 'Headline, gradient part',
+              label: 'Headline, accent line',
               type: 'text',
               required: true,
               maxLength: 60,
               defaultValue: hero.headingLine2,
-              admin: { description: 'Shown on its own line in the accent gradient.' },
+              admin: { description: 'Shown on its own line in the italic accent style.' },
             },
             {
               name: 'sub',
@@ -87,6 +87,68 @@ export const HomePage: GlobalConfig = {
           ],
         },
         {
+          label: 'Journey',
+          name: 'journey',
+          description:
+            'The scroll story on the home page. The hero is always chapter 01 ("Your website"); these chapters follow it, each with its own phone screen.',
+          fields: [
+            {
+              name: 'heroLabel',
+              label: 'Chapter 01 label',
+              type: 'text',
+              maxLength: 24,
+              defaultValue: journey.heroLabel,
+              admin: { description: 'Shown on the side rail for the hero chapter.' },
+            },
+            {
+              name: 'chapters',
+              type: 'array',
+              labels: { singular: 'Chapter', plural: 'Chapters' },
+              minRows: 1,
+              maxRows: 5,
+              defaultValue: journey.chapters.map((c) => ({ ...c })),
+              admin: { initCollapsed: true, description: 'Numbered from 02 in this order.' },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'label', label: 'Rail label', type: 'text', required: true, maxLength: 24 },
+                    {
+                      name: 'screen',
+                      label: 'Phone screen',
+                      type: 'select',
+                      required: true,
+                      defaultValue: 'chat',
+                      options: journeyScreens.map((s) => ({ label: s.label, value: s.value })),
+                    },
+                  ],
+                },
+                { name: 'eyebrow', label: 'Small line above the heading', type: 'text', maxLength: 40 },
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'headingLine1',
+                      label: 'Heading, first line',
+                      type: 'text',
+                      required: true,
+                      maxLength: 32,
+                    },
+                    { name: 'headingLine2', label: 'Heading, second line', type: 'text', maxLength: 32 },
+                  ],
+                },
+                { name: 'line', label: 'Text', type: 'textarea', required: true, maxLength: 180 },
+                {
+                  name: 'tagline',
+                  label: 'Tagline (italic, right side)',
+                  type: 'text',
+                  maxLength: 40,
+                },
+              ],
+            },
+          ],
+        },
+        {
           label: 'Final call to action',
           name: 'finalCta',
           fields: [
@@ -103,7 +165,7 @@ export const HomePage: GlobalConfig = {
                 },
                 {
                   name: 'headingAccent',
-                  label: 'Heading, gradient part',
+                  label: 'Heading, accent line',
                   type: 'text',
                   maxLength: 60,
                   defaultValue: finalCta.headingAccent,
@@ -217,6 +279,115 @@ export const HomePage: GlobalConfig = {
                   ],
                 },
                 { name: 'line', type: 'text', required: true, maxLength: 140 },
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Pricing',
+          name: 'pricing',
+          description:
+            'The home pricing section. {price} in the line is replaced with the starting price text from Site Settings > Texts.',
+          fields: [
+            { name: 'heading', type: 'text', required: true, maxLength: 60, defaultValue: pricing.heading },
+            {
+              name: 'line',
+              label: 'Line under the heading',
+              type: 'textarea',
+              required: true,
+              maxLength: 240,
+              defaultValue: pricing.line,
+              admin: { description: 'Keep {price} where the starting price should appear.' },
+            },
+            {
+              name: 'note',
+              label: 'How quotes work card',
+              type: 'group',
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'tag',
+                      label: 'Small label',
+                      type: 'text',
+                      required: true,
+                      maxLength: 30,
+                      defaultValue: pricing.note.tag,
+                    },
+                    {
+                      name: 'title',
+                      type: 'text',
+                      required: true,
+                      maxLength: 60,
+                      defaultValue: pricing.note.title,
+                    },
+                  ],
+                },
+                {
+                  name: 'body',
+                  type: 'textarea',
+                  required: true,
+                  maxLength: 300,
+                  defaultValue: pricing.note.body,
+                },
+              ],
+            },
+            {
+              name: 'setups',
+              label: 'Typical setups',
+              type: 'array',
+              labels: { singular: 'Setup', plural: 'Setups' },
+              minRows: 1,
+              maxRows: 4,
+              defaultValue: pricing.setups.map((s) => ({
+                tag: s.tag,
+                title: s.title,
+                bestFor: s.bestFor,
+                items: [...s.items],
+              })),
+              admin: {
+                initCollapsed: true,
+                description:
+                  'Cards next to the quote card, in this order. No amounts: the quote comes on WhatsApp. Leave the list empty to show the three built-in setups.',
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'tag', label: 'Small label', type: 'text', required: true, maxLength: 30 },
+                    { name: 'title', type: 'text', required: true, maxLength: 40 },
+                  ],
+                },
+                { name: 'bestFor', label: 'Best for', type: 'text', maxLength: 60 },
+                {
+                  name: 'items',
+                  label: 'What is included',
+                  type: 'text',
+                  hasMany: true,
+                  admin: { description: 'Press Enter after each item. Three reads best.' },
+                },
+              ],
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'whatsappLabel',
+                  label: 'WhatsApp button',
+                  type: 'text',
+                  required: true,
+                  maxLength: 30,
+                  defaultValue: pricing.cta.label,
+                },
+                {
+                  name: 'secondaryLabel',
+                  label: 'Second button (opens Contact)',
+                  type: 'text',
+                  required: true,
+                  maxLength: 30,
+                  defaultValue: pricing.secondary.label,
+                },
               ],
             },
           ],

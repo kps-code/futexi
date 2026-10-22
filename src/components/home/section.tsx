@@ -36,7 +36,7 @@ export function Eyebrow({ children, className }: { children: ReactNode; classNam
         className,
       )}
     >
-      <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent-gradient" />
+      <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-foreground" />
       {children}
     </p>
   )
@@ -83,7 +83,7 @@ export function IconBadge({ children, className }: { children: ReactNode; classN
   return (
     <span
       className={cn(
-        'inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-background text-accent transition-[background-color,color,border-color] duration-300 group-hover:border-transparent group-hover:bg-accent-gradient group-hover:text-white',
+        'inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-background text-foreground transition-[background-color,color,border-color] duration-300 group-hover:border-transparent group-hover:bg-foreground group-hover:text-background',
         className,
       )}
     >

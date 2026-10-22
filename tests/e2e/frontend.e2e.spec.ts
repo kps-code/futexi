@@ -8,9 +8,27 @@ test.describe('Frontend', () => {
     await expect(page.locator('h1').first()).toContainText('Your Ideas. Our Technology.')
 
     const nav = page.getByRole('navigation', { name: 'Primary' })
-    for (const label of ['Home', 'Services', 'Demos', 'About', 'Contact']) {
-      await expect(nav.getByRole('link', { name: label })).toBeVisible()
+    for (const label of ['Home', 'Demos', 'How it works', 'Pricing', 'Contact']) {
+      await expect(nav.getByRole('link', { name: label, exact: true })).toBeVisible()
     }
+    await expect(nav.getByRole('link', { name: /^Services/ })).toBeVisible()
+    await expect(page.locator('header').getByRole('link', { name: 'WhatsApp us' })).toHaveAttribute(
+      'href',
+      /wa\.me/,
+    )
+  })
+
+  test('the Services menu lists every visible service', async ({ page }) => {
+    await page.goto('/')
+    const nav = page.getByRole('navigation', { name: 'Primary' })
+    await nav.getByRole('link', { name: /^Services/ }).hover()
+    const menu = page.getByRole('group', { name: 'Services' })
+    await expect(menu).toBeVisible()
+    await expect(menu.getByRole('link', { name: /Booking Websites/ })).toHaveAttribute(
+      'href',
+      '/services#booking-websites',
+    )
+    await expect(menu.getByRole('link', { name: /See all services/ })).toHaveAttribute('href', '/services')
   })
 
   test('footer and structured data carry the business location', async ({ page }) => {
@@ -38,10 +56,10 @@ test.describe('Frontend', () => {
     await expect(nav).toBeVisible()
     const box = await nav.boundingBox()
     expect(box?.height ?? 0).toBeGreaterThan(200)
-    for (const label of ['Home', 'Services', 'Demos', 'About', 'Contact']) {
-      await expect(nav.getByRole('link', { name: label })).toBeVisible()
+    for (const label of ['Home', 'Services', 'Demos', 'How it works', 'Pricing', 'About', 'Contact']) {
+      await expect(nav.getByRole('link', { name: label, exact: true })).toBeVisible()
     }
-    await nav.getByRole('link', { name: 'Services' }).click()
+    await nav.getByRole('link', { name: 'Services', exact: true }).click()
     await expect(page).toHaveURL(/\/services$/)
     await expect(nav).toBeHidden()
     await ctx.close()

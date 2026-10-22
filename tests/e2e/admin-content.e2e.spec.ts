@@ -82,11 +82,11 @@ test.describe('Admin content on the public site', () => {
     await cleanupTestUser()
   })
 
-  test('a visible testimonial shows the "What Clients Say" section on home', async ({ page }) => {
+  test('a visible testimonial shows the "What clients say" block on home', async ({ page }) => {
     await page.goto('/')
-    const section = page.locator('#testimonials')
+    const section = page.locator('#trust')
     await expect(section).toBeAttached()
-    await expect(section.getByRole('heading', { name: 'What Clients Say' })).toBeAttached()
+    await expect(section.getByRole('heading', { name: 'What clients say' })).toBeAttached()
     await expect(section.getByText(`Client ${marker}`)).toBeAttached()
     await expect(section.getByText('Playwright Salon, Chennai')).toBeAttached()
   })
@@ -113,7 +113,12 @@ test.describe('Admin content on the public site', () => {
       page.locator('footer').getByRole('link', { name: `Playwright Service ${marker}` }),
     ).toHaveAttribute('href', `/services#pw-service-${marker}`)
     await page.goto('/')
-    await expect(page.locator('#what-we-build').getByText(`Playwright Service ${marker}`)).toBeAttached()
+    await expect(page.locator('#services').getByText(`Playwright Service ${marker}`)).toBeAttached()
+    await expect(
+      page
+        .getByRole('navigation', { name: 'Primary' })
+        .getByRole('link', { name: new RegExp(`Playwright Service ${marker}`) }),
+    ).toBeAttached()
   })
 
   test('a "Hidden" FAQ appears on neither page', async ({ page }) => {

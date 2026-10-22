@@ -36,7 +36,7 @@ export default async function AboutPage() {
             {team.map((m) => (
               <li key={m.id} className={cardClasses}>
                 <div className="flex items-center gap-4">
-                  <span className="shrink-0 rounded-full bg-accent-gradient p-0.5">
+                  <span className="shrink-0 rounded-full bg-border-strong p-0.5">
                     <Avatar
                       name={m.name}
                       photoUrl={m.photoUrl}

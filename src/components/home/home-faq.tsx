@@ -8,7 +8,7 @@ export function HomeFaq({ faqs, startingPriceText }: { faqs: FaqItem[]; starting
   const items = faqs.filter((f) => f.showOnHome)
   if (items.length === 0) return null
   return (
-    <Section id="faq" className="cv-auto">
+    <Section id="faq">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
         <SectionHeading align="left" eyebrow="FAQ" title="Questions Businesses Ask Us" className="mb-0" />
         <Reveal>
@@ -30,7 +30,7 @@ export function HomeFaq({ faqs, startingPriceText }: { faqs: FaqItem[]; starting
           </div>
           <Link
             href="/contact#faq"
-            className="mt-4 inline-block text-sm font-medium text-accent hover:underline"
+            className="mt-4 inline-block text-sm font-medium text-foreground underline decoration-border-strong underline-offset-4 hover:decoration-current"
           >
             See all questions
           </Link>

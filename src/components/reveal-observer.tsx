@@ -7,6 +7,12 @@ import { useEffect } from 'react'
  * Watches `[data-reveal]` elements and marks them visible once they enter the
  * viewport. Marks <html> as `reveal-ready` so CSS hides elements only when
  * this script is running. Re-scans on every route change.
+ *
+ * Besides the IntersectionObserver, a throttled sweep runs on scroll and after
+ * programmatic jumps (header anchor links, hash navigation): Chrome does not
+ * always deliver intersection notifications for a smooth `scrollIntoView`, so
+ * without it a section reached from a link could stay hidden until the next
+ * real scroll.
  */
 export function RevealObserver() {
   const pathname = usePathname()
@@ -35,6 +41,31 @@ export function RevealObserver() {
     )
     all().forEach((el) => io.observe(el))
 
+    // Anything currently in view is revealed, whatever the observer reported.
+    const sweep = () => {
+      const limit = window.innerHeight * 0.9
+      for (const el of all()) {
+        const r = el.getBoundingClientRect()
+        if (r.bottom > 0 && r.top < limit) {
+          el.classList.add('is-visible')
+          io.unobserve(el)
+        }
+      }
+    }
+    let timer = 0
+    const onScroll = () => {
+      if (timer) return
+      timer = window.setTimeout(() => {
+        timer = 0
+        sweep()
+      }, 150)
+    }
+    const onJump = () => window.setTimeout(sweep, 60)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('scrollend', sweep)
+    window.addEventListener('hashchange', onJump)
+    const first = window.setTimeout(sweep, 100)
+
     // Content rendered later (filters, client lists) gets observed too. Coalesce bursts
     // of mutations (hydration, list re-renders) into one scan per frame.
     let raf = 0
@@ -50,6 +81,11 @@ export function RevealObserver() {
     return () => {
       io.disconnect()
       mo.disconnect()
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('scrollend', sweep)
+      window.removeEventListener('hashchange', onJump)
+      window.clearTimeout(first)
+      window.clearTimeout(timer)
       if (raf) window.cancelAnimationFrame(raf)
     }
   }, [pathname])
