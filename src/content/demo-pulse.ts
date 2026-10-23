@@ -223,3 +223,15 @@ export const pulseAiCards = [
   },
   { title: 'Next session', value: 0, unit: '', line: 'Strength · Thu 8 PM · Coach Karthik · Spot held' },
 ] as const
+
+/* Motion v2 additions (home page). */
+
+/** Coach photo for the wipe-reveal block in the AI coach section. */
+export const pulseCoachPhoto = photo('coach-session', 'A coach guiding a member through a session')
+
+/** Big statement that lights up word by word as the visitor scrolls. */
+export const pulseManifesto =
+  'Every rep counted. Every question answered. Every morning a message that knows your numbers better than you do.'
+
+/** Items in the marquee strip under the hero. */
+export const pulseMarquee = [...pulseClasses.map((c) => c.name), 'Free trial', 'Open 5:30 AM'] as const

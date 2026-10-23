@@ -3,13 +3,15 @@ import Link from 'next/link'
 import { ArrowRight, BookOpen, CalendarCheck, MessageCircle, Users } from 'lucide-react'
 import { DemoButton, DemoShell, SectionTitle } from '@/components/demos-shared/chrome'
 import { EnquiryForm } from '@/components/demos-shared/enquiry-form'
+import { HeroScene } from '@/components/demos-shared/motion-v2/hero-scene'
+import { MotionV2 } from '@/components/demos-shared/motion-v2/motion'
 import { Photo } from '@/components/demos-shared/photo'
 import { Testimonials } from '@/components/demos-shared/sections'
 import { FadeUp, Words } from '@/components/demos-shared/words'
 import { Reveal } from '@/components/reveal'
 import { vidya } from '@/content/demo-businesses'
 import { studentClasses, tuitionBatches, tuitionFaculty, tuitionTestimonials } from '@/content/demo-tuition'
-import { vidyaCourses, vidyaPhotos, vidyaStats, vidyaToppers } from '@/content/demo-vidya'
+import { vidyaCourses, vidyaManifesto, vidyaPhotos, vidyaStats, vidyaToppers } from '@/content/demo-vidya'
 import { formatInr } from '@/lib/booking'
 import { getSiteSettings } from '@/server/site-data'
 
@@ -35,16 +37,19 @@ export default async function VidyaHomePage() {
   ]
   return (
     <DemoShell business={vidya} whatsappNumber={settings.whatsappNumber} ctaHref="#enquire">
-      {/* Hero: friendly photo, rounded everything, badges. */}
-      <section className="relative overflow-hidden">
+      {/* Hero: friendly photo, rounded everything, badges.
+          On desktop, Motion v2 bounces the headline in by character, pops the badges, draws a marker under
+          the accent line and floats pastel blocks behind it. */}
+      <section className="v2-hero relative isolate overflow-hidden">
         <div aria-hidden className="dm-blob -top-24 -right-24 h-[28rem] w-[28rem] bg-[#f59e0b]/20" />
         <div
           aria-hidden
           className="dm-blob top-40 -left-32 h-[24rem] w-[24rem] bg-[#3730a3]/12 [animation-delay:-6s]"
         />
+        <HeroScene scene="vidya" />
         <div className="container-dm grid items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.05fr_1fr]">
           <div>
-            <FadeUp index={0} className="flex flex-wrap gap-2">
+            <FadeUp index={0} className="v2-badges flex flex-wrap gap-2">
               <span className="bg-dm-brand-soft text-dm-brand-ink rounded-full px-3 py-1 text-sm font-bold">
                 ★ {vidya.rating} · {vidya.reviews} parent reviews
               </span>
@@ -55,7 +60,12 @@ export default async function VidyaHomePage() {
             <h1 className="mt-6 font-display text-4xl text-balance sm:text-6xl lg:text-7xl">
               <Words text="Small batches." />
               <br />
-              <Words text="Big results." accent={['big', 'results.']} startIndex={2} />
+              <span className="relative inline-block">
+                <Words text="Big results." accent={['big', 'results.']} startIndex={2} />
+                <svg className="v2-marker" viewBox="0 0 300 14" preserveAspectRatio="none" aria-hidden>
+                  <path d="M3 9 C 70 3, 150 13, 297 6" />
+                </svg>
+              </span>
             </h1>
             <FadeUp index={1} as="p" className="text-dm-muted mt-6 max-w-xl text-lg">
               {vidya.blurb}
@@ -86,7 +96,7 @@ export default async function VidyaHomePage() {
             </FadeUp>
           </div>
           <div className="relative">
-            <Reveal className="dm-parallax relative aspect-[4/3] overflow-hidden rounded-[2rem]">
+            <Reveal className="v2-hero-figure dm-parallax relative aspect-[4/3] overflow-hidden rounded-[2rem]">
               <Photo
                 photo={vidyaPhotos.hero}
                 priority
@@ -98,7 +108,7 @@ export default async function VidyaHomePage() {
             </Reveal>
             <Reveal
               index={2}
-              className="dm-card absolute -bottom-6 left-4 flex items-center gap-3 p-4 shadow-xl sm:left-8"
+              className="v2-hero-card dm-card absolute -bottom-6 left-4 flex items-center gap-3 p-4 shadow-xl sm:left-8"
             >
               <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[var(--dm-tint-mint)] font-display text-xl text-emerald-700">
                 96%
@@ -113,7 +123,7 @@ export default async function VidyaHomePage() {
       </section>
 
       {/* Stats with counters on a pastel tint. */}
-      <section className="bg-[var(--dm-tint-sky)] py-14">
+      <section className="v2-stats bg-[var(--dm-tint-sky)] py-14">
         <div className="container-dm grid grid-cols-2 gap-6 md:grid-cols-4">
           {vidyaStats.map((st, i) => (
             <Reveal key={st.label} index={i} className="dm-card p-5 text-center">
@@ -126,6 +136,21 @@ export default async function VidyaHomePage() {
               <p className="text-dm-muted mt-2 text-sm">{st.label}</p>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      {/* The promise on a board: typed out on desktop, plain text elsewhere. */}
+      <section className="py-16 sm:py-24">
+        <div className="container-dm">
+          <div className="v2-board">
+            <p className="text-dm-accent text-xs font-bold tracking-[0.18em] uppercase">Our promise</p>
+            <h2
+              className="v2-type mt-4 max-w-4xl font-display text-3xl sm:text-4xl lg:text-5xl"
+              aria-label={vidyaManifesto}
+            >
+              {vidyaManifesto}
+            </h2>
+          </div>
         </div>
       </section>
 
@@ -223,7 +248,11 @@ export default async function VidyaHomePage() {
       {/* Faculty. */}
       <section id="faculty" className="scroll-mt-20 py-20 sm:py-24">
         <div className="container-dm">
-          <SectionTitle eyebrow="Faculty" title="Teachers who stay for the doubt-clearing hour" />
+          <SectionTitle
+            eyebrow="Faculty"
+            title="Teachers who stay for the doubt-clearing hour"
+            sub="Every batch ends with thirty minutes of questions. Nobody leaves with a doubt they did not get to ask."
+          />
           <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {tuitionFaculty.map((f, i) => (
               <Reveal key={f.name} as="li" index={i}>
@@ -300,6 +329,7 @@ export default async function VidyaHomePage() {
           />
         </div>
       </section>
+      <MotionV2 recipe="vidya" />
     </DemoShell>
   )
 }

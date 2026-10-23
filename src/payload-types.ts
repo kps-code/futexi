@@ -530,6 +530,8 @@ export interface DemoBooking {
     | 'velvet-haircut'
     | 'velvet-colour'
     | 'velvet-keratin'
+    | 'velvet-mens-cut'
+    | 'velvet-beard'
     | 'velvet-facial'
     | 'velvet-mani-pedi'
     | 'velvet-bridal'

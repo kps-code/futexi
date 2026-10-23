@@ -3,6 +3,8 @@
 Status: plan locked 2026-10-09, implemented the same day. Copy, section order and ids stay exactly as in `docs/content-lock.md`; this phase changes appearance and motion only.
 
 > **Phase 8 (2026-10-21):** the palette changed with the showroom home. The accent token is now the ink colour (buttons, links, rings, glows, badges); the cyan→violet gradient is retired everywhere (the old --accent-from/--accent-to tokens resolve to ink); the wordmark is KAPOSA in ink + FUTEXI in muted ink, the italic serif accent lines are ink, the favicon is a white K on ink. WhatsApp actions are a green (#25D366) pill. Rows below that mention gradient fills describe the phase 6 look; the current tokens are in docs/content-lock.md §8.
+>
+> **Demo Motion v2 (2026-10-22):** the "no GSAP, no Three.js" row below still holds for the public site pages and for every demo on phones, tablets and reduced motion. On desktops with a mouse the four brand demo homes (Gym, Nova, Salon, Tuition) lazy-load GSAP, Lenis, a per-brand motion recipe and a Three.js hero scene after the page has loaded (components/demos-shared/motion-v2); the showroom home already loads Three.js on desktop. CI still measures /demo/booking on mobile, where none of it is requested. Details in docs/content-lock.md (demo note).
 
 Direction in one line: **lit glass on deep navy**. One dominant hue (indigo-violet), one accent (cyan), one neutral family (navy greys). Depth comes from light, not from decoration: gradient hairlines, soft glows, glass surfaces, and motion that explains the product.
 

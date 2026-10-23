@@ -187,3 +187,7 @@ export const vidyaFaq = [
     a: 'A test report every week on WhatsApp, and a ten-minute parent call every month.',
   },
 ] as const
+
+/** The promise, typed onto the board on desktop (Motion v2). */
+export const vidyaManifesto =
+  'Fifteen students in a room. One teacher who knows every name, and which chapter each of them is stuck on.'

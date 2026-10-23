@@ -23,7 +23,7 @@ export default async function PulseSchedulePage({
   const settings = await getSiteSettings()
   return (
     <DemoShell business={pulse} whatsappNumber={settings.whatsappNumber} ctaHref={`${pulse.path}#assistant`}>
-      <section className="relative overflow-hidden">
+      <section className="relative isolate overflow-hidden">
         <div className="dm-parallax absolute inset-0 -z-10">
           <Photo
             photo={pulsePhotos.floorDark}

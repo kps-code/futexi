@@ -57,7 +57,7 @@ export const demos: readonly Demo[] = [
     contactType: 'booking',
     status: 'live',
     liveHref: '/demo/booking',
-    screensVersion: 5,
+    screensVersion: 7,
     screens: {
       desktop: [
         {
@@ -114,18 +114,18 @@ export const demos: readonly Demo[] = [
     post: 1,
     title: 'Salon Website',
     category: 'Business',
-    line: 'A premium salon site with services, gallery, team and online booking.',
+    line: 'A dark, lounge-style unisex salon and barber site: services for him and her, prices, gallery, team, shelf and online booking.',
     tags: ['Booking', 'Gallery', 'WhatsApp'],
     cta: 'Build My Salon Website',
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/salon',
-    screensVersion: 5,
+    screensVersion: 8,
     screens: {
       desktop: [
         {
           src: '/demos/salon/desktop-home.webp',
-          alt: 'Velvet Salon home page, an editorial layout in black and gold',
+          alt: 'Velvet Salon home page, a dark barber-lounge layout in wood tones and gold',
         },
         { src: '/demos/salon/desktop-services.webp', alt: 'The full price list with photos per category' },
         { src: '/demos/salon/desktop-bridal.webp', alt: 'Bridal packages with WhatsApp enquiry' },
@@ -139,9 +139,11 @@ export const demos: readonly Demo[] = [
     },
     challenge: 'Customers ask the same questions on Instagram every day: price, timing, availability.',
     solution: [
-      'Editorial hero with photography',
+      'Lounge-style hero for him and her',
+      'Service cards and prices at a glance',
       'Price list by category',
-      'Bridal packages and enquiry',
+      'Bridal and groom packages',
+      'Products shelf on WhatsApp',
       'Gallery',
       'Team',
       'Testimonials',
@@ -167,16 +169,19 @@ export const demos: readonly Demo[] = [
     post: 2,
     title: 'Restaurant Website',
     category: 'Food',
-    line: 'A digital menu, reservations and location in one beautiful site.',
+    line: 'A fine-dining site: full-screen hero, signature dishes on a scroll-driven 3D ring, hairline menu, reservations and online ordering.',
     tags: ['Menu', 'Reservation', 'Maps'],
     cta: 'Build My Restaurant Website',
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/restaurant',
-    screensVersion: 5,
+    screensVersion: 7,
     screens: {
       desktop: [
-        { src: '/demos/restaurant/desktop-home.webp', alt: 'Saffron Kitchen home page' },
+        {
+          src: '/demos/restaurant/desktop-home.webp',
+          alt: 'Saffron Kitchen home page, a dark fine-dining layout with a light serif headline',
+        },
         { src: '/demos/restaurant/desktop-menu.webp', alt: 'Digital menu with category tabs and photos' },
         { src: '/demos/restaurant/desktop-order.webp', alt: 'Online ordering with a WhatsApp order summary' },
         { src: '/demos/restaurant/desktop-private-dining.webp', alt: 'Private dining packages' },
@@ -220,16 +225,19 @@ export const demos: readonly Demo[] = [
     post: 3,
     title: 'Interior Designer Website',
     category: 'Creative',
-    line: 'A visual-first portfolio that lets the projects speak.',
+    line: 'A monochrome interior-architecture portfolio: editorial project grid, a plan-to-room reveal, numbered services and an enquiry form.',
     tags: ['Portfolio', 'Gallery', 'Enquiry'],
     cta: 'Build My Portfolio Website',
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/interior',
-    screensVersion: 2,
+    screensVersion: 3,
     screens: {
       desktop: [
-        { src: '/demos/interior/desktop-home.webp', alt: 'Atelier Nila home with featured projects' },
+        {
+          src: '/demos/interior/desktop-home.webp',
+          alt: 'Atelier Nila home, a monochrome layout with a white kitchen photo and a serif headline',
+        },
         { src: '/demos/interior/desktop-projects.webp', alt: 'Projects gallery with filters by type' },
         {
           src: '/demos/interior/desktop-project.webp',
@@ -285,7 +293,7 @@ export const demos: readonly Demo[] = [
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/tuition',
-    screensVersion: 4,
+    screensVersion: 7,
     screens: {
       desktop: [
         { src: '/demos/tuition/desktop-home.webp', alt: 'Vidya Academy home with results strip' },
@@ -357,7 +365,7 @@ export const demos: readonly Demo[] = [
     contactType: 'ai',
     status: 'live',
     liveHref: '/demo/ai-business',
-    screensVersion: 4,
+    screensVersion: 6,
     screens: {
       desktop: [
         { src: '/demos/ai-business/desktop-home.webp', alt: 'Pulse Fitness home with the AI assistant' },

@@ -4,13 +4,19 @@ import { DemoButton, DemoShell, SectionTitle } from '@/components/demos-shared/c
 import { Photo } from '@/components/demos-shared/photo'
 import { Reveal } from '@/components/reveal'
 import { velvet } from '@/content/demo-businesses'
-import { velvetBridal, velvetBridalFaq, velvetBridalSteps, velvetPhotos } from '@/content/demo-velvet'
+import {
+  velvetBridal,
+  velvetBridalFaq,
+  velvetBridalSteps,
+  velvetGroom,
+  velvetPhotos,
+} from '@/content/demo-velvet'
 import { whatsappLink } from '@/lib/whatsapp'
 import { getSiteSettings } from '@/server/site-data'
 
 export const metadata: Metadata = {
   title: `Bridal · ${velvet.name}`,
-  description: `Engagement, muhurtham and reception makeup packages at ${velvet.name}, T. Nagar, with a trial credited against the booking. Salon website concept by KAPOSA FUTEXI.`,
+  description: `Engagement, muhurtham and reception packages for the bride, and the groom's morning, at ${velvet.name}, T. Nagar, with a trial credited against the booking. Salon website concept by KAPOSA FUTEXI.`,
 }
 
 /** Salon demo: bridal packages, the highest-value booking. */
@@ -34,7 +40,8 @@ export default async function VelvetBridalPage() {
             The morning <em>you remember.</em>
           </h1>
           <p className="text-dm-muted mt-6 max-w-md">
-            One artist for the trial, two on the day, at the venue before you wake. Forty brides this season.
+            One artist for the trial, two on the day, at the venue before you wake. And a barber for him.
+            Sixty weddings this season.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <DemoButton
@@ -114,6 +121,44 @@ export default async function VelvetBridalPage() {
             </Reveal>
           ))}
         </ul>
+      </section>
+
+      {/* The groom's side, with any package or on its own. */}
+      <section className="container-dm pb-20 sm:pb-28" data-testid="groom">
+        <Reveal className="border-dm-line grid gap-8 border p-5 lg:grid-cols-[1fr_1.4fr] lg:p-8">
+          <Photo photo={velvetGroom.photo} sizes="(min-width: 1024px) 35vw, 100vw" className="aspect-[4/3]" />
+          <div className="flex flex-col">
+            <p className="dm-label text-dm-brand">For him</p>
+            <h2 className="mt-3 font-display text-3xl sm:text-4xl">{velvetGroom.name}</h2>
+            <p className="mt-3 flex items-baseline gap-2">
+              <span className="font-display text-4xl">{velvetGroom.price}</span>
+            </p>
+            <p className="text-dm-muted text-xs">{velvetGroom.priceNote}</p>
+            <p className="text-dm-muted mt-3 max-w-xl text-sm">{velvetGroom.line}</p>
+            <ul className="mt-5 grid gap-2 text-sm sm:grid-cols-2">
+              {velvetGroom.included.map((inc) => (
+                <li key={inc} className="flex items-start gap-2">
+                  <Check className="text-dm-brand mt-0.5 h-4 w-4 shrink-0" /> {inc}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 flex flex-col gap-2 sm:flex-row">
+              <a
+                href={enquire(velvetGroom.name)}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track="whatsapp_click"
+                data-track-props='{"where":"demo_bridal","demo":"salon","package":"groom"}'
+                className="dm-btn-motion inline-flex h-11 items-center justify-center rounded-[var(--dm-radius-btn)] bg-[#25D366] px-5 text-white"
+              >
+                Enquire for the groom
+              </a>
+              <DemoButton href={`${velvet.bookPath}?service=velvet-beard`} variant="secondary">
+                Book his trim
+              </DemoButton>
+            </div>
+          </div>
+        </Reveal>
       </section>
 
       <section className="bg-dm-surface py-20 sm:py-28">

@@ -120,6 +120,20 @@ try {
       if (device === 'tablet' && shot.name !== 'home') continue
       await page.goto(`${base}${shot.path}`, { waitUntil: 'load', timeout: 120_000 })
       await page.waitForTimeout(1200)
+      // Motion v2 pages (desktop): wait for the GSAP intro and the 3D hero to finish fading in.
+      await page
+        .waitForFunction(
+          () => {
+            const c = document.documentElement.classList
+            return !c.contains('dm-v2') || c.contains('dm-v2-three')
+          },
+          undefined,
+          { timeout: 8_000 },
+        )
+        .catch(() => {})
+      if (await page.evaluate(() => document.documentElement.classList.contains('dm-v2'))) {
+        await page.waitForTimeout(1800)
+      }
       for (const step of shot.steps) {
         if (step.click) await page.locator(step.click).first().click()
         if (step.waitFor) await page.locator(step.waitFor).first().waitFor({ timeout: 15_000 })

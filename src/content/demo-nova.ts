@@ -157,3 +157,7 @@ export const novaFaq = [
   { q: 'Is parking available?', a: 'Two spots behind the building, and a public lot one street away.' },
   { q: 'How do I pay?', a: 'UPI or card at the studio. Members and gift cards are prepaid.' },
 ] as const
+
+/** The promise: revealed line by line under a gold rule on desktop (Motion v2). */
+export const novaManifesto =
+  'An hour that is only about you. No clock on the wall, no phone in your hand, no one waiting at the desk.'

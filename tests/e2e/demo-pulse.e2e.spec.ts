@@ -44,4 +44,31 @@ test.describe('Pulse Fitness pages', () => {
     )
     await expect(page.locator('#assistant')).toBeVisible()
   })
+  test('Motion v2 runs on desktop only: character slam, manifesto words, pinned strip', async ({
+    page,
+    browser,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.goto('/demo/ai-business')
+    await page.locator('html.dm-v2').waitFor({ timeout: 30_000 })
+    await expect(page.locator('.v2-ch').first()).toBeAttached()
+    await page.waitForFunction(() => document.querySelectorAll('.v2-w').length > 10, undefined, {
+      timeout: 30_000,
+    })
+    await expect(page.locator('.pin-spacer')).toHaveCount(1)
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto')
+
+    const mobile = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      isMobile: true,
+      hasTouch: true,
+    })
+    const m = await mobile.newPage()
+    await m.goto('/demo/ai-business')
+    await m.waitForTimeout(2500)
+    expect(await m.locator('html.dm-v2').count()).toBe(0)
+    expect(await m.locator('.v2-ch').count()).toBe(0)
+    await expect(m.locator('.v2-marquee')).toBeAttached()
+    await mobile.close()
+  })
 })

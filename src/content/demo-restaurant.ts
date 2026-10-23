@@ -248,3 +248,54 @@ export const saffronPrivateFaq = [
     a: '50% on confirmation on WhatsApp, the rest on the day. Full refund up to 48 hours before.',
   },
 ] as const
+
+/** Six signature dishes on the home page ring; photos from the gallery set. */
+export const saffronSignature = [
+  {
+    name: 'Seeraga samba biryani',
+    line: 'Small-grain rice, slow dum, fried onions',
+    price: '₹449',
+    photo: photo('biryani', 'Biryani with fried onions'),
+  },
+  {
+    name: 'Mutton kuzhambu',
+    line: 'Tamarind, pepper, the brass vessel',
+    price: '₹499',
+    photo: photo('mutton-kuzhambu', 'Mutton kuzhambu in a dark tamarind gravy'),
+  },
+  {
+    name: 'Karaikudi prawn fry',
+    line: 'Dry-roasted with curry leaf',
+    price: '₹429',
+    photo: photo('prawn-fry', 'Prawn fry with curry leaves'),
+  },
+  {
+    name: 'Meen varuval thali',
+    line: 'Fish fry, rice, three curries',
+    price: '₹399',
+    photo: photo('thali', 'Thali with rice and appalam'),
+  },
+  {
+    name: 'Paniyaram trio',
+    line: 'Sweet, spicy and herb',
+    price: '₹199',
+    photo: photo('paniyaram', 'Paniyaram on a banana leaf'),
+  },
+  {
+    name: 'Palm jaggery panna cotta',
+    line: 'Set with coconut cream',
+    price: '₹249',
+    photo: photo('panna-cotta', 'Panna cotta with palm jaggery'),
+  },
+] as const
+
+/** The one-line statement under the hero, sharpened character by character on desktop. */
+export const saffronStatement =
+  'Every masala ground this morning. Every kuzhambu in the same brass vessel since 2018.'
+
+/** Three facts beside the dining room photo. */
+export const saffronStory = [
+  { value: '2018', label: 'Wood-fired since' },
+  { value: '40', label: 'Seats, plus the private hall' },
+  { value: '11', label: 'Masalas ground in house' },
+] as const
