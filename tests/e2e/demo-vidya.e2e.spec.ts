@@ -36,4 +36,32 @@ test.describe('Vidya Academy pages', () => {
     await expect(page.getByTestId('toppers').locator(':scope > li')).toHaveCount(4)
     await expect(page.getByText('Now: MBBS, Stanley Medical College')).toBeVisible()
   })
+  test('Motion v2 runs on desktop only: character bounce, marker, typed board, sticky-note batches', async ({
+    page,
+    browser,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.goto('/demo/tuition')
+    await page.locator('html.dm-v2').waitFor({ timeout: 30_000 })
+    await expect(page.locator('.v2-ch').first()).toBeAttached()
+    await expect(page.locator('.v2-marker')).toBeAttached()
+    await expect(page.locator('.v2-board .v2-type')).toBeAttached()
+    await page.waitForTimeout(2500)
+    await expect(page.locator('.pin-spacer')).toHaveCount(0)
+    expect(await page.locator('.v2-marquee').count()).toBe(0)
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto')
+
+    const mobile = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      isMobile: true,
+      hasTouch: true,
+    })
+    const m = await mobile.newPage()
+    await m.goto('/demo/tuition')
+    await m.waitForTimeout(2500)
+    expect(await m.locator('html.dm-v2').count()).toBe(0)
+    expect(await m.locator('.v2-ch').count()).toBe(0)
+    await expect(m.locator('.v2-board')).toContainText('Fifteen students')
+    await mobile.close()
+  })
 })

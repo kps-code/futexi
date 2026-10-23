@@ -56,4 +56,29 @@ test.describe('Interior demo pages', () => {
       .evaluate((el) => getComputedStyle(el).fontFamily)
     expect(family.toLowerCase()).toContain('playfair')
   })
+
+  test('Motion v2 runs on desktop only: tracked words, blinds, plan-to-room pin', async ({
+    page,
+    browser,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.goto('/demo/interior')
+    await page.locator('html.dm-v2').waitFor({ timeout: 30_000 })
+    await expect(page.locator('.in-blinds span')).toHaveCount(5)
+    await page.locator('.pin-spacer').waitFor({ timeout: 30_000 })
+    await expect(page.locator('.in-plan-step')).toHaveCount(3)
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto')
+
+    const mobile = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      isMobile: true,
+      hasTouch: true,
+    })
+    const m = await mobile.newPage()
+    await m.goto('/demo/interior')
+    await m.waitForTimeout(2500)
+    expect(await m.locator('html.dm-v2').count()).toBe(0)
+    await expect(m.locator('.in-rows li')).toHaveCount(4)
+    await mobile.close()
+  })
 })

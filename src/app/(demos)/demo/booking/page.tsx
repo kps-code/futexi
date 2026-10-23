@@ -2,12 +2,21 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Check } from 'lucide-react'
 import { DemoButton, DemoShell, SectionTitle } from '@/components/demos-shared/chrome'
+import { HeroScene } from '@/components/demos-shared/motion-v2/hero-scene'
+import { MotionV2 } from '@/components/demos-shared/motion-v2/motion'
 import { Photo } from '@/components/demos-shared/photo'
 import { CtaBand, Steps, Testimonials } from '@/components/demos-shared/sections'
 import { FadeUp, Words } from '@/components/demos-shared/words'
 import { Reveal } from '@/components/reveal'
 import { nova } from '@/content/demo-businesses'
-import { novaPerks, novaPhotos, novaStats, novaTreatments, novaVisit } from '@/content/demo-nova'
+import {
+  novaManifesto,
+  novaPerks,
+  novaPhotos,
+  novaStats,
+  novaTreatments,
+  novaVisit,
+} from '@/content/demo-nova'
 import { formatInr } from '@/lib/booking'
 import { bookableDatesNow } from '@/server/demo-booking'
 import { getSiteSettings } from '@/server/site-data'
@@ -36,8 +45,10 @@ export default async function NovaHomePage() {
   const dates = bookableDatesNow(nova)
   return (
     <DemoShell business={nova} whatsappNumber={settings.whatsappNumber}>
-      {/* Hero: full-bleed photo with parallax, word-by-word headline, floating booking bar. */}
-      <section className="relative">
+      {/* Hero: full-bleed photo with parallax, word-by-word headline, floating booking bar.
+          On desktop, Motion v2 raises each headline word out of its own mask, lets the photo breathe and floats
+          a 3D stone stack over it. */}
+      <section className="v2-hero relative">
         <div className="dm-parallax relative h-[78vh] min-h-[520px] overflow-hidden">
           <Photo
             photo={novaPhotos.hero}
@@ -45,8 +56,9 @@ export default async function NovaHomePage() {
             quality={60}
             sizes="100vw"
             zoom={false}
-            className="dm-settle absolute inset-0 h-full w-full rounded-none"
+            className="v2-hero-photo dm-settle absolute inset-0 h-full w-full rounded-none"
           />
+          <HeroScene scene="nova" over />
           <div
             aria-hidden
             className="absolute inset-0 bg-[linear-gradient(90deg,rgba(27,42,65,0.78)_0%,rgba(27,42,65,0.38)_55%,rgba(246,241,234,0.1)_100%),linear-gradient(180deg,transparent_60%,rgba(246,241,234,0.9)_100%)]"
@@ -182,7 +194,17 @@ export default async function NovaHomePage() {
         </div>
       </section>
 
-      {/* Pinned horizontal story: a visit, step by step. */}
+      {/* The promise: a gold rule, then the quote reveals line by line (desktop). */}
+      <section className="py-20 sm:py-28">
+        <div className="container-dm max-w-4xl text-center">
+          <span className="v2-rule mx-auto" aria-hidden />
+          <h2 className="v2-quote mt-8 font-display text-3xl text-balance italic sm:text-5xl lg:text-6xl">
+            {novaManifesto}
+          </h2>
+        </div>
+      </section>
+
+      {/* A visit, step by step: a swipe row on phones, stacked cards on desktop. */}
       <section className="dm-pin" style={{ ['--dm-track-shift' as string]: '55%' }}>
         <div className="dm-pin-stage">
           <div className="container-dm w-full">
@@ -190,10 +212,12 @@ export default async function NovaHomePage() {
             <ol className="dm-pin-track mt-10">
               {novaVisit.map((v, i) => (
                 <li key={v.title} data-cursor="View" className="w-[78vw] shrink-0 sm:w-[46vw] lg:w-[32vw]">
-                  <Photo photo={v.photo} className="aspect-[4/3]" sizes="(min-width: 1024px) 32vw, 78vw" />
-                  <p className="dm-label text-dm-accent-ink mt-5">0{i + 1}</p>
-                  <h3 className="mt-1 font-display text-3xl">{v.title}</h3>
-                  <p className="text-dm-muted mt-2 max-w-sm">{v.line}</p>
+                  <Photo photo={v.photo} className="aspect-[4/3]" sizes="(min-width: 1024px) 40vw, 78vw" />
+                  <div className="v2-visit-copy">
+                    <p className="dm-label text-dm-accent-ink mt-5 lg:mt-0">0{i + 1}</p>
+                    <h3 className="mt-1 font-display text-3xl">{v.title}</h3>
+                    <p className="text-dm-muted mt-2 max-w-sm">{v.line}</p>
+                  </div>
                 </li>
               ))}
             </ol>
@@ -205,16 +229,14 @@ export default async function NovaHomePage() {
 
       {/* Studio. */}
       <section id="studio" className="bg-dm-surface scroll-mt-20 py-20 sm:py-28">
-        <div className="container-dm grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
-          <Reveal className="dm-parallax relative aspect-[4/5] overflow-hidden rounded-[var(--dm-radius-img)]">
-            <Photo
-              photo={novaPhotos.bath}
-              className="absolute inset-0 h-full w-full rounded-none"
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              zoom={false}
-            />
-          </Reveal>
-          <Reveal index={1}>
+        <div className="v2-studio container-dm grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
+          <Photo
+            photo={novaPhotos.bath}
+            className="v2-studio-photo aspect-[4/5]"
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            zoom={false}
+          />
+          <Reveal index={1} className="v2-studio-copy">
             <SectionTitle eyebrow="The studio" title="Four rooms above the trees" />
             <p className="text-dm-muted mt-5 text-lg">
               A second-floor studio in Anna Nagar with a garden on the terrace. Four treatment rooms, a tea
@@ -246,6 +268,7 @@ export default async function NovaHomePage() {
         line="Pick a slot now and get a WhatsApp confirmation straight away."
         label="Book a treatment"
       />
+      <MotionV2 recipe="nova" />
     </DemoShell>
   )
 }

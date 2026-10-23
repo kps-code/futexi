@@ -4,15 +4,16 @@ import { expect, test } from '@playwright/test'
 test.describe('Velvet Salon pages', () => {
   test('home uses the editorial fonts and links to the price list and bridal pages', async ({ page }) => {
     await page.goto('/demo/salon')
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Beauty')
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('More than')
     const family = await page
       .getByRole('heading', { level: 1 })
       .evaluate((el) => getComputedStyle(el).fontFamily)
-    expect(family).toContain('Bodoni')
+    expect(family).toContain('DM Serif')
     const nav = page.getByRole('navigation', { name: 'Velvet Salon' })
     await expect(nav.getByRole('link', { name: 'Services' })).toHaveAttribute('href', '/demo/salon/services')
     await expect(nav.getByRole('link', { name: 'Bridal' })).toHaveAttribute('href', '/demo/salon/bridal')
     await expect(page.getByRole('heading', { name: 'Meera Nair' })).toBeAttached()
+    await expect(page.getByRole('heading', { name: 'Faisal Rahman' })).toBeAttached()
   })
 
   test('price list shows four categories and books a service with it preselected', async ({ page }) => {
@@ -39,5 +40,30 @@ test.describe('Velvet Salon pages', () => {
       '/demo/salon/book?service=velvet-bridal',
     )
     await expect(page.getByTestId('faq').locator('details')).toHaveCount(4)
+  })
+  test('Motion v2 runs on desktop only: skewed words, type band, sticky bridal image', async ({
+    page,
+    browser,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.goto('/demo/salon')
+    await page.locator('html.dm-v2').waitFor({ timeout: 30_000 })
+    await page.locator('.pin-spacer').waitFor({ timeout: 30_000 })
+    await expect(page.locator('.v2-band-row')).toHaveCount(2)
+    expect(await page.locator('.v2-ch').count()).toBe(0)
+    expect(await page.locator('.v2-marquee').count()).toBe(0)
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto')
+
+    const mobile = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      isMobile: true,
+      hasTouch: true,
+    })
+    const m = await mobile.newPage()
+    await m.goto('/demo/salon')
+    await m.waitForTimeout(2500)
+    expect(await m.locator('html.dm-v2').count()).toBe(0)
+    await expect(m.locator('.v2-band')).toBeAttached()
+    await mobile.close()
   })
 })

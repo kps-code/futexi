@@ -65,4 +65,33 @@ test.describe('Nova Studio pages', () => {
     expect(await page.evaluate(() => getComputedStyle(document.documentElement).cursor)).toBe('auto')
     await mobile.close()
   })
+
+  test('Motion v2 runs on desktop only: masked words, quote lines, stacked visit steps', async ({
+    page,
+    browser,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.goto('/demo/booking')
+    await page.locator('html.dm-v2').waitFor({ timeout: 30_000 })
+    await page.waitForFunction(() => document.querySelectorAll('.v2-line').length > 1, undefined, {
+      timeout: 30_000,
+    })
+    expect(await page.locator('.v2-ch').count()).toBe(0)
+    await expect(page.locator('.pin-spacer')).toHaveCount(1)
+    expect(await page.locator('.v2-marquee').count()).toBe(0)
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto')
+
+    const mobile = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      isMobile: true,
+      hasTouch: true,
+    })
+    const m = await mobile.newPage()
+    await m.goto('/demo/booking')
+    await m.waitForTimeout(2500)
+    expect(await m.locator('html.dm-v2').count()).toBe(0)
+    expect(await m.locator('.v2-line').count()).toBe(0)
+    await expect(m.locator('.v2-quote')).toBeAttached()
+    await mobile.close()
+  })
 })

@@ -1,0 +1,558 @@
+/* ---------------------------------------------------------------------------
+   Motion v2 (components/demos-shared/motion-v2): GSAP + Three.js on desktop.
+   `html.dm-v2` is set once GSAP has arrived and takes over from the CSS layer;
+   `html.dm-v2-three` once the hero scene renders. Below 1024 px, on touch and
+   under reduced motion none of these classes appear and demo.css stays in charge.
+   --------------------------------------------------------------------------- */
+
+/* Hold the CSS hero intro on desktop so the character slam can replace it.
+   If the script never arrives the CSS intro still plays, just later. */
+@media (min-width: 64rem) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .v2-hero .dm-word > span {
+    animation-delay: calc(var(--i, 0) * var(--dm-word-gap, 90ms) + 1400ms);
+  }
+  .v2-hero .dm-fade-up {
+    animation-delay: calc(var(--i, 0) * 120ms + 1600ms);
+  }
+}
+.dm-v2 .v2-hero .dm-word > span,
+.dm-v2 .v2-hero .dm-fade-up {
+  animation: none;
+}
+.dm-v2 .v2-hero .dm-word {
+  perspective: 600px;
+}
+.v2-ch {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Lenis drives the scroll; CSS smooth scrolling would fight it. */
+.dm-v2 {
+  scroll-behavior: auto !important;
+}
+
+/* Scroll-driven parts move from CSS timelines to ScrollTrigger. */
+.dm-v2 .dm-progress {
+  animation: none;
+}
+.dm-v2 .dm-pin {
+  height: auto;
+}
+.dm-v2 .dm-pin-stage {
+  position: static;
+  height: 100dvh;
+}
+.dm-v2 .dm-pin-track {
+  animation: none;
+}
+.dm-v2 .theme-pulse .dm-pin-track img {
+  scale: 1.14;
+  will-change: transform;
+}
+
+/* Elements GSAP owns: the CSS reveal transition must not smooth their frames. */
+.dm-v2 .v2-gs {
+  transition: none !important;
+}
+
+/* Manifesto words start dim and light up on scroll. */
+.v2-manifesto {
+  text-wrap: balance;
+}
+.dm-v2 .v2-manifesto .v2-w {
+  display: inline-block;
+  color: color-mix(in oklab, var(--dm-ink) 18%, transparent);
+}
+
+/* Photo wipe block (.v2-reveal): the photo is clipped away until the section scrolls in. */
+.dm-v2 .v2-wipe {
+  clip-path: inset(0 100% 0 0);
+}
+.dm-v2 .v2-wipe img {
+  scale: 1.25;
+}
+
+/* Hero 3D scene sits above the photo and below the copy. */
+.v2-hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: -5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.v2-hero-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.dm-v2-three .v2-hero-canvas {
+  opacity: 1;
+}
+.v2-hero-photo {
+  transition: opacity 1.2s ease;
+}
+.dm-v2-three .v2-hero-photo {
+  opacity: 0.45;
+}
+/* Over-photo variant: stacks by DOM order (after the photo, before the overlay and copy). */
+.v2-hero-canvas-over {
+  z-index: 0;
+}
+
+/* Wipe copy wrapped in a scroll Reveal: on desktop GSAP staggers its children instead. */
+.dm-v2.reveal-ready .v2-reveal-copy.reveal:not(.is-visible) {
+  opacity: 1;
+  transform: none;
+}
+
+/* Nova (booking): the photo dims over navy rather than washing out over sand; gold marquee accents. */
+.theme-nova .v2-hero > .dm-parallax {
+  background: var(--dm-ink);
+}
+.dm-v2-three .theme-nova .v2-hero-photo {
+  opacity: 0.55;
+}
+
+/* Marquee strip under the hero: CSS on every device. */
+.v2-marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid var(--dm-line);
+  border-bottom: 1px solid var(--dm-line);
+  padding: 1rem 0;
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+.v2-marquee-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.5rem;
+  padding-right: 2.5rem;
+  font-family: var(--dm-font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dm-muted);
+  will-change: transform;
+  animation: v2-marquee 26s linear infinite;
+}
+.v2-marquee-track em {
+  font-style: normal;
+  color: var(--dm-brand);
+}
+.v2-marquee-track i {
+  font-style: normal;
+  color: var(--dm-line-strong);
+}
+.v2-marquee:hover .v2-marquee-track {
+  animation-play-state: paused;
+}
+@keyframes v2-marquee {
+  to {
+    transform: translateX(-33.3333%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-marquee-track {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Nova (booking): masked word rise, stacked visit steps, drifting studio photo.
+   --------------------------------------------------------------------------- */
+.dm-v2 .theme-nova .v2-hero .dm-word {
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.dm-v2 .theme-nova .dm-settle,
+.dm-v2 .theme-nova .dm-parallax img,
+.dm-v2 .theme-nova .dm-scale-in {
+  animation: none;
+}
+.theme-nova .v2-rule {
+  display: block;
+  width: 5rem;
+  height: 1px;
+  background: var(--dm-accent);
+  transform-origin: center;
+}
+.dm-v2 .theme-nova .dm-pin-track {
+  display: grid;
+  gap: 0;
+  justify-items: center;
+}
+.dm-v2 .theme-nova .dm-pin-track > li {
+  grid-area: 1 / 1;
+  width: min(64rem, 76vw);
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  background: var(--dm-surface);
+  border: 1px solid var(--dm-line);
+  border-radius: var(--dm-radius);
+  padding: 1.5rem;
+  box-shadow: 0 30px 60px -30px rgba(27, 42, 65, 0.35);
+  will-change: transform;
+}
+.dm-v2 .theme-nova .dm-pin-track > li > figure {
+  aspect-ratio: 4 / 3;
+}
+.dm-v2 .theme-nova .v2-studio-photo img {
+  scale: 1.2;
+}
+
+/* ---------------------------------------------------------------------------
+   Velvet (salon): type band, uncovering tiles, sticky bridal image.
+   --------------------------------------------------------------------------- */
+.dm-v2 .theme-velvet .dm-settle,
+.dm-v2 .theme-velvet .dm-parallax img,
+.dm-v2 .theme-velvet .dm-scale-in {
+  animation: none;
+}
+.v2-band {
+  overflow: hidden;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--dm-line);
+  border-bottom: 1px solid var(--dm-line);
+}
+.v2-band-row {
+  display: flex;
+  gap: 2.5rem;
+  width: max-content;
+  white-space: nowrap;
+  font-family: var(--dm-font-display);
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--dm-line-strong);
+  will-change: transform;
+}
+.v2-band-row + .v2-band-row {
+  margin-top: 0.25rem;
+  color: var(--dm-brand);
+  -webkit-text-stroke: 0;
+}
+.v2-band-row i {
+  font-style: normal;
+  color: var(--dm-accent);
+  -webkit-text-stroke: 0;
+}
+@media (max-width: 63.99rem) {
+  .v2-band-row {
+    animation: v2-marquee 30s linear infinite;
+  }
+  .v2-band-row + .v2-band-row {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-band-row {
+    animation: none;
+  }
+}
+.dm-v2 .theme-velvet .dm-pin-track {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  grid-template-rows: repeat(4, auto);
+  column-gap: 4rem;
+  row-gap: 1.5rem;
+  align-items: center;
+}
+.dm-v2 .theme-velvet .dm-pin-track > li {
+  display: contents;
+}
+.dm-v2 .theme-velvet .dm-pin-track > li > figure {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  width: auto;
+  height: min(68vh, 60vw);
+  aspect-ratio: 3 / 4;
+  justify-self: center;
+  will-change: transform, opacity;
+}
+.dm-v2 .theme-velvet .dm-pin-track > li > .v2-step-copy {
+  grid-column: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   Vidya (tuition): marker underline, chalkboard typing, sticky-note batches.
+   --------------------------------------------------------------------------- */
+.dm-v2 .theme-vidya .dm-settle,
+.dm-v2 .theme-vidya .dm-parallax img,
+.dm-v2 .theme-vidya .dm-scale-in {
+  animation: none;
+}
+.v2-marker {
+  position: absolute;
+  left: 0;
+  bottom: -0.24em;
+  width: 100%;
+  height: 0.3em;
+  overflow: visible;
+  pointer-events: none;
+}
+.v2-marker path {
+  fill: none;
+  stroke: var(--dm-accent);
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+.theme-vidya .v2-board {
+  background: #1e1b4b;
+  color: #fff;
+  border-radius: var(--dm-radius);
+  padding: 3rem;
+}
+.dm-v2 .theme-vidya .v2-type {
+  min-height: 3lh;
+}
+.v2-typing::after {
+  content: '▍';
+  margin-left: 0.1em;
+  color: var(--dm-accent);
+  animation: v2-blink 0.9s steps(1) infinite;
+}
+@keyframes v2-blink {
+  50% {
+    opacity: 0;
+  }
+}
+.dm-v2 .theme-vidya .dm-pin-stage {
+  height: auto;
+  display: block;
+  padding: 5rem 0;
+}
+.dm-v2 .theme-vidya .dm-pin-track {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+.dm-v2 .theme-vidya .dm-pin-track > li {
+  width: calc(33.333% - 1rem);
+  will-change: transform;
+}
+
+/* Velvet: the lounge photo stays a little more present under the ribbon. */
+.dm-v2-three .theme-velvet .v2-hero-photo {
+  opacity: 0.6;
+}
+
+/* ---------------------------------------------------------------------------
+   Saffron (restaurant): blurred characters, a 3D dish ring, hairline calm.
+   --------------------------------------------------------------------------- */
+.dm-v2 .theme-saffron .dm-settle,
+.dm-v2 .theme-saffron .dm-parallax img {
+  animation: none;
+}
+.dm-v2-three .theme-saffron .v2-hero-photo {
+  opacity: 0.55;
+}
+.theme-saffron .rs-cue-line {
+  display: block;
+  width: 1px;
+  height: 3.5rem;
+  background: linear-gradient(180deg, var(--dm-brand), transparent);
+  animation: rs-cue 2.2s ease-in-out infinite;
+  transform-origin: top;
+}
+@keyframes rs-cue {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+.theme-saffron .v2-sc {
+  display: inline-block;
+}
+/* Ring: a plain two-column list by default (phones and before GSAP arrives). */
+.theme-saffron .rs-ring {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+@media (min-width: 40rem) {
+  .theme-saffron .rs-ring {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.theme-saffron .rs-dish-copy {
+  padding-top: 0.9rem;
+}
+/* Desktop: the list becomes a 3D ring that the recipe turns on scroll. */
+.dm-v2 .theme-saffron .rs-stage {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+}
+.dm-v2 .theme-saffron .rs-ring-wrap {
+  perspective: 3000px;
+  height: clamp(26rem, 62vh, 38rem);
+}
+.dm-v2 .theme-saffron .rs-ring {
+  position: relative;
+  display: block;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+.dm-v2 .theme-saffron .rs-dish {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: clamp(13rem, 32vh, 20rem);
+  backface-visibility: hidden;
+  transition: opacity 0.4s ease;
+  opacity: 0.55;
+}
+.dm-v2 .theme-saffron .rs-dish.is-front {
+  opacity: 1;
+}
+.dm-v2 .theme-saffron .rs-dish .rs-dish-copy {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.dm-v2 .theme-saffron .rs-dish.is-front .rs-dish-copy {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   Nila (interior): blinds, opening frames, the plan-to-room reveal, drawn line.
+   --------------------------------------------------------------------------- */
+.dm-v2 .theme-nila .dm-settle,
+.dm-v2 .theme-nila .dm-parallax img,
+.dm-v2 .theme-nila .dm-scale-in {
+  animation: none;
+}
+/* Blinds cover the hero photo only while the desktop intro runs. */
+.theme-nila .in-blinds {
+  display: none;
+}
+.dm-v2 .theme-nila .in-blinds {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  pointer-events: none;
+}
+.dm-v2 .theme-nila .in-blinds span {
+  background: var(--dm-bg);
+  transform-origin: top;
+}
+/* Blueprint overlay on the plan-to-room photo: desktop only. */
+.theme-nila .in-blueprint {
+  display: none;
+}
+.dm-v2 .theme-nila .in-blueprint {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background:
+    repeating-linear-gradient(0deg, rgba(20, 20, 20, 0.07) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(20, 20, 20, 0.07) 0 1px, transparent 1px 24px), #eef0f3;
+  clip-path: circle(80% at 62% 48%);
+}
+.dm-v2 .theme-nila .in-blueprint svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--dm-ink);
+  stroke-width: 1.2;
+}
+.dm-v2 .theme-nila .in-blueprint .dm-label {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1rem;
+  color: var(--dm-ink);
+}
+.dm-v2 .theme-nila .in-plan {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+}
+.theme-nila .in-plan-step {
+  transition: opacity 0.4s ease;
+}
+.dm-v2 .theme-nila .in-plan-step {
+  opacity: 0.35;
+}
+.dm-v2 .theme-nila .in-plan-step.is-on {
+  opacity: 1;
+}
+/* Service rows: the photo floats beside the row under the pointer (desktop). */
+.theme-nila .in-row-photo {
+  display: none;
+}
+@media (min-width: 64rem) and (pointer: fine) {
+  .theme-nila .in-row-photo {
+    display: block;
+    position: absolute;
+    right: 5rem;
+    top: 50%;
+    width: 18rem;
+    margin-top: -6.75rem;
+    opacity: 0;
+    transform: translateY(8px) rotate(-2deg);
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease;
+    pointer-events: none;
+    box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.4);
+    z-index: 1;
+  }
+  .theme-nila .in-row:hover .in-row-photo {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+/* Process line and dots. */
+.theme-nila .in-process-line {
+  position: absolute;
+  top: 0.35rem;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  fill: none;
+  stroke: var(--dm-line-strong);
+  stroke-width: 2;
+  display: none;
+}
+.theme-nila .in-process-step {
+  position: relative;
+}
+.theme-nila .in-process-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 999px;
+  background: var(--dm-ink);
+}
+@media (min-width: 48rem) {
+  .theme-nila .in-process-line {
+    display: block;
+  }
+}
+
+/* Short laptop screens: the pinned ring stage must fit the viewport. */
+@media (max-height: 44rem) {
+  .dm-v2 .theme-saffron .rs-stage {
+    padding-block: 2rem;
+  }
+  .dm-v2 .theme-saffron .rs-ring-caption {
+    display: none;
+  }
+}

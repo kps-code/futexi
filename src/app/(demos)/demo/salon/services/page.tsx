@@ -9,7 +9,7 @@ import { getSiteSettings } from '@/server/site-data'
 
 export const metadata: Metadata = {
   title: `Services and prices · ${velvet.name}`,
-  description: `Hair, skin, nails and makeup prices at ${velvet.name}, T. Nagar. Consultation is free. Salon website concept by KAPOSA FUTEXI.`,
+  description: `Hair, barber, skin, nails and makeup prices for him and her at ${velvet.name}, T. Nagar. Consultation is free. Salon website concept by KAPOSA FUTEXI.`,
 }
 
 /** Salon demo: the full price list, grouped like a magazine spread. */
@@ -24,12 +24,13 @@ export default async function VelvetServicesPage() {
             The price list, <em>in full.</em>
           </h1>
           <p className="text-dm-muted mt-6 max-w-md">
-            Every price includes consultation, wash and finish. No surprises at the counter.
+            Her side and his side, one list. Every price includes consultation, wash and finish. No surprises
+            at the counter.
           </p>
         </div>
         <Reveal className="lg:col-span-5">
           <Photo
-            photo={velvetPhotos.tools}
+            photo={velvetPhotos.toolsDark}
             priority
             sizes="(min-width: 1024px) 40vw, 100vw"
             className="dm-frame aspect-[4/3]"

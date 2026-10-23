@@ -1,12 +1,13 @@
 import {
   Bebas_Neue,
-  Bodoni_Moda,
   Cormorant_Garamond,
+  DM_Serif_Display,
   Inter,
   Jost,
   Lexend,
   Montserrat,
   Nunito,
+  Plus_Jakarta_Sans,
   Sora,
   Space_Grotesk,
 } from 'next/font/google'
@@ -47,13 +48,13 @@ const jost = Jost({
   weight: '400',
 })
 
-// Velvet Salon: fashion editorial.
-const bodoni = Bodoni_Moda({
+// Velvet Salon: a dark barber lounge; one classic serif weight, roman and italic.
+const dmSerif = DM_Serif_Display({
   subsets: ['latin'],
-  variable: '--font-bodoni',
+  variable: '--font-dmserif',
   display: 'swap',
   preload: false,
-  weight: ['500', '600', '700'],
+  weight: '400',
   style: ['normal', 'italic'],
 })
 const montserrat = Montserrat({
@@ -62,6 +63,15 @@ const montserrat = Montserrat({
   display: 'swap',
   preload: false,
   weight: ['300', '400', '500'],
+})
+
+// Saffron Kitchen: bold, tight headlines like a modern restaurant brand.
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-jakarta',
+  display: 'swap',
+  preload: false,
+  weight: ['600', '700'],
 })
 
 // Pulse Fitness: loud and sporty.
@@ -100,9 +110,9 @@ const base = `${inter.variable} ${sora.variable}`
 
 export const demoFontClass: Record<DemoBusinessId, string> = {
   booking: `${base} ${cormorant.variable} ${jost.variable}`,
-  salon: `${base} ${bodoni.variable} ${montserrat.variable}`,
+  salon: `${base} ${dmSerif.variable} ${montserrat.variable}`,
   'ai-business': `${base} ${bebas.variable} ${spaceGrotesk.variable}`,
   tuition: `${base} ${lexend.variable} ${nunito.variable}`,
-  restaurant: base,
+  restaurant: `${base} ${jakarta.variable}`,
   interior: base,
 }

@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { ArrowRight, Bot, Check, MessageCircle, Workflow, Zap } from 'lucide-react'
 import { AiAssistant } from '@/components/demos-shared/ai-assistant'
 import { DemoButton, DemoShell, SectionTitle } from '@/components/demos-shared/chrome'
+import { HeroScene } from '@/components/demos-shared/motion-v2/hero-scene'
+import { MotionV2 } from '@/components/demos-shared/motion-v2/motion'
 import { Photo } from '@/components/demos-shared/photo'
 import { CtaBand, ServicesGrid } from '@/components/demos-shared/sections'
 import { FadeUp, Words } from '@/components/demos-shared/words'
@@ -11,6 +13,9 @@ import { pulse } from '@/content/demo-businesses'
 import {
   pulseAiCards,
   pulseClasses,
+  pulseCoachPhoto,
+  pulseManifesto,
+  pulseMarquee,
   pulsePhotos,
   pulseStats,
   pulseTransformations,
@@ -45,8 +50,9 @@ export default async function PulseHomePage() {
   const requestHref = `/contact?type=${pulse.contactType}`
   return (
     <DemoShell business={pulse} whatsappNumber={settings.whatsappNumber} ctaHref="#assistant">
-      {/* Hero: gritty full-bleed photo, oversized headline that overlaps it, AI chat beside. */}
-      <section className="relative overflow-hidden">
+      {/* Hero: gritty full-bleed photo, oversized headline that overlaps it, AI chat beside.
+          On desktop, Motion v2 slams the headline in by character and fades a 3D scene over the photo. */}
+      <section className="v2-hero relative isolate overflow-hidden">
         <div className="dm-parallax absolute inset-0 -z-10">
           <Photo
             photo={pulsePhotos.hero}
@@ -54,7 +60,7 @@ export default async function PulseHomePage() {
             quality={60}
             zoom={false}
             sizes="100vw"
-            className="dm-settle dm-grit absolute inset-0 h-full w-full rounded-none"
+            className="v2-hero-photo dm-settle dm-grit absolute inset-0 h-full w-full rounded-none"
           />
           <div
             aria-hidden
@@ -62,6 +68,7 @@ export default async function PulseHomePage() {
           />
           <div aria-hidden className="dm-blob -right-20 -bottom-20 h-[26rem] w-[26rem] bg-[#a3e635]/20" />
         </div>
+        <HeroScene scene="gym" />
         <div className="container-dm grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-[1.15fr_1fr]">
           <div>
             <FadeUp index={0} className="dm-label text-dm-brand">
@@ -111,14 +118,43 @@ export default async function PulseHomePage() {
         </div>
       </section>
 
-      {/* AI coaching cards: progress ring, heart-rate line, next session. */}
+      {/* Marquee of classes, then the manifesto that lights up word by word on scroll. */}
+      <div className="v2-marquee" aria-hidden>
+        <div className="v2-marquee-track">
+          {[...pulseMarquee, ...pulseMarquee, ...pulseMarquee].map((item, i) => (
+            <span key={`${item}-${i}`} className="inline-flex items-center gap-10">
+              {i % 2 ? <em>{item}</em> : item}
+              <i>·</i>
+            </span>
+          ))}
+        </div>
+      </div>
+      <section className="py-16 sm:py-24">
+        <div className="container-dm">
+          <p className="dm-label text-dm-brand">Manifesto</p>
+          <h2 className="v2-manifesto mt-4 max-w-5xl font-display text-5xl sm:text-7xl lg:text-8xl">
+            {pulseManifesto}
+          </h2>
+        </div>
+      </section>
+
+      {/* AI coaching: coach photo wipes in beside the title (desktop), then the three cards. */}
       <section className="dm-diagonal bg-dm-surface relative py-20 sm:py-24">
         <div className="container-dm">
-          <SectionTitle
-            eyebrow="AI coach"
-            title="Your numbers, every morning"
-            sub="Members get a short WhatsApp each morning: progress, heart rate trend, next session."
-          />
+          <div className="v2-reveal grid gap-10 lg:grid-cols-[1fr_1.3fr] lg:items-center">
+            <Photo
+              photo={pulseCoachPhoto}
+              sizes="(min-width: 1024px) 38vw, 100vw"
+              className="v2-wipe dm-grit aspect-[4/5]"
+            />
+            <div className="v2-reveal-copy">
+              <SectionTitle
+                eyebrow="AI coach"
+                title="Your numbers, every morning"
+                sub="Members get a short WhatsApp each morning: progress, heart rate trend, next session. The assistant books the spot before you finish your coffee."
+              />
+            </div>
+          </div>
           <ul className="mt-10 grid gap-4 md:grid-cols-3">
             {pulseAiCards.map((c, i) => (
               <Reveal key={c.title} as="li" index={i}>
@@ -323,6 +359,7 @@ export default async function PulseHomePage() {
         href="#assistant"
         label="Book a free trial"
       />
+      <MotionV2 recipe="gym" />
     </DemoShell>
   )
 }

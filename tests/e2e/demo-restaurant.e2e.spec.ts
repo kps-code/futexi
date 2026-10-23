@@ -55,4 +55,30 @@ test.describe('Restaurant demo pages', () => {
     )
     await expect(page.getByRole('img', { name: /Tandoori chicken/ })).toBeVisible()
   })
+
+  test('Motion v2 runs on desktop only: blurred characters, dish ring, editorial rows', async ({
+    page,
+    browser,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.goto('/demo/restaurant')
+    await page.locator('html.dm-v2').waitFor({ timeout: 30_000 })
+    await expect(page.locator('.v2-ch').first()).toBeAttached()
+    await page.locator('.pin-spacer').waitFor({ timeout: 30_000 })
+    await expect(page.locator('.rs-dish')).toHaveCount(6)
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto')
+
+    const mobile = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      isMobile: true,
+      hasTouch: true,
+    })
+    const m = await mobile.newPage()
+    await m.goto('/demo/restaurant')
+    await m.waitForTimeout(2500)
+    expect(await m.locator('html.dm-v2').count()).toBe(0)
+    expect(await m.locator('.v2-ch').count()).toBe(0)
+    await expect(m.locator('.rs-dish')).toHaveCount(6)
+    await mobile.close()
+  })
 })

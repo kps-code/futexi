@@ -376,3 +376,41 @@ export const interiorFaq = [
     a: 'Yes, within about 150 km: Pondicherry, Vellore, Kanchipuram. Site visits beyond that are quoted separately.',
   },
 ] as const
+
+/** Four numbers under the hero. */
+export const interiorNumbers = [
+  { value: 60, suffix: '+', label: 'Homes and workplaces' },
+  { value: 6, suffix: '', label: 'Years, one site crew' },
+  { value: 11, suffix: '', label: 'People in the studio' },
+  { value: 1, suffix: '', label: 'Quote, in writing' },
+] as const
+
+/** Plan to room: the pinned reveal on the home page. */
+export const interiorPlan = {
+  photo: photo('courtyard-hall', 'A villa hall with a long sofa, timber ceiling and garden light'),
+  steps: [
+    { title: 'Plan', line: 'A measured drawing of your rooms, with every wall, window and socket in place.' },
+    { title: 'Material', line: 'Oak, stone, linen and paint chosen on a board you can hold in your hand.' },
+    { title: 'Room', line: 'Built by our own carpenters and handed over clean, with the drawings to keep.' },
+  ],
+} as const
+
+/** Numbered service rows on the home page; packages and prices live on /services. */
+export const interiorRows = [
+  {
+    slug: 'nila-residential',
+    photo: photo('service-full-home', 'Dining area with a wooden table and warm light'),
+  },
+  {
+    slug: 'nila-kitchen',
+    photo: photo('service-kitchen', 'White kitchen with a marble counter and fresh lemons'),
+  },
+  { slug: 'nila-office', photo: photo('service-office', 'Office floor with plants and timber flooring') },
+  {
+    slug: 'nila-turnkey',
+    photo: photo('courtyard-cover', 'Villa living room opening onto a wooden deck and garden'),
+  },
+] as const
+
+/** The hero photo on the home page: the reference look, a white kitchen with an oak island. */
+export const interiorHeroPhoto = photo('sea-breeze-kitchen', 'White kitchen with an oak island and stools')

@@ -31,6 +31,8 @@ export function Header({ logo, logoDark, defaultDark = false, services = [], wha
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [menu, setMenu] = useState(false)
+  // Services accordion inside the mobile drawer; starts closed and resets with the drawer.
+  const [subOpen, setSubOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -66,7 +68,10 @@ export function Header({ logo, logoDark, defaultDark = false, services = [], wha
     if (href.includes('#')) return false
     return href === '/' ? pathname === '/' : pathname.startsWith(href)
   }
-  const closeMenu = () => setOpen(false)
+  const closeMenu = () => {
+    setOpen(false)
+    setSubOpen(false)
+  }
   const linkClass = (active: boolean) =>
     cn(
       'inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-colors',
@@ -173,7 +178,7 @@ export function Header({ logo, logoDark, defaultDark = false, services = [], wha
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               aria-controls="mobile-menu"
-              onClick={() => setOpen((v) => !v)}
+              onClick={() => (open ? closeMenu() : setOpen(true))}
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface lg:hidden"
             >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -189,41 +194,62 @@ export function Header({ logo, logoDark, defaultDark = false, services = [], wha
         hidden={!open}
         className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto border-t border-border bg-background sm:top-[4.5rem] lg:hidden"
       >
-        <nav aria-label="Mobile" className="container-site flex flex-col gap-1 py-6">
-          {nav.map((item) => (
-            <div key={item.href}>
-              <Link
-                href={item.href}
-                onClick={closeMenu}
-                aria-current={isActive(item.href) ? 'page' : undefined}
-                className={cn(
-                  'block rounded-xl px-4 py-3 font-display text-2xl font-semibold transition-colors',
-                  isActive(item.href) ? 'text-foreground' : 'text-muted hover:text-foreground',
+        <nav aria-label="Mobile" className="container-site flex flex-col gap-0.5 py-4">
+          {nav.map((item) => {
+            const hasMenu = 'menu' in item && services.length > 0
+            return (
+              <div key={item.href}>
+                <div className="flex items-center">
+                  <Link
+                    href={item.href}
+                    onClick={closeMenu}
+                    aria-current={isActive(item.href) ? 'page' : undefined}
+                    className={cn(
+                      'block flex-1 rounded-xl px-4 py-2.5 font-display text-lg font-semibold transition-colors',
+                      isActive(item.href) ? 'text-foreground' : 'text-muted hover:text-foreground',
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                  {hasMenu && (
+                    <button
+                      type="button"
+                      aria-label={subOpen ? 'Hide services' : 'Show services'}
+                      aria-expanded={subOpen}
+                      aria-controls="mobile-services"
+                      onClick={() => setSubOpen((v) => !v)}
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted hover:bg-surface hover:text-foreground"
+                    >
+                      <ChevronDown className={cn('h-4 w-4 transition-transform', subOpen && 'rotate-180')} />
+                    </button>
+                  )}
+                </div>
+                {hasMenu && (
+                  <ul
+                    id="mobile-services"
+                    hidden={!subOpen}
+                    className="mb-2 ml-4 grid gap-0.5 border-l border-border pl-4"
+                  >
+                    {services.map((s) => (
+                      <li key={s.slug}>
+                        <Link
+                          href={`/services#${s.slug}`}
+                          onClick={closeMenu}
+                          className="block px-2 py-1.5 text-[15px] text-muted hover:text-foreground"
+                        >
+                          {s.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 )}
-              >
-                {item.label}
-              </Link>
-              {'menu' in item && services.length > 0 && (
-                <ul className="mb-2 ml-4 grid gap-0.5 border-l border-border pl-4">
-                  {services.map((s) => (
-                    <li key={s.slug}>
-                      <Link
-                        href={`/services#${s.slug}`}
-                        onClick={closeMenu}
-                        className="block px-2 py-1.5 text-sm text-muted hover:text-foreground"
-                      >
-                        {s.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
+              </div>
+            )
+          })}
           <Link
             href="/about"
             onClick={closeMenu}
-            className="block rounded-xl px-4 py-3 font-display text-2xl font-semibold text-muted transition-colors hover:text-foreground"
+            className="block rounded-xl px-4 py-2.5 font-display text-lg font-semibold text-muted transition-colors hover:text-foreground"
           >
             About
           </Link>
@@ -232,7 +258,7 @@ export function Header({ logo, logoDark, defaultDark = false, services = [], wha
             target="_blank"
             rel="noopener noreferrer"
             onClick={closeMenu}
-            className="mt-6 inline-flex h-13 items-center justify-center gap-2 rounded-full bg-[#25d366] px-8 text-base font-semibold text-[#06281a]"
+            className="mt-5 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#25d366] px-8 text-base font-semibold text-[#06281a]"
             data-track="whatsapp_click"
             data-track-props='{"where":"mobile_menu"}'
           >

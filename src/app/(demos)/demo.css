@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import '../_shared/base.css';
+@import './motion-v2.css';
 
 /*
  * Demo mini-sites share one component set styled with `dm-*` tokens.
@@ -53,26 +54,27 @@
   }
 }
 
-/* Velvet Salon: Champagne Noir. Fashion editorial: warm black, champagne gold, blush accent,
-   Bodoni headings with italic accents, Montserrat body, sharp 4px radii, gold hairlines. */
+/* Velvet Salon: The Gentlemen's Lounge, for her too. A dark barber lounge: warm black and wood,
+   old gold, tan accent, DM Serif Display headings with italic accents, Montserrat body,
+   sharp radii, gold hairlines and gold icon squares. */
 .theme-velvet {
-  --dm-bg: #141210;
-  --dm-surface: #1c1917;
-  --dm-surface-2: #23201c;
-  --dm-ink: #f5efe6;
-  --dm-muted: #b9ae9f;
-  --dm-line: rgba(212, 167, 87, 0.22);
-  --dm-line-strong: rgba(212, 167, 87, 0.5);
-  --dm-brand: #d4a757;
-  --dm-brand-ink: #e2bb72;
-  --dm-brand-soft: rgba(212, 167, 87, 0.14);
+  --dm-bg: #16110d;
+  --dm-surface: #1f1813;
+  --dm-surface-2: #2a211a;
+  --dm-ink: #f3eadc;
+  --dm-muted: #b3a493;
+  --dm-line: rgba(201, 160, 99, 0.22);
+  --dm-line-strong: rgba(201, 160, 99, 0.5);
+  --dm-brand: #c9a063;
+  --dm-brand-ink: #d9b378;
+  --dm-brand-soft: rgba(201, 160, 99, 0.14);
   --dm-on-brand: #1a1410;
-  --dm-accent: #e8b4b8;
-  --dm-accent-ink: #e8b4b8;
-  --dm-ring: rgba(212, 167, 87, 0.45);
-  --dm-glass: rgba(28, 25, 23, 0.8);
+  --dm-accent: #e2b98a;
+  --dm-accent-ink: #e2b98a;
+  --dm-ring: rgba(201, 160, 99, 0.45);
+  --dm-glass: rgba(31, 24, 19, 0.8);
   --dm-font-body: var(--font-montserrat);
-  --dm-font-display: var(--font-bodoni), 'Didot', 'Bodoni MT', Georgia, serif;
+  --dm-font-display: var(--font-dmserif), Georgia, 'Times New Roman', serif;
   --dm-radius: 4px;
   --dm-radius-btn: 2px;
   --dm-radius-img: 2px;
@@ -82,13 +84,31 @@
   color-scheme: dark;
   font-weight: 300;
   .font-display {
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    font-weight: 400;
+    letter-spacing: 0;
   }
   .font-display em {
     font-style: italic;
-    font-weight: 500;
+    font-weight: 400;
     color: var(--dm-brand-ink);
+  }
+  /* Gold icon square on service and price cards. */
+  .vb-icon {
+    display: inline-flex;
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    background: var(--dm-brand);
+    color: var(--dm-on-brand);
+    box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.7);
+  }
+  /* Warm wood glow behind the lounge and shelf sections. */
+  .vb-wood {
+    background:
+      radial-gradient(60% 80% at 20% 0%, rgba(201, 160, 99, 0.16), transparent 60%),
+      radial-gradient(50% 60% at 90% 100%, rgba(120, 72, 36, 0.35), transparent 60%), var(--dm-surface);
   }
   .font-semibold,
   .font-bold {
@@ -118,20 +138,64 @@
 
 /* Saffron Kitchen: dark, warm, amber. */
 .theme-saffron {
-  --dm-bg: #171210;
-  --dm-surface: #211a16;
-  --dm-surface-2: #2b221d;
-  --dm-ink: #f6efe7;
-  --dm-muted: #b9aa9c;
-  --dm-line: rgba(246, 239, 231, 0.1);
-  --dm-line-strong: rgba(246, 239, 231, 0.22);
-  --dm-brand: #e0892b;
-  --dm-brand-ink: #f2a44f;
-  --dm-brand-soft: rgba(224, 137, 43, 0.16);
+  --dm-bg: #0e0c0a;
+  --dm-surface: #16120f;
+  --dm-surface-2: #1f1915;
+  --dm-ink: #f2eadf;
+  --dm-muted: #a89c8e;
+  --dm-line: rgba(242, 234, 223, 0.1);
+  --dm-line-strong: rgba(242, 234, 223, 0.24);
+  --dm-brand: #d9a441;
+  --dm-brand-ink: #e6b65c;
+  --dm-brand-soft: rgba(217, 164, 65, 0.14);
   --dm-on-brand: #1a1208;
-  --dm-accent: #b91c1c;
-  --dm-ring: rgba(224, 137, 43, 0.4);
+  --dm-accent: #b3261e;
+  --dm-ring: rgba(217, 164, 65, 0.4);
+  --dm-font-display: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
+  --dm-radius: 0.75rem;
+  --dm-radius-btn: 999px;
+  --dm-radius-img: 0.75rem;
+  --dm-dur: 1.1s;
+  --dm-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dm-word-gap: 120ms;
   color-scheme: dark;
+  .font-display {
+    font-weight: 700;
+    letter-spacing: -0.035em;
+  }
+  .font-display em {
+    font-style: normal;
+    color: var(--dm-brand-ink);
+  }
+  /* Menu as a fine-dining list: hairlines instead of cards. */
+  .rs-menu [role='tab'] {
+    border-radius: 0;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    padding-inline: 0.25rem;
+  }
+  .rs-menu [role='tab'][aria-selected='true'] {
+    background: transparent;
+    color: var(--dm-ink);
+    border-bottom-color: var(--dm-brand);
+  }
+  .rs-menu [role='tabpanel'] > ul {
+    gap: 0;
+  }
+  .rs-menu .dm-card {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--dm-line);
+    border-radius: 0;
+    box-shadow: none;
+    padding: 1.1rem 0;
+  }
+  .rs-menu .dm-card figure {
+    border-radius: 999px;
+  }
+  .dm-progress {
+    background: var(--dm-brand);
+  }
 }
 
 /* Pulse Fitness (AI demo): dark navy, electric green, sky accent. Sporty tech: Bebas Neue
@@ -282,20 +346,26 @@
 
 /* Atelier Nila (interior): ivory, oat beige, ash wood, espresso. Editorial serif headings. */
 .theme-nila {
-  --dm-bg: #f5f0e8;
+  --dm-bg: #f6f5f2;
   --dm-surface: #ffffff;
-  --dm-surface-2: #ebe3d8;
-  --dm-ink: #3b2a1e;
-  --dm-muted: #6f5f52;
-  --dm-line: rgba(59, 42, 30, 0.1);
-  --dm-line-strong: rgba(59, 42, 30, 0.22);
-  --dm-brand: #3b2a1e;
-  --dm-brand-ink: #2a1d14;
-  --dm-brand-soft: #e9dfd2;
-  --dm-on-brand: #f7f2ea;
-  --dm-accent: #c9a97d;
-  --dm-accent-ink: #7a5a38;
-  --dm-ring: rgba(59, 42, 30, 0.3);
+  --dm-surface-2: #ecebe7;
+  --dm-ink: #141414;
+  --dm-muted: #6e6e6e;
+  --dm-line: rgba(20, 20, 20, 0.1);
+  --dm-line-strong: rgba(20, 20, 20, 0.26);
+  --dm-brand: #141414;
+  --dm-brand-ink: #000000;
+  --dm-brand-soft: #e9e7e2;
+  --dm-on-brand: #ffffff;
+  --dm-accent: #b4825a;
+  --dm-accent-ink: #8a5f3c;
+  --dm-ring: rgba(20, 20, 20, 0.3);
+  --dm-radius: 0.25rem;
+  --dm-radius-btn: 999px;
+  --dm-radius-img: 0.125rem;
+  --dm-dur: 1s;
+  --dm-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dm-word-gap: 110ms;
   color-scheme: light;
 
   /* Serif display face, loaded by the interior pages only. */
