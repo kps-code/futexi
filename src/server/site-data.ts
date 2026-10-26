@@ -197,7 +197,8 @@ export const getDemoSettings = unstable_cache(
     const s = await payload.findGlobal({ slug: 'demo-settings', depth: 0, overrideAccess: true })
     const list = (v: unknown): string[] =>
       Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : []
-    const featured = list(s?.featured)
+    const rows = Array.isArray(s?.featured) ? (s.featured as Array<{ demo?: string | null }>) : []
+    const featured = rows.map((r) => r?.demo).filter((d): d is string => typeof d === 'string')
     return { hidden: list(s?.hidden), featured: featured.length ? featured : DEFAULT_FEATURED }
   },
   ['demo-settings'],
@@ -210,13 +211,16 @@ export async function getVisibleDemos(): Promise<Demo[]> {
   return demos.filter((d) => !hidden.includes(d.slug))
 }
 
-/** Up to four demos for the home page, in the admin's chosen order, skipping hidden ones. */
+/**
+ * Up to six demos for the home showcase, in the admin's chosen order (Settings > Demos > Featured
+ * on Home), skipping hidden ones and demos that are not live yet.
+ */
 export async function getFeaturedDemos(): Promise<Demo[]> {
   const { hidden, featured } = await getDemoSettings()
   return featured
     .map(demoBySlug)
-    .filter((d): d is Demo => Boolean(d) && !hidden.includes(d!.slug))
-    .slice(0, 4)
+    .filter((d): d is Demo => Boolean(d) && d!.status === 'live' && !hidden.includes(d!.slug))
+    .slice(0, 6)
 }
 
 export async function isDemoHidden(slug: string): Promise<boolean> {
