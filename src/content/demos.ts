@@ -51,18 +51,18 @@ export const demos: readonly Demo[] = [
     post: 0,
     title: 'Booking Website',
     category: 'Booking',
-    line: 'A modern appointment experience that turns visitors into scheduled customers.',
+    line: 'A bold red-and-black booking site: live slots, WhatsApp confirmation, memberships, built to turn visitors into appointments.',
     tags: ['Booking', 'WhatsApp', 'Responsive'],
     cta: 'Request a Similar Website',
     contactType: 'booking',
     status: 'live',
     liveHref: '/demo/booking',
-    screensVersion: 8,
+    screensVersion: 9,
     screens: {
       desktop: [
         {
           src: '/demos/booking/desktop-home.webp',
-          alt: 'Nova Studio home page with a resort-style hero and booking bar',
+          alt: 'Nova Studio home page: black and red hero with a bold headline and the booking bar',
         },
         {
           src: '/demos/booking/desktop-treatments.webp',

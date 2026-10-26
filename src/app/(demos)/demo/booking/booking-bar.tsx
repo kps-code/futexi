@@ -26,7 +26,7 @@ export function BookingBar({
 
   return (
     <div className="container-dm relative z-10 -mt-14 sm:-mt-20" data-testid="booking-bar">
-      <div className="dm-glass grid overflow-hidden rounded-[var(--dm-radius)] shadow-[0_30px_60px_-30px_rgba(27,42,65,0.45)] md:grid-cols-[1.3fr_1fr_auto]">
+      <div className="dm-glass grid overflow-hidden rounded-[var(--dm-radius)] shadow-[0_30px_60px_-30px_rgba(0,0,0,0.8)] md:grid-cols-[1.3fr_1fr_auto]">
         <label className="border-dm-line flex flex-col gap-1 border-b px-6 py-4 md:border-r md:border-b-0">
           <span className="dm-label">Treatment</span>
           <select
@@ -71,7 +71,7 @@ export function BookingBar({
                 aria-pressed={on}
                 onClick={() => setDate(d)}
                 className={cn(
-                  'flex w-16 shrink-0 flex-col items-center rounded-[1rem] border py-2 text-xs transition-[transform,background-color,color,border-color] duration-300',
+                  'flex w-16 shrink-0 flex-col items-center rounded-[var(--dm-radius)] border py-2 text-xs transition-[transform,background-color,color,border-color] duration-300',
                   on
                     ? 'border-dm-brand bg-dm-brand text-dm-on-brand -translate-y-0.5'
                     : 'border-dm-line bg-dm-surface/70 text-dm-muted hover:text-dm-ink hover:-translate-y-0.5',

@@ -1,8 +1,8 @@
 import { claim, q, type Recipe } from './shared'
 
 /**
- * Nova Studio: slow and soft. Headline words rise out of their own masks while
- * the hero photo breathes (Ken Burns) and the booking bar floats up; treatment
+ * Nova Studio: bold and measured. Headline words rise out of their own masks while
+ * the red disc grows and the portrait rises through it; the booking bar floats up; treatment
  * cards turn in like pages; the quote reveals line by line under a gold rule;
  * the visit steps stack on top of each other while the section is pinned; the
  * studio photo drifts against its copy.
@@ -20,6 +20,19 @@ export const recipe: Recipe = {
       tl.from(fades, { opacity: 0, y: 20, filter: 'blur(10px)', duration: 1.1, stagger: 0.15 }, 0.5)
     if (bar) tl.from(bar, { y: 48, opacity: 0, duration: 1.1 }, 0.9)
     if (img) tl.fromTo(img, { scale: 1.18 }, { scale: 1.04, duration: 9, ease: 'power2.out' }, 0)
+    // Red disc grows out, the portrait rises through it, the rating stamps in.
+    const disc = document.querySelector<HTMLElement>('.v2-hero .nv-disc')
+    const portrait = document.querySelector<HTMLElement>('.v2-hero .nv-portrait')
+    const stamp = document.querySelector<HTMLElement>('.v2-hero .nv-art .font-display')
+    if (disc) tl.from(disc, { scale: 0, duration: 1.6, ease: 'expo.out' }, 0.2)
+    if (portrait)
+      tl.fromTo(
+        portrait,
+        { clipPath: 'inset(100% 0 0 0)' },
+        { clipPath: 'inset(0% 0 0 0)', duration: 1.4, ease: 'power4.inOut' },
+        0.5,
+      )
+    if (stamp) tl.from(stamp, { scale: 1.6, opacity: 0, duration: 0.6, ease: 'power4.out' }, 1.5)
     add(() => tl.kill())
   },
 

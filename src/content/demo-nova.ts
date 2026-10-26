@@ -20,6 +20,7 @@ export const novaPhotos = {
   sea: photo('sea', 'Sea water catching the light'),
   yoga: photo('yoga-beach', 'A yoga class on the beach at dawn'),
   dropper: photo('oil-dropper', 'A hand holding a dropper of aromatic oil'),
+  portrait: photo('skin-portrait', 'A calm portrait after a facial'),
 }
 
 /** Room-style detail per bookable service (slugs match the business config). */
@@ -161,3 +162,20 @@ export const novaFaq = [
 /** The promise: revealed line by line under a gold rule on desktop (Motion v2). */
 export const novaManifesto =
   'An hour that is only about you. No clock on the wall, no phone in your hand, no one waiting at the desk.'
+
+/** The bold line in the middle of the statement section. */
+export const novaStatement = {
+  line1: 'Slow hands.',
+  line2: 'Fast booking.',
+  sub: 'Only free slots are shown, updated live. Your summary lands on WhatsApp before you put the phone down.',
+} as const
+
+/** Left-hand list beside the statement. */
+export const novaSide = {
+  left: [
+    ['Skin', 'Facials, consultations'],
+    ['Body', 'Massage, warm stones'],
+    ['Hair', 'Spa, masks'],
+    ['Membership', 'Monthly, 15% off'],
+  ],
+} as const

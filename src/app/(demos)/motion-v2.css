@@ -108,11 +108,10 @@
 }
 
 /* Nova (booking): the photo dims over navy rather than washing out over sand; gold marquee accents. */
-.theme-nova .v2-hero > .dm-parallax {
-  background: var(--dm-ink);
-}
-.dm-v2-three .theme-nova .v2-hero-photo {
-  opacity: 0.55;
+/* Red disc and portrait are drawn in by the intro on desktop; static elsewhere. */
+.dm-v2 .theme-nova .nv-disc,
+.dm-v2 .theme-nova .nv-portrait {
+  will-change: transform, clip-path;
 }
 
 /* Marquee strip under the hero: CSS on every device. */
@@ -175,10 +174,8 @@
 }
 .theme-nova .v2-rule {
   display: block;
-  width: 5rem;
-  height: 1px;
-  background: var(--dm-accent);
-  transform-origin: center;
+  background: var(--dm-brand);
+  transform-origin: left;
 }
 .dm-v2 .theme-nova .dm-pin-track {
   display: grid;
@@ -196,7 +193,7 @@
   border: 1px solid var(--dm-line);
   border-radius: var(--dm-radius);
   padding: 1.5rem;
-  box-shadow: 0 30px 60px -30px rgba(27, 42, 65, 0.35);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.9);
   will-change: transform;
 }
 .dm-v2 .theme-nova .dm-pin-track > li > figure {
