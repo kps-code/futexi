@@ -30,7 +30,7 @@ export function CaseStudy({ demo, whatsappNumber }: { demo: Demo; whatsappNumber
         <div className="container-site grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-[1fr_1.1fr]">
           <div>
             <p className="text-xs font-semibold tracking-[0.22em] text-muted uppercase">
-              Demo {String(demo.post).padStart(2, '0')} · {demo.category}
+              Demo {String(demo.post + 1).padStart(2, '0')} · {demo.category}
             </p>
             <h1 className="mt-4 font-display text-4xl font-bold tracking-tight text-balance sm:text-5xl">
               {demo.title}
