@@ -51,18 +51,18 @@ export const demos: readonly Demo[] = [
     post: 0,
     title: 'Booking Website',
     category: 'Booking',
-    line: 'A modern appointment experience that turns visitors into scheduled customers.',
+    line: 'A bold red-and-black booking site: live slots, WhatsApp confirmation, memberships, built to turn visitors into appointments.',
     tags: ['Booking', 'WhatsApp', 'Responsive'],
     cta: 'Request a Similar Website',
     contactType: 'booking',
     status: 'live',
     liveHref: '/demo/booking',
-    screensVersion: 7,
+    screensVersion: 9,
     screens: {
       desktop: [
         {
           src: '/demos/booking/desktop-home.webp',
-          alt: 'Nova Studio home page with a resort-style hero and booking bar',
+          alt: 'Nova Studio home page: black and red hero with a bold headline and the booking bar',
         },
         {
           src: '/demos/booking/desktop-treatments.webp',
@@ -120,7 +120,7 @@ export const demos: readonly Demo[] = [
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/salon',
-    screensVersion: 8,
+    screensVersion: 9,
     screens: {
       desktop: [
         {
@@ -175,7 +175,7 @@ export const demos: readonly Demo[] = [
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/restaurant',
-    screensVersion: 7,
+    screensVersion: 8,
     screens: {
       desktop: [
         {
@@ -231,7 +231,7 @@ export const demos: readonly Demo[] = [
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/interior',
-    screensVersion: 3,
+    screensVersion: 4,
     screens: {
       desktop: [
         {
@@ -293,7 +293,7 @@ export const demos: readonly Demo[] = [
     contactType: 'website',
     status: 'live',
     liveHref: '/demo/tuition',
-    screensVersion: 7,
+    screensVersion: 8,
     screens: {
       desktop: [
         { src: '/demos/tuition/desktop-home.webp', alt: 'Vidya Academy home with results strip' },
@@ -365,7 +365,7 @@ export const demos: readonly Demo[] = [
     contactType: 'ai',
     status: 'live',
     liveHref: '/demo/ai-business',
-    screensVersion: 6,
+    screensVersion: 7,
     screens: {
       desktop: [
         { src: '/demos/ai-business/desktop-home.webp', alt: 'Pulse Fitness home with the AI assistant' },

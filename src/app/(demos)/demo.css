@@ -7,50 +7,90 @@
  * Each business sets the tokens through a theme class on its wrapper.
  */
 
-/* Nova Studio (Booking demo): Sand and Sea. Resort calm: sand paper, navy ink, gold accent,
-   Cormorant headings, Jost body, soft 24px radii, slow eases. */
+/* Nova Studio (Booking demo): Red Room. Black, bold and modern: near-black panels, one red,
+   Anton uppercase headlines, Inter body, sharp corners, black-and-white photos with red discs. */
 .theme-nova {
-  --dm-bg: #f6f1ea;
-  --dm-surface: #ffffff;
-  --dm-surface-2: #ece4d8;
-  --dm-ink: #1b2a41;
-  --dm-muted: #4f5d75;
-  --dm-line: rgba(27, 42, 65, 0.1);
-  --dm-line-strong: rgba(27, 42, 65, 0.26);
-  --dm-brand: #1b2a41;
-  --dm-brand-ink: #8a6424;
-  --dm-brand-soft: #e6ecf3;
+  --dm-bg: #0a0a0a;
+  --dm-surface: #121212;
+  --dm-surface-2: #1a1a1a;
+  --dm-ink: #f4f4f4;
+  --dm-muted: #9a9a9a;
+  --dm-line: rgba(255, 255, 255, 0.1);
+  --dm-line-strong: rgba(255, 255, 255, 0.28);
+  --dm-brand: #e11d2e;
+  --dm-brand-ink: #ff3b4a;
+  --dm-brand-soft: rgba(225, 29, 46, 0.16);
   --dm-on-brand: #ffffff;
-  --dm-accent: #b8893f;
-  --dm-accent-ink: #7a5520;
-  --dm-ring: rgba(27, 42, 65, 0.3);
-  --dm-glass: rgba(255, 255, 255, 0.78);
-  --dm-font-body: var(--font-jost);
-  --dm-font-display: var(--font-cormorant), Georgia, 'Times New Roman', serif;
-  --dm-radius: 1.5rem;
-  --dm-radius-btn: 999px;
-  --dm-radius-img: 1.5rem;
-  --dm-dur: 1s;
+  --dm-accent: #e11d2e;
+  --dm-accent-ink: #ff3b4a;
+  --dm-ring: rgba(225, 29, 46, 0.45);
+  --dm-glass: rgba(10, 10, 10, 0.82);
+  --dm-font-body: var(--font-inter);
+  --dm-font-display: var(--font-anton), Impact, 'Arial Narrow', sans-serif;
+  --dm-radius: 0.25rem;
+  --dm-radius-btn: 0.125rem;
+  --dm-radius-img: 0.125rem;
+  --dm-dur: 0.9s;
   --dm-ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --dm-word-gap: 110ms;
-  color-scheme: light;
+  --dm-word-gap: 90ms;
+  color-scheme: dark;
   .font-display {
-    font-weight: 600;
-    letter-spacing: -0.005em;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.94;
   }
   .font-display em {
-    font-style: italic;
-    color: var(--dm-accent-ink);
+    font-style: normal;
+    color: var(--dm-brand);
   }
-  /* One Jost file: heavier utilities render as 400 (no faux bold); hierarchy comes from size and caps. */
-  .font-medium,
-  .font-semibold,
-  .font-bold {
-    font-weight: 400;
+  /* Photos read as black and white; the red discs and the type carry the colour. */
+  figure img {
+    filter: grayscale(1) contrast(1.06);
   }
-  /* Brand is the navy ink, so text links take the gold to stay distinguishable from body text. */
-  a.text-dm-brand {
-    color: var(--dm-accent-ink);
+  .nv-shape {
+    position: absolute;
+    border-radius: 999px;
+    background: var(--dm-brand);
+    mix-blend-mode: multiply;
+    opacity: 0.92;
+    pointer-events: none;
+  }
+  .nv-disc {
+    right: -12%;
+    top: 8%;
+    width: 78%;
+    aspect-ratio: 1;
+    mix-blend-mode: normal;
+    opacity: 1;
+  }
+  .nv-portrait {
+    mix-blend-mode: luminosity;
+  }
+  .nv-card-disc {
+    right: -22%;
+    top: 22%;
+    width: 75%;
+    aspect-ratio: 1;
+  }
+  .nv-studio-disc {
+    left: -8%;
+    bottom: -8%;
+    width: 46%;
+    aspect-ratio: 1;
+    mix-blend-mode: normal;
+  }
+  .dm-btn-motion {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+  .dm-label {
+    color: var(--dm-brand);
+  }
+  .dm-progress {
+    background: var(--dm-brand);
   }
 }
 

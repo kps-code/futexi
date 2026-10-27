@@ -4,7 +4,7 @@ import { expect, test } from '@playwright/test'
 test.describe('Nova Studio pages', () => {
   test('booking bar opens the flow with treatment and date preselected', async ({ page }) => {
     await page.goto('/demo/booking')
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Your hour of calm')
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Calm')
     const bar = page.getByTestId('booking-bar')
     await bar.getByLabel('Treatment').selectOption('hair-spa')
     const dates = bar.getByRole('button', { pressed: false })
@@ -51,7 +51,7 @@ test.describe('Nova Studio pages', () => {
     const family = await page
       .getByRole('heading', { level: 1 })
       .evaluate((el) => getComputedStyle(el).fontFamily)
-    expect(family).toContain('Cormorant')
+    expect(family).toContain('Anton')
     const mobile = await browser.newContext({
       viewport: { width: 375, height: 812 },
       hasTouch: true,

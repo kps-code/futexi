@@ -7,6 +7,8 @@ import * as migration_20261013_061105_roles from './20261013_061105_roles'
 import * as migration_20261015_103409_branding from './20261015_103409_branding'
 import * as migration_20261021_130246_journey from './20261021_130246_journey'
 import * as migration_20261022_075648_pricing from './20261022_075648_pricing'
+import * as migration_20261026_095918_featured_drop from './20261026_095918_featured_drop'
+import * as migration_20261026_095951_featured_rows from './20261026_095951_featured_rows'
 
 export const migrations = [
   {
@@ -53,5 +55,15 @@ export const migrations = [
     up: migration_20261022_075648_pricing.up,
     down: migration_20261022_075648_pricing.down,
     name: '20261022_075648_pricing',
+  },
+  {
+    up: migration_20261026_095918_featured_drop.up,
+    down: migration_20261026_095918_featured_drop.down,
+    name: '20261026_095918_featured_drop',
+  },
+  {
+    up: migration_20261026_095951_featured_rows.up,
+    down: migration_20261026_095951_featured_rows.down,
+    name: '20261026_095951_featured_rows',
   },
 ]

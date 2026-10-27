@@ -1,9 +1,8 @@
 import {
+  Anton,
   Bebas_Neue,
-  Cormorant_Garamond,
   DM_Serif_Display,
   Inter,
-  Jost,
   Lexend,
   Montserrat,
   Nunito,
@@ -31,18 +30,10 @@ const sora = Sora({
   weight: ['500', '600', '700'],
 })
 
-// Nova Studio: resort calm.
-const cormorant = Cormorant_Garamond({
+// Nova Studio: red and black; one heavy condensed face for uppercase headlines, Inter body.
+const anton = Anton({
   subsets: ['latin'],
-  variable: '--font-cormorant',
-  display: 'swap',
-  preload: false,
-  weight: '600',
-  style: ['normal', 'italic'],
-})
-const jost = Jost({
-  subsets: ['latin'],
-  variable: '--font-jost',
+  variable: '--font-anton',
   display: 'swap',
   preload: false,
   weight: '400',
@@ -109,7 +100,7 @@ const nunito = Nunito({
 const base = `${inter.variable} ${sora.variable}`
 
 export const demoFontClass: Record<DemoBusinessId, string> = {
-  booking: `${base} ${cormorant.variable} ${jost.variable}`,
+  booking: `${base} ${anton.variable}`,
   salon: `${base} ${dmSerif.variable} ${montserrat.variable}`,
   'ai-business': `${base} ${bebas.variable} ${spaceGrotesk.variable}`,
   tuition: `${base} ${lexend.variable} ${nunito.variable}`,

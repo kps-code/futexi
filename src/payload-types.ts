@@ -1327,9 +1327,14 @@ export interface DemoSetting {
    */
   hidden?: ('booking' | 'salon' | 'restaurant' | 'interior' | 'tuition' | 'before-after' | 'ai-business')[] | null;
   /**
-   * Up to four demos shown on the home page, in the order selected. Hidden demos are skipped.
+   * The "Live demos" section of the home page shows these, top to bottom. Drag the handle to reorder, up to six. Hidden demos and demos marked coming soon are skipped.
    */
-  featured?: ('booking' | 'salon' | 'restaurant' | 'interior' | 'tuition' | 'before-after' | 'ai-business')[] | null;
+  featured?:
+    | {
+        demo: 'booking' | 'salon' | 'restaurant' | 'interior' | 'tuition' | 'before-after' | 'ai-business';
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1600,7 +1605,12 @@ export interface AboutPageSelect<T extends boolean = true> {
  */
 export interface DemoSettingsSelect<T extends boolean = true> {
   hidden?: T;
-  featured?: T;
+  featured?:
+    | T
+    | {
+        demo?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

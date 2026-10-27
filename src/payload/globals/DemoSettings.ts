@@ -34,14 +34,16 @@ export const DemoSettings: GlobalConfig = {
     {
       name: 'featured',
       label: 'Featured on Home',
-      type: 'select',
-      hasMany: true,
-      options,
-      defaultValue: ['booking', 'salon', 'restaurant', 'ai-business'],
+      type: 'array',
+      labels: { singular: 'Demo', plural: 'Demos' },
+      maxRows: 6,
+      defaultValue: ['booking', 'salon', 'restaurant', 'ai-business'].map((demo) => ({ demo })),
       admin: {
+        initCollapsed: false,
         description:
-          'Up to four demos shown on the home page, in the order selected. Hidden demos are skipped.',
+          'The "Live demos" section of the home page shows these, top to bottom. Drag the handle to reorder, up to six. Hidden demos and demos marked coming soon are skipped.',
       },
+      fields: [{ name: 'demo', label: 'Demo', type: 'select', options, required: true }],
     },
   ],
 }

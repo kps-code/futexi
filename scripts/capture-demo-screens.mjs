@@ -112,7 +112,9 @@ try {
       deviceScaleFactor: 1,
       isMobile: device === 'mobile',
       hasTouch: device === 'mobile',
-      reducedMotion: 'reduce',
+      // Desktop keeps motion on so Motion v2 and the 3D hero scene appear in the shot, as a visitor
+      // with a mouse sees them; phones and tablets stay on the calm CSS layer.
+      reducedMotion: device === 'desktop' ? 'no-preference' : 'reduce',
       colorScheme: 'light',
     })
     const page = await context.newPage()
@@ -120,19 +122,19 @@ try {
       if (device === 'tablet' && shot.name !== 'home') continue
       await page.goto(`${base}${shot.path}`, { waitUntil: 'load', timeout: 120_000 })
       await page.waitForTimeout(1200)
-      // Motion v2 pages (desktop): wait for the GSAP intro and the 3D hero to finish fading in.
-      await page
-        .waitForFunction(
-          () => {
-            const c = document.documentElement.classList
-            return !c.contains('dm-v2') || c.contains('dm-v2-three')
-          },
-          undefined,
-          { timeout: 8_000 },
-        )
-        .catch(() => {})
-      if (await page.evaluate(() => document.documentElement.classList.contains('dm-v2'))) {
+      // Motion v2 pages (desktop): the 3D hero scene loads after the page load event and fades in over
+      // 1.2 s; the GSAP intro runs about 1.5 s. Wait for the scene when the page has one, then let both settle.
+      // The canvas element is in the DOM on every device, but the scene mounts on desktop only.
+      const hasScene = device === 'desktop' && (await page.locator('.v2-hero-canvas').count()) > 0
+      if (hasScene) {
+        await page
+          .waitForFunction(() => document.documentElement.classList.contains('dm-v2-three'), undefined, {
+            timeout: 20_000,
+          })
+          .catch(() => console.warn('3D scene did not report ready on', shot.path))
         await page.waitForTimeout(1800)
+      } else if (await page.evaluate(() => document.documentElement.classList.contains('dm-v2'))) {
+        await page.waitForTimeout(2500)
       }
       for (const step of shot.steps) {
         if (step.click) await page.locator(step.click).first().click()

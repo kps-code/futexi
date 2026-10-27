@@ -162,7 +162,7 @@ async function main() {
     })
     await api(req, 'post', '/api/globals/demo-settings', {
       hidden: ['tuition'],
-      featured: ['booking', 'salon'],
+      featured: [{ demo: 'booking' }, { demo: 'salon' }],
     })
     /* ---- Collections ---- */
     const svc = await api(req, 'post', '/api/services', {
@@ -241,6 +241,15 @@ async function main() {
       has(`Service ${M}`) && html.includes(`/services#svc-${M}`) && has(`Good ${M}`),
     )
     ok('demo hidden from home showcase', !has('Tuition Centre Website'))
+    {
+      const start = html.indexOf('id="demos"')
+      const showcase = start >= 0 ? html.slice(start, html.indexOf('</section>', start)) : ''
+      const order = ['Booking Website', 'Salon Website'].map((t) => showcase.indexOf(t))
+      ok(
+        'home showcase follows Featured on Home (booking, salon only, in order)',
+        order[0] >= 0 && order[1] > order[0] && !showcase.includes('Restaurant Website'),
+      )
+    }
     ok('AI demo chip from admin', has(`Chip${M}`))
     ok(
       'how we work heading + step + tech',

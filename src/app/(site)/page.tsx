@@ -16,15 +16,17 @@ import {
   getSiteSettings,
   getTeamMembers,
   getTestimonials,
+  getFeaturedDemos,
   getVisibleDemos,
 } from '@/server/site-data'
 
 /** Home. Section order: docs/content-lock.md §2 (showroom edition). */
 export default async function HomePage() {
-  const [settings, team, demos, home, faqs, testimonials, services] = await Promise.all([
+  const [settings, team, demos, featured, home, faqs, testimonials, services] = await Promise.all([
     getSiteSettings(),
     getTeamMembers(),
     getVisibleDemos(),
+    getFeaturedDemos(),
     getHomePage(),
     getFaqs(),
     getTestimonials(),
@@ -43,7 +45,7 @@ export default async function HomePage() {
         secondaryHref={hero.secondary.href}
       />
       <ServicesCards services={services} whatsappNumber={settings.whatsappNumber} />
-      <DemoShowcase demos={liveDemos} />
+      <DemoShowcase demos={featured} />
       <AiSection />
       <HowWeWork content={home.howWeWork} technology={home.technology} />
       <Trust
