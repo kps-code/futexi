@@ -9,6 +9,7 @@ import { budgetOptions, needOptions } from '@/content/contact'
 import { parseSessionCookie, SESSION_COOKIE, VISITOR_COOKIE, isValidVisitorId } from '@/lib/session'
 import { whatsappLink } from '@/lib/whatsapp'
 import { runAfter } from '@/server/after'
+import { leadEmail } from '@/server/email/notify'
 import { getServerEnv } from '@/server/env'
 import { logger } from '@/server/logging/logger'
 import { requestMetaFromHeaders } from '@/server/logging/request-meta'
@@ -149,24 +150,31 @@ const submitContactInner = withAction(
         }
         if (env.RESEND_API_KEY) {
           const resend = new Resend(env.RESEND_API_KEY)
+          const mail = leadEmail({
+            id: lead.id,
+            createdAt: new Date(lead.createdAt),
+            siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? '',
+            name: input.name,
+            businessName: input.businessName || undefined,
+            email: input.email,
+            whatsapp: input.whatsapp,
+            businessType: input.businessType || undefined,
+            need: input.need,
+            budget: input.budget || undefined,
+            details: input.details || undefined,
+            source: {
+              utmSource: visitor?.firstUtm?.source ?? undefined,
+              referrer: visitor?.firstReferrer ?? undefined,
+              landingPath: visitor?.firstLandingPath ?? undefined,
+            },
+          })
           await resend.emails.send({
             from: env.LEAD_FROM_EMAIL ?? 'KAPOSA FUTEXI <onboarding@resend.dev>',
             to: [env.LEAD_NOTIFY_EMAIL ?? settings.email],
             replyTo: input.email,
-            subject: `New lead: ${input.name} · ${input.need}`,
-            text: [
-              `Name: ${input.name}`,
-              `Business: ${input.businessName || '-'}`,
-              `Email: ${input.email}`,
-              `WhatsApp: ${input.whatsapp}`,
-              `Business type: ${input.businessType || '-'}`,
-              `Need: ${input.need}`,
-              `Budget: ${input.budget || '-'}`,
-              '',
-              input.details || '(no details)',
-              '',
-              `Open in admin: ${process.env.NEXT_PUBLIC_SITE_URL}/admin/collections/leads/${lead.id}`,
-            ].join('\n'),
+            subject: mail.subject,
+            html: mail.html,
+            text: mail.text,
           })
         } else {
           logger.info({ leadId: lead.id }, 'lead created (email disabled: RESEND_API_KEY not set)')

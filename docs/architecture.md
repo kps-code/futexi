@@ -317,7 +317,7 @@ Gates live in lighthouserc.json and run in CI against the built app on three pag
 | Errors | `error.tsx` per route group, `not-found.tsx`, Sentry on client and server, request_id shown on the error screen so a user can quote it |
 | Security headers | CSP, HSTS, frame-ancestors none (except demo iframes from own origin), Referrer-Policy strict-origin-when-cross-origin |
 | Secrets | Vercel env vars only. `server/env.ts` validates at build. `.env.example` committed |
-| Email | Resend. Lead notification to kpsankar1398kp@gmail.com. Auto-reply to the lead |
+| Email | Resend. Lead and feedback notifications to the owner as HTML cards (`src/server/email/notify.ts`: name, need/type/budget chips, WhatsApp/Call/Email buttons, message, details, source path, admin link; plain-text twin; all user text escaped). Reply-To is the lead |
 | Backups | Neon point-in-time restore (7 days free). Weekly `pg_dump` to Blob via cron |
 | Theme | next-themes, class strategy, cookie so SSR renders the right theme with no flash |
 | i18n | English only for v1. Structure allows Tamil later |

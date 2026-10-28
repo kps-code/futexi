@@ -6,6 +6,7 @@ import { Resend } from 'resend'
 import { z } from 'zod'
 import config from '@payload-config'
 import { runAfter } from '@/server/after'
+import { feedbackEmail } from '@/server/email/notify'
 import { getServerEnv } from '@/server/env'
 import { logger } from '@/server/logging/logger'
 import { requestMetaFromHeaders } from '@/server/logging/request-meta'
@@ -100,20 +101,21 @@ const submitFeedbackInner = withAction(
         }
         const settings = await getSiteSettings()
         const resend = new Resend(env.RESEND_API_KEY)
+        const mail = feedbackEmail({
+          id: doc.id,
+          createdAt: new Date(doc.createdAt),
+          siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? '',
+          name: input.name,
+          business: input.business || undefined,
+          rating: input.rating,
+          quote: input.quote,
+        })
         await resend.emails.send({
           from: env.LEAD_FROM_EMAIL ?? 'KAPOSA FUTEXI <onboarding@resend.dev>',
           to: [env.LEAD_NOTIFY_EMAIL ?? settings.email],
-          subject: `New feedback: ${input.name}${input.business ? ` · ${input.business}` : ''} · ${input.rating}/5`,
-          text: [
-            `Name: ${input.name}`,
-            `Business: ${input.business || '-'}`,
-            `Rating: ${input.rating} / 5`,
-            '',
-            input.quote,
-            '',
-            'It is hidden until you tick Visible in the admin:',
-            `${process.env.NEXT_PUBLIC_SITE_URL}/admin/collections/testimonials/${doc.id}`,
-          ].join('\n'),
+          subject: mail.subject,
+          html: mail.html,
+          text: mail.text,
         })
       } catch (err) {
         logger.warn({ err, testimonialId: doc.id }, 'feedback notification failed')
