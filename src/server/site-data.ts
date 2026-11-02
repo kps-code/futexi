@@ -154,6 +154,8 @@ export type TeamMemberView = {
   photoAlt?: string
   linkedin?: string
   github?: string
+  /** The one person the home page shows with a WhatsApp button. */
+  pointOfContact: boolean
 }
 
 export const getTeamMembers = unstable_cache(
@@ -180,6 +182,7 @@ export const getTeamMembers = unstable_cache(
         photoAlt: photo?.alt,
         linkedin: optionalText(m.linkedin),
         github: optionalText(m.github),
+        pointOfContact: Boolean(m.pointOfContact),
       }
     })
   },

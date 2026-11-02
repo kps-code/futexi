@@ -8,6 +8,9 @@ import { getAboutPage, getTeamMembers } from '@/server/site-data'
 
 export const metadata: Metadata = { title: 'About' }
 
+/** Chips per card; every skill still appears once in the "Our stack" row. */
+const MAX_CHIPS = 6
+
 const audiences = [
   'Local Businesses',
   'Startups',
@@ -21,6 +24,7 @@ const audiences = [
 
 export default async function AboutPage() {
   const [about, team] = await Promise.all([getAboutPage(), getTeamMembers()])
+  const stack = Array.from(new Set(team.flatMap((m) => m.skills)))
 
   return (
     <>
@@ -53,7 +57,7 @@ export default async function AboutPage() {
                 <p className="mt-4 text-sm text-foreground/90">{m.bio}</p>
                 {m.skills.length > 0 && (
                   <ul className="mt-4 flex flex-wrap gap-1.5">
-                    {m.skills.map((s) => (
+                    {m.skills.slice(0, MAX_CHIPS).map((s) => (
                       <li
                         key={s}
                         className="rounded-full border border-border px-2.5 py-1 text-xs text-muted"
@@ -102,6 +106,19 @@ export default async function AboutPage() {
               </li>
             ))}
           </ul>
+        )}
+
+        {stack.length > 0 && (
+          <div className="mt-10 border-t border-border pt-8">
+            <h2 className="font-display text-lg font-semibold">Our stack</h2>
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {stack.map((s) => (
+                <li key={s} className="rounded-full border border-border px-3 py-1 text-xs text-muted">
+                  {s}
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
 
         <ul className="mt-10 flex flex-wrap gap-2">

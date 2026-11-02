@@ -94,7 +94,7 @@ futexi/
     payload.config.ts
     collections/
       Users.ts
-      TeamMembers.ts
+      TeamMembers.ts            builders on /about; one "Point of contact" (beforeChange hook keeps it single) is the home card
       Media.ts
       Leads.ts
       ApiLogs.ts

@@ -159,11 +159,6 @@ export const investment = {
   cta: { label: 'Discuss Your Project', href: '/contact' },
 } as const
 
-export const aboutTeaser = {
-  heading: 'Three Builders. One Vision.',
-  cta: { label: 'Meet the Team', href: '/about' },
-} as const
-
 export const technology = {
   heading: 'Modern Technology. Built for Tomorrow.',
   line: 'You do not need to know the stack. You just need it to work. This is what we build with.',
@@ -249,8 +244,14 @@ export const demoShowcase = {
 export const trust = {
   eyebrow: 'Why us',
   heading: 'Why businesses choose us.',
-  sub: 'Small team, direct contact, work you can try before you buy.',
-  team: { heading: 'The people you will talk to', cta: { label: 'Meet the Team', href: '/about' } },
+  sub: 'Direct contact, honest pricing, work you can try before you buy.',
+  team: {
+    heading: 'Who you will talk to',
+    contact: 'your point of contact',
+    line: 'The same person from the first call to launch.',
+    whatsapp: 'WhatsApp',
+    cta: { label: 'Meet the team', href: '/about' },
+  },
   testimonials: { heading: 'What clients say' },
 } as const
 

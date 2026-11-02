@@ -11,6 +11,7 @@ import * as migration_20261026_095918_featured_drop from './20261026_095918_feat
 import * as migration_20261026_095951_featured_rows from './20261026_095951_featured_rows'
 import * as migration_20261031_112601_assistant_global from './20261031_112601_assistant_global'
 import * as migration_20261031_115041_leads_email_optional from './20261031_115041_leads_email_optional'
+import * as migration_20261102_102455_team_point_of_contact from './20261102_102455_team_point_of_contact'
 
 export const migrations = [
   {
@@ -77,5 +78,10 @@ export const migrations = [
     up: migration_20261031_115041_leads_email_optional.up,
     down: migration_20261031_115041_leads_email_optional.down,
     name: '20261031_115041_leads_email_optional',
+  },
+  {
+    up: migration_20261102_102455_team_point_of_contact.up,
+    down: migration_20261102_102455_team_point_of_contact.down,
+    name: '20261102_102455_team_point_of_contact',
   },
 ]

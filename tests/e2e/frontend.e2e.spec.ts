@@ -18,6 +18,17 @@ test.describe('Frontend', () => {
     )
   })
 
+  test('home shows one point of contact with a WhatsApp button', async ({ page }) => {
+    await page.goto('/')
+    const section = page.locator('section#trust')
+    const label = section.getByText('Who you will talk to')
+    await label.scrollIntoViewIfNeeded()
+    await expect(label).toBeVisible()
+    await expect(section.getByText('your point of contact')).toHaveCount(1)
+    await expect(section.getByRole('link', { name: /^WhatsApp [^ ]+/ })).toHaveAttribute('href', /wa[.]me/)
+    await expect(section.getByRole('link', { name: /Meet the team/ })).toHaveAttribute('href', '/about')
+  })
+
   test('the Services menu lists every visible service', async ({ page }) => {
     await page.goto('/')
     const nav = page.getByRole('navigation', { name: 'Primary' })

@@ -321,6 +321,10 @@ export interface TeamMember {
    */
   order: number;
   visible?: boolean | null;
+  /**
+   * Shown on the home page as the person visitors will talk to, with a WhatsApp button. Only one person can be ticked.
+   */
+  pointOfContact?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -975,6 +979,7 @@ export interface TeamMembersSelect<T extends boolean = true> {
   github?: T;
   order?: T;
   visible?: T;
+  pointOfContact?: T;
   updatedAt?: T;
   createdAt?: T;
 }

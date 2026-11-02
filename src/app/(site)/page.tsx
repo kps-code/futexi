@@ -52,6 +52,7 @@ export default async function HomePage() {
         whyUs={home.whyUs}
         testimonials={testimonials}
         team={team}
+        whatsappHref={whatsappHref}
         stats={{ demos: liveDemos.length, city: settings.city, replyTime: settings.replyTimeText }}
       />
       <Pricing

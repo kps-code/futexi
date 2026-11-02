@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionBeforeChangeHook, CollectionConfig } from 'payload'
 import { anyone, edit, hiddenUnless } from '../access'
 import { revalidateTeamMembers, revalidateTeamMembersOnDelete } from '../hooks/revalidate'
 
@@ -17,16 +17,32 @@ const urlField = (name: string, label: string): CollectionConfig['fields'][numbe
   },
 })
 
+/** Only one person can be the point of contact: ticking someone unticks everyone else. */
+const singlePointOfContact: CollectionBeforeChangeHook = async ({ data, req, originalDoc }) => {
+  if (!data?.pointOfContact) return data
+  await req.payload.update({
+    collection: 'team-members',
+    where: {
+      pointOfContact: { equals: true },
+      ...(originalDoc?.id ? { id: { not_equals: originalDoc.id } } : {}),
+    },
+    data: { pointOfContact: false },
+    req,
+    overrideAccess: true,
+  })
+  return data
+}
+
 export const TeamMembers: CollectionConfig = {
   slug: 'team-members',
   labels: { singular: 'Team Member', plural: 'Team Members' },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'role', 'order', 'visible'],
+    defaultColumns: ['name', 'role', 'order', 'visible', 'pointOfContact'],
     group: 'Settings',
     hidden: hiddenUnless('teamMembers'),
     description:
-      'The builders shown on the About page and the home page. Untick Visible to hide someone without deleting; Delete is in the record menu.',
+      'The builders shown on the About page. The home page shows only the Point of contact. Untick Visible to hide someone without deleting; Delete is in the record menu.',
   },
   access: {
     read: anyone,
@@ -35,7 +51,11 @@ export const TeamMembers: CollectionConfig = {
     delete: edit('teamMembers'),
   },
   defaultSort: 'order',
-  hooks: { afterChange: [revalidateTeamMembers], afterDelete: [revalidateTeamMembersOnDelete] },
+  hooks: {
+    beforeChange: [singlePointOfContact],
+    afterChange: [revalidateTeamMembers],
+    afterDelete: [revalidateTeamMembersOnDelete],
+  },
   fields: [
     {
       type: 'row',
@@ -87,6 +107,16 @@ export const TeamMembers: CollectionConfig = {
           name: 'visible',
           type: 'checkbox',
           defaultValue: true,
+        },
+        {
+          name: 'pointOfContact',
+          label: 'Point of contact',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: {
+            description:
+              'Shown on the home page as the person visitors will talk to, with a WhatsApp button. Only one person can be ticked.',
+          },
         },
       ],
     },
