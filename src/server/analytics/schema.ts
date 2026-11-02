@@ -40,6 +40,8 @@ export const eventNames = [
   'form_submit',
   'form_error',
   'outbound_click',
+  'assistant_open',
+  'assistant_message',
 ] as const
 
 export const eventItem = z.object({

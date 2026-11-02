@@ -31,7 +31,7 @@ export const Leads: CollectionConfig = {
     {
       type: 'row',
       fields: [
-        { name: 'email', type: 'email', required: true },
+        { name: 'email', type: 'email' },
         { name: 'whatsapp', type: 'text', required: true },
       ],
     },

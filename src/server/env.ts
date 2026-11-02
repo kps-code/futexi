@@ -38,6 +38,14 @@ const serverSchema = z
       emptyToUndefined,
       z.enum(['trace', 'debug', 'info', 'warn', 'error']).default('info'),
     ),
+    // Ask-us assistant (docs/architecture.md, section 4.8). Off unless AI_ENABLED=true and a key is set.
+    AI_ENABLED: z.preprocess(emptyToUndefined, z.enum(['true', 'false']).optional()),
+    AI_API_URL: z.preprocess(emptyToUndefined, z.url().optional()),
+    NVIDIA_API_KEY: optionalString(),
+    AI_MODEL_DEFAULT: optionalString(),
+    AI_MODEL_FALLBACKS: optionalString(),
+    AI_TIMEOUT_SECONDS: z.preprocess(emptyToUndefined, z.coerce.number().int().min(5).max(120).optional()),
+    AI_MOCK: z.preprocess(emptyToUndefined, z.enum(['true', 'false']).optional()),
     NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
     VERCEL_ENV: z.preprocess(emptyToUndefined, z.enum(['development', 'preview', 'production']).optional()),
   })

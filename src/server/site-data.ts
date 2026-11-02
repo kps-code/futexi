@@ -3,6 +3,7 @@ import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { aiScript, type AiScriptItem } from '@/content/ai-script'
+import { assistantDefaults } from '@/content/assistant'
 import type { ContactType } from '@/content/contact'
 import { demoBySlug, demos, type Demo } from '@/content/demos'
 import { faq, homeFaqCount } from '@/content/faq'
@@ -564,4 +565,37 @@ export const getTestimonials = unstable_cache(
   },
   ['testimonials'],
   { tags: [CACHE_TAGS.testimonials], revalidate: ONE_HOUR },
+)
+
+/* ------------------------------------------------------------------------ */
+/* Ask-us assistant (AI > Site Assistant)                                   */
+/* ------------------------------------------------------------------------ */
+
+export type AssistantSettings = {
+  enabled: boolean
+  name: string
+  welcome: string
+  chips: string[]
+  extraNotes: string
+  dailyCap: number
+  perChatMax: number
+}
+
+export const getAssistantSettings = unstable_cache(
+  async (): Promise<AssistantSettings> => {
+    const payload = await getPayload({ config })
+    const g = await payload.findGlobal({ slug: 'assistant', depth: 0, overrideAccess: true })
+    const chips = (g?.chips ?? []).map((c) => text(c.label, '')).filter(Boolean)
+    return {
+      enabled: g?.enabled ?? assistantDefaults.enabled,
+      name: text(g?.name, assistantDefaults.name),
+      welcome: text(g?.welcome, assistantDefaults.welcome),
+      chips: chips.length ? chips : [...assistantDefaults.chips],
+      extraNotes: text(g?.extraNotes, assistantDefaults.extraNotes),
+      dailyCap: typeof g?.dailyCap === 'number' ? g.dailyCap : assistantDefaults.dailyCap,
+      perChatMax: typeof g?.perChatMax === 'number' ? g.perChatMax : assistantDefaults.perChatMax,
+    }
+  },
+  ['assistant'],
+  { tags: [CACHE_TAGS.assistant], revalidate: ONE_HOUR },
 )

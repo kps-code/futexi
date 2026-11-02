@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Sora } from 'next/font/google'
 import localFont from 'next/font/local'
 import type { ReactNode } from 'react'
+import { AssistantLauncher } from '@/components/assistant/launcher'
 import { CardMotion } from '@/components/home/card-motion'
 import { RevealObserver } from '@/components/reveal-observer'
 import { Footer } from '@/components/site/footer'
@@ -11,8 +12,9 @@ import { ThemeProvider } from '@/components/site/theme-provider'
 import { Tracker } from '@/components/tracking/tracker'
 import { brand } from '@/content/site'
 import { whatsappLink } from '@/lib/whatsapp'
+import { assistantConfigFromEnv } from '@/server/assistant/config'
 import { clientEnv } from '@/server/env'
-import { getServices, getSiteSettings } from '@/server/site-data'
+import { getAssistantSettings, getServices, getSiteSettings } from '@/server/site-data'
 import './globals.css'
 
 const inter = Inter({
@@ -88,7 +90,13 @@ export const viewport: Viewport = {
 }
 
 export default async function SiteLayout({ children }: { children: ReactNode }) {
-  const [settings, services] = await Promise.all([getSiteSettings(), getServices()])
+  const [settings, services, assistant] = await Promise.all([
+    getSiteSettings(),
+    getServices(),
+    getAssistantSettings(),
+  ])
+  // The chat needs both the admin switch and a configured model key; otherwise nothing is rendered.
+  const showAssistant = assistant.enabled && assistantConfigFromEnv().enabled
 
   return (
     <html
@@ -133,6 +141,14 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
           <RevealObserver />
           <CardMotion />
           <Tracker />
+          {showAssistant && (
+            <AssistantLauncher
+              name={assistant.name}
+              welcome={assistant.welcome}
+              chips={assistant.chips}
+              whatsappHref={whatsappLink(settings.whatsappNumber, settings.whatsappMessage)}
+            />
+          )}
         </ThemeProvider>
         <JsonLd settings={settings} siteUrl={clientEnv.NEXT_PUBLIC_SITE_URL} />
       </body>

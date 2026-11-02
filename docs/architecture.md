@@ -84,6 +84,7 @@ futexi/
     demos/                      BookingFlow, Menu, Gallery, WhatsAppButton
     ui/                         shadcn primitives
     tracking/                   Tracker, useTrack()
+    assistant/                  Ask-us chat: launcher (ships with the page) + panel (loaded on first open)
   content/
     site.ts                     all marketing copy, typed
     demos.ts                    7 case studies
@@ -105,14 +106,28 @@ futexi/
     globals/
       SiteSettings.ts
       AboutPage.ts
+      Assistant.ts              AI > Site Assistant: switch, name, welcome, chips, notes, limits
     admin/
       Dashboard.tsx             custom view: traffic + leads
       LeadJourney.tsx           custom field: visitor's page history
+      fields/AssistantSources   where each assistant fact is edited; fields/KnowledgePreview: the sheet the model reads
     hooks/
       revalidate.ts             on change -> revalidateTag
   server/
     actions/
       submit-contact.ts
+      submit-assistant-lead.ts  two-field lead form inside the chat
+    assistant/
+      knowledge.ts              builds the knowledge sheet from content + admin data
+      load-knowledge.ts         fills it from the cached site-data getters
+      provider.ts               OpenAI-compatible streaming client with model fallback chain
+      config.ts                 AI_* env -> provider config
+      chat.ts                   limits, cap, model or scripted answer, event row
+      fallback.ts               scripted replies when no model answers
+      daily-cap.ts              site-wide messages-per-day counter
+      stream-filter.ts          strips the quote-form token from a stream
+      shape.ts                  redraws a paragraph answer in the fixed shape (safety net)
+      intent.ts                 does the visitor really want a quote or call back
     logging/
       logger.ts                 pino instance
       with-logging.ts           handler and action wrapper
@@ -261,6 +276,19 @@ Writes go through Payload's Local API inside `after()`, so they never sit on the
 - Retention: page_views and events 180 days, api_logs 90 days, visitors and leads kept.
 - Lead delete in admin also deletes the linked visitor history.
 
+### 4.8 Ask-us assistant
+A small chat bubble on every main-site page (never inside `/demo/*`, which has its own layout). It answers questions about KAPOSA FUTEXI only, from a knowledge sheet built at request time from the content files and the admin data: Site Settings (price text, contact), FAQ (timelines), Services, Home Page texts, visible demos, plus free-text notes from AI > Site Assistant. One fact, one place: the sheet reads what the website already shows, so an edit anywhere updates both. Team Members is deliberately left out: the chat never gives names or a head count (owner decision, 2026-11-02); asked who we are, it describes what we build and points to /about.
+
+- Model: any OpenAI-compatible `/chat/completions` endpoint; today NVIDIA NIM free tier (`AI_API_URL`, `NVIDIA_API_KEY`). `AI_MODEL_DEFAULT` is tried first, then each of `AI_MODEL_FALLBACKS`. A 404/410 (model not on the account or retired), 429, 5xx, network error, empty answer or a slow first token moves to the next model. Tamil-script messages go to gpt-oss first because lightning garbles Tamil letters. Total first-token budget `AI_TIMEOUT_SECONDS` (20).
+- Prompt shape (`messages.ts`): the sheet as the first system message, the last 12 turns, then a short system reminder as the very last message (scope, facts only, fixed shape: one-line answer, up to five "• " lines, one closing line, under 90 words; Tamil script when the visitor used it). Small models follow the most recent instruction best: without the reminder, lightning wrote a poem on request even though the sheet forbids it. The history is deduplicated first (`dedupeHistory`: earlier copies of the current question, including near-duplicates such as "show demo detail" vs "show demos detail", and repeated answers are dropped) because a small model copies the text and format of earlier turns. As a last safety net `shape.ts` redraws any 30+ word, 3+ sentence answer that has no list lines into the fixed shape and sends it as a `replace` event; the panel offers "Start over" and uses the storage key `kf_assistant_v2` so transcripts from before this fix are dropped.
+- When no model answers, or the chat is over a limit, or the admin switch is off, the visitor gets a scripted reply from the same knowledge (closest FAQ, price, timeline or contact answer) with the WhatsApp link. The chat never shows an error.
+- Route: `POST /api/assistant` (`withRoute`, one api_logs row per message, no chat text in logs). Body: chat id, last 12 turns, path. Response: newline-delimited JSON, `{"t":"..."}` deltas then `{"done":true,"form":bool,"source":"model"|"fallback"}`. Stops reading from the model when the visitor leaves.
+- Limits (free tiers): 10 messages per 10 minutes per IP (429), per-chat maximum and site-wide messages-per-day from the admin (default 20 and 300, counted in India time; one `assistant_message` event per model answer, read once a minute per instance), `max_tokens` 300, knowledge cached one hour via the existing getters. At 300 model answers a day the whole feature stays inside the NVIDIA, Vercel and Neon free limits.
+- Lead capture: rule 10 of the sheet lets the model end with `[OPEN_QUOTE_FORM]` only on a clear quote, call-back or start request. The token is stripped from the stream and the form is shown only when the visitor's own words agree (`intent.ts`), because the model over-uses it on plain price questions. The form asks name and WhatsApp (email optional) and calls `submit-assistant-lead`: a Leads row with the transcript in details, need guessed from the chat, `form_submit` event, owner email card with `[Chat]` in the subject.
+- Client: `components/assistant/launcher.tsx` (about 1 KB, hydrated with the page) loads `panel.tsx` on first open. Conversation kept in sessionStorage. Mobile: bottom sheet; desktop: 380 x 600 panel. Escape closes, focus goes to the input, `aria-live` on the answers. Site paths and https links in answers become anchors.
+- Admin: AI > Site Assistant (switch, name, welcome, up to three chips, notes, daily cap, per-chat max, read-only preview of the sheet) and AI > AI Assistant Demo (the scripted home-page box, unchanged). Permission area `assistant`.
+- Off switches: `AI_ENABLED` unset or no key renders nothing; the admin switch renders nothing; `AI_MOCK=true` answers with canned text for e2e and UI work.
+
 ---
 
 ## 5. Performance
@@ -322,6 +350,7 @@ Gates live in lighthouserc.json and run in CI against the built app on three pag
 | Theme | next-themes, class strategy, cookie so SSR renders the right theme with no flash |
 | i18n | English only for v1. Structure allows Tamil later |
 | Accessibility | Semantic landmarks, focus states, 4.5:1 contrast in both themes, keyboard-operable booking flow |
+| AI assistant | Section 4.8. Facts only from the knowledge sheet; model never sees secrets or visitor identity; chat text is not logged; every model failure falls back to a scripted answer; quote form gated by the visitor's own words |
 
 ---
 

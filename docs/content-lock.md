@@ -63,6 +63,16 @@ kpsankar1398kp@gmail.com
 © 2026 KAPOSA FUTEXI · Privacy Policy · Terms
 ```
 
+### Ask-us chat (phase 9)
+Bottom-right bubble on every main-site page, never inside /demo/*. Texts below are the defaults in `src/content/assistant.ts`; the admin can change them in AI → Site Assistant.
+- Bubble: **Ask us** (icon + label). Screen-reader name: "Open chat: ask KAPOSA Assistant".
+- Header: **KAPOSA Assistant** · "AI assistant, not a person. Answers from our website."
+- Welcome: "Hi! Ask us anything about websites, demos or pricing. Tanglish-um ok."
+- Chips: What do you build? · How much does a website cost? · How long does it take?
+- Composer placeholder: "Type your question. Tanglish-um ok." Footer line: "Prices and timelines are indicative." · link "Prefer WhatsApp?"
+- Lead form (only when the visitor asks for a quote, a call back or to start): Your name · WhatsApp number · Email (optional) · button **Send my details**. Thank-you: "Thanks, {name}. We reply within one working day." + green **Faster on WhatsApp**.
+- Answer style (fixed in code, section 4.8 of the architecture doc): fixed shape (one-line answer, up to five "• " lines when listing, one closing line, under 90 words), facts only from the site, prices only as the Site Settings starting price text, timelines only from the FAQ, Tamil script answered in Tamil script, Tanglish answered in simple English.; never team names or a head count (owner decision 2026-11-02)
+
 ---
 
 ## 2. Home page

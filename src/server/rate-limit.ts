@@ -46,3 +46,8 @@ export const trackLimiterByVisitor = createLimiter(60, 60_000)
 export const trackLimiterByIp = createLimiter(600, 60_000)
 export const contactLimiterByIp = createLimiter(5, 10 * 60_000)
 export const feedbackLimiterByIp = createLimiter(5, 10 * 60_000)
+// Ask-us assistant: 10 messages per 10 minutes per IP, per-chat limit from the admin (docs/architecture.md, section 4.8).
+export const assistantLimiterByIp = createLimiter(10, 10 * 60_000)
+// Per-chat counter: a wide window whose used count is compared with the admin's per-chat limit.
+export const ASSISTANT_CHAT_COUNTER_MAX = 100
+export const assistantChatCounter = createLimiter(ASSISTANT_CHAT_COUNTER_MAX, 24 * 60 * 60_000)

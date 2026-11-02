@@ -9,6 +9,8 @@ import * as migration_20261021_130246_journey from './20261021_130246_journey'
 import * as migration_20261022_075648_pricing from './20261022_075648_pricing'
 import * as migration_20261026_095918_featured_drop from './20261026_095918_featured_drop'
 import * as migration_20261026_095951_featured_rows from './20261026_095951_featured_rows'
+import * as migration_20261031_112601_assistant_global from './20261031_112601_assistant_global'
+import * as migration_20261031_115041_leads_email_optional from './20261031_115041_leads_email_optional'
 
 export const migrations = [
   {
@@ -65,5 +67,15 @@ export const migrations = [
     up: migration_20261026_095951_featured_rows.up,
     down: migration_20261026_095951_featured_rows.down,
     name: '20261026_095951_featured_rows',
+  },
+  {
+    up: migration_20261031_112601_assistant_global.up,
+    down: migration_20261031_112601_assistant_global.down,
+    name: '20261031_112601_assistant_global',
+  },
+  {
+    up: migration_20261031_115041_leads_email_optional.up,
+    down: migration_20261031_115041_leads_email_optional.down,
+    name: '20261031_115041_leads_email_optional',
   },
 ]
