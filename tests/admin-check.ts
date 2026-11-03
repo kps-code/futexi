@@ -257,7 +257,11 @@ async function main() {
     )
     ok('why us heading + card', has(`Why ${M}`) && has(`Why line ${M}`))
     ok('trust facts: city + reply time', has(`City${M}`) && has(`We reply in ${M} minutes.`))
-    ok('testimonial + team member on home', has(`Quote ${M}`) && has(`Member ${M}`) && has(`Role ${M}`))
+    ok('testimonial on home', has(`Quote ${M}`))
+    ok(
+      'home shows one point of contact with WhatsApp',
+      has('Who you will talk to') && has('your point of contact'),
+    )
     ok('pricing starting price text', has(`Projects start from ₹${M}`))
     ok(
       'pricing tab texts',

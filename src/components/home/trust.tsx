@@ -1,9 +1,10 @@
 import Image from 'next/image'
-import { Quote, Star } from 'lucide-react'
+import Link from 'next/link'
+import { MessageCircle, Quote, Star } from 'lucide-react'
 import { Avatar } from '@/components/site/avatar'
-import { ButtonLink } from '@/components/ui/button'
 import { Reveal } from '@/components/reveal'
 import { trust } from '@/content/home'
+import { firstName } from '@/lib/initials'
 import { cn } from '@/lib/utils'
 import type { TeamMemberView, TestimonialView, WhyUsContent } from '@/server/site-data'
 import { Section, SectionHeading } from './section'
@@ -14,19 +15,22 @@ export type TrustStats = { demos: number; city: string; replyTime: string }
 /**
  * Why businesses choose us: three facts, the "Why Build With Us?" reasons
  * (Content > Home Page), client testimonials when there are any, and the
- * people behind the work (Content > Team Members).
+ * person visitors will talk to (Content > Team Members > Point of contact).
  */
 export function Trust({
   whyUs,
   testimonials,
   team,
   stats,
+  whatsappHref,
 }: {
   whyUs: WhyUsContent
   testimonials: TestimonialView[]
   team: TeamMemberView[]
   stats: TrustStats
+  whatsappHref: string
 }) {
+  const contact = team.find((m) => m.pointOfContact) ?? team[0]
   const facts = [
     { k: `${stats.demos}`, v: 'live demos you can try' },
     { k: stats.city, v: 'based, working across India' },
@@ -122,38 +126,52 @@ export function Trust({
         </div>
       )}
 
-      {team.length > 0 && (
+      {contact && (
         <Reveal className="mt-16 flex flex-col items-start justify-between gap-6 rounded-3xl border border-border bg-surface p-6 sm:flex-row sm:items-center sm:p-8">
-          <div>
-            <h3 className="font-display text-xl font-semibold">{trust.team.heading}</h3>
-            <ul className="mt-4 flex flex-wrap gap-5">
-              {team.map((m) => (
-                <li key={m.id} className="flex items-center gap-3">
-                  <span className="shrink-0 rounded-full bg-border-strong p-0.5">
-                    <Avatar
-                      name={m.name}
-                      photoUrl={m.photoUrl}
-                      photoAlt={m.photoAlt}
-                      size={48}
-                      className="block"
-                    />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="truncate font-display text-sm font-semibold">{m.name}</p>
-                    <p className="truncate text-xs text-muted">{m.role}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+          <div className="flex items-start gap-5 sm:items-center">
+            <span className="shrink-0 rounded-full bg-border-strong p-0.5">
+              <Avatar
+                name={contact.name}
+                photoUrl={contact.photoUrl}
+                photoAlt={contact.photoAlt}
+                size={72}
+                className="block"
+              />
+            </span>
+            <div className="min-w-0">
+              <p className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">
+                {trust.team.heading}
+              </p>
+              <h3 className="mt-1 font-display text-xl font-semibold">{contact.name}</h3>
+              <p className="text-sm text-muted">
+                {contact.role} · {trust.team.contact}
+              </p>
+              <p className="mt-2 max-w-xl text-sm text-muted">
+                {stats.replyTime} {trust.team.line}
+              </p>
+            </div>
           </div>
-          <ButtonLink
-            href={trust.team.cta.href}
-            variant="secondary"
-            data-track="cta_click"
-            data-track-props='{"cta":"meet_team"}'
-          >
-            {trust.team.cta.label}
-          </ButtonLink>
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-11 items-center gap-2 rounded-full bg-[#25d366] px-5 text-sm font-semibold text-[#06281a] transition-[transform,filter] hover:-translate-y-0.5 hover:brightness-105"
+              data-track="whatsapp_click"
+              data-track-props='{"where":"home_contact"}'
+            >
+              <MessageCircle className="h-4 w-4" />
+              {trust.team.whatsapp} {firstName(contact.name)}
+            </a>
+            <Link
+              href={trust.team.cta.href}
+              className="text-sm font-medium text-muted underline underline-offset-4 hover:text-foreground"
+              data-track="cta_click"
+              data-track-props='{"cta":"meet_team"}'
+            >
+              {trust.team.cta.label} →
+            </Link>
+          </div>
         </Reveal>
       )}
     </Section>

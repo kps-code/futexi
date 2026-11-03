@@ -1,4 +1,6 @@
 import { LeadJourney as LeadJourney_76da8f50f63c53c22c7a7fff90a0cfdc } from '../../../payload/admin/fields/LeadJourney'
+import { AssistantSources as AssistantSources_05b40faebd643b0ad3c894a2fc243175 } from '../../../payload/admin/fields/AssistantSources'
+import { KnowledgePreview as KnowledgePreview_aa25edcb7ede0ee6e993dd50e7664b3f } from '../../../payload/admin/fields/KnowledgePreview'
 import { LogoutNavLink as LogoutNavLink_380d75c201fa0ec08771b2c8785d6ab2 } from '../../../payload/admin/LogoutNavLink'
 import { DashboardNavLink as DashboardNavLink_75e8b10f22e9e10c3ffa1acc1cd88ac4 } from '../../../payload/admin/DashboardNavLink'
 import { PasswordRevealProvider as PasswordRevealProvider_c2713cde5bf14c35a3c6589e26785339 } from '../../../payload/admin/PasswordRevealProvider'
@@ -10,6 +12,8 @@ import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e
 /** @type import('payload').ImportMap */
 export const importMap = {
   "/payload/admin/fields/LeadJourney#LeadJourney": LeadJourney_76da8f50f63c53c22c7a7fff90a0cfdc,
+  "/payload/admin/fields/AssistantSources#AssistantSources": AssistantSources_05b40faebd643b0ad3c894a2fc243175,
+  "/payload/admin/fields/KnowledgePreview#KnowledgePreview": KnowledgePreview_aa25edcb7ede0ee6e993dd50e7664b3f,
   "/payload/admin/LogoutNavLink#LogoutNavLink": LogoutNavLink_380d75c201fa0ec08771b2c8785d6ab2,
   "/payload/admin/DashboardNavLink#DashboardNavLink": DashboardNavLink_75e8b10f22e9e10c3ffa1acc1cd88ac4,
   "/payload/admin/PasswordRevealProvider#PasswordRevealProvider": PasswordRevealProvider_c2713cde5bf14c35a3c6589e26785339,

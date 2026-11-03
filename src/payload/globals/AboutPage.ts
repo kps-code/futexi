@@ -20,7 +20,7 @@ export const AboutPage: GlobalConfig = {
       name: 'heading',
       type: 'text',
       required: true,
-      defaultValue: 'Three Builders. One Vision.',
+      defaultValue: 'Built by engineers, end to end.',
     },
     {
       name: 'intro',
@@ -28,7 +28,7 @@ export const AboutPage: GlobalConfig = {
       required: true,
       maxLength: 600,
       defaultValue:
-        'We are a small technology team focused on building modern websites, AI-powered experiences, automation solutions and digital products. We work directly with every client, from the first call to launch and beyond.',
+        'We are a technology team focused on building modern websites, AI-powered experiences, automation solutions and digital products. We work directly with every client, from the first call to launch and beyond.',
     },
     {
       name: 'values',

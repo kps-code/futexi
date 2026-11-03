@@ -13,6 +13,7 @@ export const CACHE_TAGS = {
   services: 'services',
   servicesPage: 'services-page',
   legalPages: 'legal-pages',
+  assistant: 'assistant',
 } as const
 
 function revalidate(tag: string) {
@@ -67,3 +68,4 @@ export const revalidateServices = changeHook(CACHE_TAGS.services)
 export const revalidateServicesOnDelete = deleteHook(CACHE_TAGS.services)
 export const revalidateServicesPage = globalHook(CACHE_TAGS.servicesPage)
 export const revalidateLegalPages = globalHook(CACHE_TAGS.legalPages)
+export const revalidateAssistant = globalHook(CACHE_TAGS.assistant)

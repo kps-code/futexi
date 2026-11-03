@@ -8,7 +8,7 @@ export const AiDemo: GlobalConfig = {
   slug: 'ai-demo',
   label: 'AI Assistant Demo',
   admin: {
-    group: 'Content',
+    group: 'AI',
     hidden: hiddenUnless('aiDemo'),
     description:
       'The sample conversation in the "Ask our AI Assistant" box on the home page. Each row is a chip the visitor can click: the question appears, then the answer is typed out.',

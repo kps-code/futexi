@@ -2,7 +2,7 @@ import type { CollectionConfig, Field } from 'payload'
 import { hiddenUnlessAdmin, isAdmin, isLoggedIn } from '../access'
 import { PERMISSION_AREAS } from '../permissions'
 
-const GROUPS = ['Content', 'Settings', 'Sales', 'Demos', 'Analytics', 'System'] as const
+const GROUPS = ['Content', 'AI', 'Settings', 'Sales', 'Demos', 'Analytics', 'System'] as const
 
 /** One select per area, grouped like the sidebar. */
 function areaFields(): Field[] {

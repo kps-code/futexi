@@ -63,6 +63,16 @@ kpsankar1398kp@gmail.com
 © 2026 KAPOSA FUTEXI · Privacy Policy · Terms
 ```
 
+### Ask-us chat (phase 9)
+Bottom-right bubble on every main-site page, never inside /demo/*. Texts below are the defaults in `src/content/assistant.ts`; the admin can change them in AI → Site Assistant.
+- Bubble: **Ask us** (icon + label). Screen-reader name: "Open chat: ask KAPOSA Assistant".
+- Header: **KAPOSA Assistant** · "AI assistant, not a person. Answers from our website."
+- Welcome: "Hi! Ask us anything about websites, demos or pricing. Tanglish-um ok."
+- Chips: What do you build? · How much does a website cost? · How long does it take?
+- Composer placeholder: "Type your question. Tanglish-um ok." Footer line: "Prices and timelines are indicative." · link "Prefer WhatsApp?"
+- Lead form (only when the visitor asks for a quote, a call back or to start): Your name · WhatsApp number · Email (optional) · button **Send my details**. Thank-you: "Thanks, {name}. We reply within one working day." + green **Faster on WhatsApp**.
+- Answer style (fixed in code, section 4.8 of the architecture doc): fixed shape (one-line answer, up to five "• " lines when listing, one closing line, under 90 words), facts only from the site, prices only as the Site Settings starting price text, timelines only from the FAQ, Tamil script answered in Tamil script, Tanglish answered in simple English.; never team names or a head count (owner decision 2026-11-02)
+
 ---
 
 ## 2. Home page
@@ -103,11 +113,11 @@ Unchanged from the previous edition (features table + scripted demo box). See be
 - Six step cards, then the Technology line and pills (Content > Home Page > Technology).
 
 ### 2.6 Trust (#trust)
-- Eyebrow: Why us · H2 from Content > Home Page > Why us heading (default **Why Build With Us?**) · Sub: Small team, direct contact, work you can try before you buy.
+- Eyebrow: Why us · H2 from Content > Home Page > Why us heading (default **Why Build With Us?**) · Sub: Direct contact, honest pricing, work you can try before you buy.
 - Three facts: "<n> live demos you can try", "<City> based, working across India", "Direct · <reply time text>".
 - The six "Why Build With Us?" reasons (Content > Home Page) as a check list.
 - "What clients say": up to three testimonials (Content > Testimonials), hidden while empty.
-- "The people you will talk to": every visible team member (Content > Team Members) + **Meet the Team** → /about.
+- "Who you will talk to" (changed 2026-11-02): one person only, the Team Member ticked **Point of contact** (fallback: first visible member). Initials or photo, name, "<role> · your point of contact", "<reply time text> The same person from the first call to launch.", green **WhatsApp <first name>** button (wa.me link), **Meet the team →** /about. No head count or full list on the home page.
 
 ### 2.7 Pricing (#pricing)
 All texts below are editable in Content > Home Page > Pricing (defaults in src/content/home.ts); the starting price text comes from Site Settings > Texts and replaces {price}.
@@ -373,8 +383,8 @@ Restaurant demo update (2026-10-16): same dark amber palette; abstract tiles rep
 
 ## 6. About page (/about)
 
-- H1: **Three Builders. One Vision.**
-- Intro: We are a small technology team focused on building modern websites, AI-powered experiences, automation solutions and digital products. We work directly with every client, from the first call to launch and beyond.
+- H1: **Built by engineers, end to end.** (was "Three Builders. One Vision." until 2026-11-02: no head count anywhere, owner decision)
+- Intro: We are a technology team focused on building modern websites, AI-powered experiences, automation solutions and digital products. We work directly with every client, from the first call to launch and beyond.
 
 ### Team cards (editable in admin)
 
@@ -386,7 +396,7 @@ Restaurant demo update (2026-10-16): same dark amber palette; abstract tiles rep
 
 Note: all three bios you sent were identical. The draft lines above give each person a distinct focus. Confirm or edit; they are editable in admin later anyway.
 
-Photo: initials avatar until photos are uploaded.
+Photo: initials on a gradient circle until photos are uploaded (cartoon placeholder removed 2026-11-02). Each card shows at most 6 skill chips; every skill appears once in the "Our stack" row under the cards.
 
 ### Values strip
 Custom, Not Cookie-Cutter · AI-Ready · Mobile First · Direct Collaboration
@@ -488,7 +498,7 @@ Login at /admin. One account per team member. Access is role-based (added 2026-1
 
 | Collection | Fields | Used on |
 |---|---|---|
-| Team Members | name, role, bio, skills (list), AI skills (list), photo, LinkedIn, GitHub, order, visible | About page, Home about teaser |
+| Team Members | name, role, bio, skills (list), AI skills (list), photo, LinkedIn, GitHub, order, visible, point of contact (one person; ticking moves it) | About page, Home "Who you will talk to" card |
 | Site Settings (single) | phone, WhatsApp number, email, Instagram, LinkedIn, GitHub, starting price text, tagline, reply-time text | Header, Footer, Contact, Investment section |
 | About Page (single) | heading, intro paragraph, values list | About page |
 | Media | uploaded images | Team photos, future demo screenshots |

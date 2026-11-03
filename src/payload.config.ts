@@ -27,6 +27,7 @@ import { AboutPage } from './payload/globals/AboutPage'
 import { DemoSettings } from './payload/globals/DemoSettings'
 import { HomePage } from './payload/globals/HomePage'
 import { AiDemo } from './payload/globals/AiDemo'
+import { Assistant } from './payload/globals/Assistant'
 import { ServicesPage } from './payload/globals/ServicesPage'
 import { LegalPages } from './payload/globals/LegalPages'
 import { getDatabaseUrl } from './server/env'
@@ -92,7 +93,7 @@ export default buildConfig({
     Testimonials,
     Services,
   ],
-  globals: [SiteSettings, AboutPage, DemoSettings, HomePage, AiDemo, ServicesPage, LegalPages],
+  globals: [SiteSettings, AboutPage, DemoSettings, HomePage, AiDemo, Assistant, ServicesPage, LegalPages],
   editor: lexicalEditor(),
   email: resendKey
     ? resendAdapter({ apiKey: resendKey, defaultFromAddress: from.address, defaultFromName: from.name })

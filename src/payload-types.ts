@@ -119,6 +119,7 @@ export interface Config {
     'demo-settings': DemoSetting;
     'home-page': HomePage;
     'ai-demo': AiDemo;
+    assistant: Assistant;
     'services-page': ServicesPage;
     'legal-pages': LegalPage;
   };
@@ -128,6 +129,7 @@ export interface Config {
     'demo-settings': DemoSettingsSelect<false> | DemoSettingsSelect<true>;
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'ai-demo': AiDemoSelect<false> | AiDemoSelect<true>;
+    assistant: AssistantSelect<false> | AssistantSelect<true>;
     'services-page': ServicesPageSelect<false> | ServicesPageSelect<true>;
     'legal-pages': LegalPagesSelect<false> | LegalPagesSelect<true>;
   };
@@ -223,9 +225,10 @@ export interface Role {
     services?: ('none' | 'view' | 'edit') | null;
     aboutPage?: ('none' | 'view' | 'edit') | null;
     homePage?: ('none' | 'view' | 'edit') | null;
-    aiDemo?: ('none' | 'view' | 'edit') | null;
     servicesPage?: ('none' | 'view' | 'edit') | null;
     legalPages?: ('none' | 'view' | 'edit') | null;
+    aiDemo?: ('none' | 'view' | 'edit') | null;
+    assistant?: ('none' | 'view' | 'edit') | null;
     teamMembers?: ('none' | 'view' | 'edit') | null;
     siteSettings?: ('none' | 'view' | 'edit') | null;
     demoSettings?: ('none' | 'view' | 'edit') | null;
@@ -289,7 +292,7 @@ export interface Media {
   };
 }
 /**
- * The builders shown on the About page and the home page. Untick Visible to hide someone without deleting; Delete is in the record menu.
+ * The builders shown on the About page. The home page shows only the Point of contact. Untick Visible to hide someone without deleting; Delete is in the record menu.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "team-members".
@@ -318,6 +321,10 @@ export interface TeamMember {
    */
   order: number;
   visible?: boolean | null;
+  /**
+   * Shown on the home page as the person visitors will talk to, with a WhatsApp button. Only one person can be ticked.
+   */
+  pointOfContact?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -331,7 +338,7 @@ export interface Lead {
   id: number;
   name: string;
   businessName?: string | null;
-  email: string;
+  email?: string | null;
   whatsapp: string;
   businessType?: string | null;
   need:
@@ -499,7 +506,9 @@ export interface Event {
     | 'form_start'
     | 'form_submit'
     | 'form_error'
-    | 'outbound_click';
+    | 'outbound_click'
+    | 'assistant_open'
+    | 'assistant_message';
   path: string;
   props?:
     | {
@@ -887,9 +896,10 @@ export interface RolesSelect<T extends boolean = true> {
         services?: T;
         aboutPage?: T;
         homePage?: T;
-        aiDemo?: T;
         servicesPage?: T;
         legalPages?: T;
+        aiDemo?: T;
+        assistant?: T;
         teamMembers?: T;
         siteSettings?: T;
         demoSettings?: T;
@@ -969,6 +979,7 @@ export interface TeamMembersSelect<T extends boolean = true> {
   github?: T;
   order?: T;
   visible?: T;
+  pointOfContact?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1500,6 +1511,50 @@ export interface AiDemo {
   createdAt?: string | null;
 }
 /**
+ * The "Ask us" chat bubble on the main website. It answers from the site content, Site Settings, FAQ, Team Members and the notes below. It is never shown inside the demos.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "assistant".
+ */
+export interface Assistant {
+  id: number;
+  /**
+   * Off hides the bubble everywhere. The chat also stays off while the AI key is missing on the server.
+   */
+  enabled?: boolean | null;
+  /**
+   * Shown in the chat header and used when it introduces itself.
+   */
+  name?: string | null;
+  /**
+   * The first line visitors see when they open the chat.
+   */
+  welcome?: string | null;
+  /**
+   * Up to three one-tap questions under the welcome message.
+   */
+  chips?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Plain sentences the assistant must follow. Offers, things to say or avoid, answers for questions the site does not cover. Example: "Diwali offer: 10% off until 5 Nov." or "If asked about Shopify, say we can discuss it on WhatsApp." These override everything else.
+   */
+  extraNotes?: string | null;
+  /**
+   * Counted in India time. 0 pauses the AI for the day.
+   */
+  dailyCap?: number | null;
+  /**
+   * After this the visitor is pointed to WhatsApp.
+   */
+  perChatMax?: number | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * Heading and sub-text at the top of the Services page. The service cards are under Content > Services.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1729,6 +1784,27 @@ export interface AiDemoSelect<T extends boolean = true> {
         answer?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "assistant_select".
+ */
+export interface AssistantSelect<T extends boolean = true> {
+  enabled?: T;
+  name?: T;
+  welcome?: T;
+  chips?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  extraNotes?: T;
+  dailyCap?: T;
+  perChatMax?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

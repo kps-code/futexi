@@ -39,6 +39,12 @@ Date: 2026-10-07
 | `LEAD_NOTIFY_EMAIL` | `kpsankar1398kp@gmail.com` |
 | `LEAD_FROM_EMAIL` | `KAPOSA FUTEXI <hello@kaposafutexi.com>` once the domain is verified |
 | `LOG_LEVEL` | `info` |
+| `AI_ENABLED` | `true` to show the Ask-us chat (section 4.8 of the architecture doc). Unset or `false` hides it |
+| `AI_API_URL` | `https://integrate.api.nvidia.com/v1` |
+| `NVIDIA_API_KEY` | from build.nvidia.com (free tier). Never paste it in chat or commit it |
+| `AI_MODEL_DEFAULT` | `nvidia/nemotron-3.5-lightning-30b-a3b` |
+| `AI_MODEL_FALLBACKS` | `openai/gpt-oss-20b` (comma-separated list, tried in order) |
+| `AI_TIMEOUT_SECONDS` | `20` |
 
 4. Storage: add **Vercel Blob** to the project (Storage tab). It injects `BLOB_READ_WRITE_TOKEN` automatically. Team photos upload there.
 5. Deploy. The first deploy runs `payload migrate` against Neon, then builds. Open `/admin` on the Vercel URL and create the first admin user (it gets the built-in Admin role automatically).
